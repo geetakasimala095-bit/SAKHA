@@ -1,15 +1,22 @@
 <!DOCTYPE html>
-
 <html lang="or">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <meta name="theme-color" content="#08051f">
 <meta name="description" content="SAKHA - Your friendly AI Life Assistant">
+
 <title>SAKHA | AI Life Assistant</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+
+*{
+ box-sizing:border-box;
+ margin:0;
+ padding:0;
+}
 
 :root{
  --bg:#06051a;
@@ -24,22 +31,49 @@
  --green:#35dc9a;
 }
 
-html{scroll-behavior:smooth}
+html{
+ scroll-behavior:smooth;
+}
 
 body{
  color:var(--text);
- font-family:system-ui,-apple-system,BlinkMacSystemFont,
- "Noto Sans Oriya","Noto Sans",sans-serif;
+ font-family:
+ system-ui,
+ -apple-system,
+ BlinkMacSystemFont,
+ "Noto Sans Oriya",
+ "Noto Sans",
+ sans-serif;
+
  min-height:100vh;
+
  background:
- radial-gradient(circle at 5% 0%,#3b218d 0,transparent 27%),
- radial-gradient(circle at 95% 0%,#781654 0,transparent 25%),
- radial-gradient(circle at 50% 100%,#063f68 0,transparent 32%),
+ radial-gradient(
+  circle at 5% 0%,
+  #3b218d 0,
+  transparent 27%
+ ),
+ radial-gradient(
+  circle at 95% 0%,
+  #781654 0,
+  transparent 25%
+ ),
+ radial-gradient(
+  circle at 50% 100%,
+  #063f68 0,
+  transparent 32%
+ ),
  var(--bg);
 }
 
-button,input{font:inherit}
-button{cursor:pointer}
+button,
+input{
+ font:inherit;
+}
+
+button{
+ cursor:pointer;
+}
 
 .app{
  width:min(1250px,100%);
@@ -70,8 +104,16 @@ header{
  display:grid;
  place-items:center;
  font-size:30px;
- background:linear-gradient(135deg,#6855ff,#e340d7);
- box-shadow:0 0 35px #7955ff77;
+
+ background:
+ linear-gradient(
+  135deg,
+  #6855ff,
+  #e340d7
+ );
+
+ box-shadow:
+ 0 0 35px #7955ff77;
 }
 
 .brand h1{
@@ -109,8 +151,10 @@ header{
  overflow:hidden;
  text-align:center;
  padding:38px 15px 27px;
+
  border-radius:32px;
  border:1px solid var(--border);
+
  background:
  linear-gradient(
   135deg,
@@ -118,7 +162,9 @@ header{
   rgba(8,50,94,.48),
   rgba(111,17,83,.35)
  );
- box-shadow:0 25px 80px #0009;
+
+ box-shadow:
+ 0 25px 80px #0009;
 }
 
 .hero-content{
@@ -130,6 +176,7 @@ header{
  font-size:clamp(50px,10vw,84px);
  font-weight:950;
  letter-spacing:8px;
+
  background:
  linear-gradient(
   90deg,
@@ -138,6 +185,7 @@ header{
   #ff55c8,
   #ffd85b
  );
+
  -webkit-background-clip:text;
  background-clip:text;
  color:transparent;
@@ -167,9 +215,11 @@ header{
  inset:0;
  border-radius:50%;
  border:1px solid #50ddff99;
+
  box-shadow:
-  0 0 25px #2ddcff55,
-  inset 0 0 25px #8d5cff33;
+ 0 0 25px #2ddcff55,
+ inset 0 0 25px #8d5cff33;
+
  animation:spin 8s linear infinite;
 }
 
@@ -189,10 +239,12 @@ header{
 .orb{
  position:absolute;
  inset:43px;
+
  border-radius:50%;
  display:grid;
  place-items:center;
  font-size:58px;
+
  background:
  radial-gradient(
   circle at 35% 25%,
@@ -200,18 +252,24 @@ header{
   #6158ff 50%,
   #d629ff
  );
+
  box-shadow:
-  0 0 35px #39d9ff,
-  0 0 85px #824dff88;
+ 0 0 35px #39d9ff,
+ 0 0 85px #824dff88;
+
  animation:pulse 2.5s infinite;
 }
 
 @keyframes spin{
- to{transform:rotate(360deg)}
+ to{
+  transform:rotate(360deg);
+ }
 }
 
 @keyframes pulse{
- 50%{transform:scale(1.07)}
+ 50%{
+  transform:scale(1.07);
+ }
 }
 
 /* VOICE */
@@ -219,11 +277,22 @@ header{
 .voice-button{
  width:78px;
  height:78px;
+
  border:0;
  border-radius:50%;
+
  font-size:31px;
- background:linear-gradient(135deg,#ffd75a,#ff6e9d);
- box-shadow:0 10px 35px #ff719d66;
+
+ background:
+ linear-gradient(
+ 135deg,
+ #ffd75a,
+ #ff6e9d
+ );
+
+ box-shadow:
+ 0 10px 35px #ff719d66;
+
  transition:.2s;
 }
 
@@ -238,7 +307,8 @@ header{
 @keyframes listening{
  50%{
   transform:scale(1.12);
-  box-shadow:0 0 60px #ff54d5;
+  box-shadow:
+   0 0 60px #ff54d5;
  }
 }
 
@@ -259,9 +329,12 @@ header{
 .chat{
  margin-top:16px;
  padding:17px;
+
  border-radius:23px;
  border:1px solid var(--border);
+
  background:var(--card);
+
  backdrop-filter:blur(18px);
 }
 
@@ -273,11 +346,13 @@ header{
 
 .messages{
  min-height:58px;
- max-height:320px;
+ max-height:360px;
  overflow:auto;
+
  display:flex;
  flex-direction:column;
  gap:8px;
+
  margin-bottom:11px;
  padding-right:3px;
 }
@@ -285,26 +360,33 @@ header{
 .message{
  max-width:88%;
  padding:10px 14px;
+
  border-radius:16px;
+
  line-height:1.55;
+
  white-space:pre-wrap;
  word-break:break-word;
 }
 
 .message.ai{
  align-self:flex-start;
+
  background:
  linear-gradient(
   135deg,
   #7d4dff33,
   #00cfff18
  );
+
  border:1px solid #7d4dff33;
 }
 
 .message.user{
  align-self:flex-end;
+
  background:#1f84cb40;
+
  border:1px solid #2bb8ff40;
 }
 
@@ -321,25 +403,42 @@ header{
 .chat-row input{
  flex:1;
  min-width:0;
+
  padding:13px;
+
  color:white;
+
  background:#0007;
+
  border:1px solid var(--border);
+
  border-radius:14px;
+
  outline:none;
 }
 
 .chat-row input:focus{
  border-color:#50ddff88;
- box-shadow:0 0 15px #36ddff22;
+
+ box-shadow:
+ 0 0 15px #36ddff22;
 }
 
 .send-button{
  border:0;
  border-radius:14px;
+
  padding:0 19px;
- background:linear-gradient(135deg,#ffd85c,#ff9f43);
+
+ background:
+ linear-gradient(
+ 135deg,
+ #ffd85c,
+ #ff9f43
+ );
+
  font-weight:950;
+
  color:#1b102d;
 }
 
@@ -354,6 +453,7 @@ header{
  justify-content:space-between;
  align-items:center;
  gap:10px;
+
  margin-bottom:12px;
 }
 
@@ -375,36 +475,52 @@ header{
 .service-card{
  position:relative;
  overflow:hidden;
+
  min-height:145px;
+
  text-align:left;
  color:white;
+
  padding:16px;
+
  border:1px solid var(--border);
  border-radius:21px;
+
  background:var(--card);
+
  transition:.25s;
+
  backdrop-filter:blur(15px);
 }
 
 .service-card:hover{
  transform:translateY(-5px);
- background:rgba(255,255,255,.12);
- box-shadow:0 18px 45px #0007;
+
+ background:
+ rgba(255,255,255,.12);
+
+ box-shadow:
+ 0 18px 45px #0007;
 }
 
 .service-icon{
  width:48px;
  height:48px;
+
  border-radius:15px;
+
  display:grid;
  place-items:center;
+
  font-size:25px;
+
  margin-bottom:10px;
+
  background:
  linear-gradient(
-  135deg,
-  var(--glow),
-  #ffffff1f
+ 135deg,
+ var(--glow),
+ #ffffff1f
  );
 }
 
@@ -431,11 +547,15 @@ header{
 
 .panel{
  display:none;
+
  margin-top:17px;
  padding:21px;
+
  border-radius:23px;
  border:1px solid var(--border);
+
  background:var(--card);
+
  backdrop-filter:blur(18px);
 }
 
@@ -456,14 +576,18 @@ header{
 .panel-grid{
  display:grid;
  grid-template-columns:repeat(3,1fr);
+
  gap:11px;
+
  margin-top:17px;
 }
 
 .info-box{
  padding:16px;
+
  border:1px solid var(--border);
  border-radius:16px;
+
  background:#ffffff08;
 }
 
@@ -481,24 +605,36 @@ header{
 
 .reminder-form{
  display:grid;
- grid-template-columns:1fr 210px auto;
+
+ grid-template-columns:
+ 1fr 210px auto;
+
  gap:8px;
+
  margin-top:16px;
 }
 
 .reminder-form input{
  padding:12px;
+
  color:white;
+
  background:#0006;
+
  border:1px solid var(--border);
+
  border-radius:13px;
 }
 
 .add-button{
  border:0;
+
  border-radius:13px;
+
  padding:0 18px;
+
  background:var(--gold);
+
  font-weight:950;
 }
 
@@ -512,9 +648,12 @@ header{
  display:flex;
  justify-content:space-between;
  gap:10px;
+
  padding:12px;
+
  border:1px solid var(--border);
  border-radius:13px;
+
  background:#ffffff08;
 }
 
@@ -528,7 +667,9 @@ header{
 
 footer{
  text-align:center;
+
  padding:38px 8px 20px;
+
  color:var(--muted);
 }
 
@@ -629,16 +770,12 @@ footer{
   min-height:45px;
  }
 
- .chat-row{
-  align-items:stretch;
- }
-
  .send-button{
   padding:0 14px;
  }
 }
-</style>
 
+</style>
 </head>
 
 <body>
@@ -651,32 +788,46 @@ footer{
 
  <div class="logo-area">
 
-  <div class="logo">🤖</div>
+  <div class="logo">
+   🤖
+  </div>
 
   <div class="brand">
+
    <h1>SAKHA</h1>
-   <p>AI Life Assistant</p>
+
+   <p>
+    AI Life Assistant
+   </p>
+
   </div>
 
  </div>
 
  <div class="header-actions">
 
-<button class="header-btn"
-onclick="setLanguage('or')">
-ଓଡ଼ିଆ </button>
+  <button
+   class="header-btn"
+   onclick="setLanguage('or')">
+   ଓଡ଼ିଆ
+  </button>
 
-<button class="header-btn"
-onclick="setLanguage('hi')">
-हिन्दी </button>
+  <button
+   class="header-btn"
+   onclick="setLanguage('hi')">
+   हिन्दी
+  </button>
 
-<button class="header-btn"
-onclick="setLanguage('en')">
-English </button>
+  <button
+   class="header-btn"
+   onclick="setLanguage('en')">
+   English
+  </button>
 
  </div>
 
 </header>
+
 
 <!-- HERO -->
 
@@ -696,10 +847,13 @@ English </button>
    Problem ଯେଉଁଠି, Solution ସେଇଠି।
   </div>
 
+
   <div class="ai-orb">
 
    <div class="ring"></div>
+
    <div class="ring two"></div>
+
    <div class="ring three"></div>
 
    <div class="orb">
@@ -708,30 +862,36 @@ English </button>
 
   </div>
 
-<button
-id="voiceButton"
-class="voice-button"
-onclick="startVoice()">
 
-🎙️
+  <button
+   id="voiceButton"
+   class="voice-button"
+   onclick="startVoice()">
+
+   🎙️
 
   </button>
+
 
   <div
    id="voiceStatus"
    class="voice-status">
 
-କହନ୍ତୁ… SAKHA ଶୁଣୁଛି
+   କହନ୍ତୁ… SAKHA ଶୁଣୁଛି
 
   </div>
 
+
   <div class="voice-hint">
+
    🎙️ Voiceରେ ପଚାରନ୍ତୁ • SAKHA ଉତ୍ତର ଦେବ
+
   </div>
 
  </div>
 
 </section>
+
 
 <!-- CHAT -->
 
@@ -741,26 +901,33 @@ onclick="startVoice()">
   💬 Talk with SAKHA
  </div>
 
- <div id="messages" class="messages">
+
+ <div
+  id="messages"
+  class="messages">
 
   <div class="message ai">
-   🤖 ନମସ୍କାର! ମୁଁ SAKHA। କହନ୍ତୁ, କଣ help ଦରକାର?
+
+   🤖 ନମସ୍କାର! ମୁଁ SAKHA।
+   କହନ୍ତୁ, କଣ help ଦରକାର?
+
   </div>
 
  </div>
 
+
  <div class="chat-row">
 
-<input
-id="chatInput"
-placeholder="ତୁମ problem ଲେଖ…"
-autocomplete="off">
+  <input
+   id="chatInput"
+   placeholder="ତୁମ problem ଲେଖ…"
+   autocomplete="off">
 
-<button
-class="send-button"
-onclick="sendMessage()">
+  <button
+   class="send-button"
+   onclick="sendMessage()">
 
-Send
+   Send
 
   </button>
 
@@ -768,13 +935,16 @@ Send
 
 </section>
 
+
 <!-- SERVICES -->
 
 <section class="section">
 
  <div class="section-heading">
 
-  <h2>✨ SAKHA Services</h2>
+  <h2>
+   ✨ SAKHA Services
+  </h2>
 
   <span>
    All-in-one daily assistant
@@ -782,14 +952,21 @@ Send
 
  </div>
 
+
  <div class="service-grid">
 
-<button class="service-card purple"
-onclick="openPanel('student')">
 
-   <div class="service-icon">📚</div>
+  <button
+   class="service-card purple"
+   onclick="openPanel('student')">
 
-<strong>Student AI</strong>
+   <div class="service-icon">
+    📚
+   </div>
+
+   <strong>
+    Student AI
+   </strong>
 
    <small>
     Study, questions, explanation ଓ revision help।
@@ -797,12 +974,18 @@ onclick="openPanel('student')">
 
   </button>
 
-<button class="service-card green"
-onclick="openPanel('farmer')">
 
-   <div class="service-icon">🌾</div>
+  <button
+   class="service-card green"
+   onclick="openPanel('farmer')">
 
-<strong>Farmer AI</strong>
+   <div class="service-icon">
+    🌾
+   </div>
+
+   <strong>
+    Farmer AI
+   </strong>
 
    <small>
     ଫସଲ, farming ଓ field guidance।
@@ -810,12 +993,18 @@ onclick="openPanel('farmer')">
 
   </button>
 
-<button class="service-card orange"
-onclick="openPanel('animalCare')">
 
-   <div class="service-icon">🐄</div>
+  <button
+   class="service-card orange"
+   onclick="openPanel('animalCare')">
 
-<strong>Animal Care</strong>
+   <div class="service-icon">
+    🐄
+   </div>
+
+   <strong>
+    Animal Care
+   </strong>
 
    <small>
     ପଶୁ care ଓ general information।
@@ -823,12 +1012,18 @@ onclick="openPanel('animalCare')">
 
   </button>
 
-<button class="service-card red"
-onclick="openPanel('animalRescue')">
 
-   <div class="service-icon">🐾</div>
+  <button
+   class="service-card red"
+   onclick="openPanel('animalRescue')">
 
-<strong>Animal Rescue</strong>
+   <div class="service-icon">
+    🐾
+   </div>
+
+   <strong>
+    Animal Rescue
+   </strong>
 
    <small>
     ବିପଦରେ ଥିବା ପଶୁ ପାଇଁ help।
@@ -836,12 +1031,18 @@ onclick="openPanel('animalRescue')">
 
   </button>
 
-<button class="service-card blue"
-onclick="openPanel('baby')">
 
-   <div class="service-icon">👶</div>
+  <button
+   class="service-card blue"
+   onclick="openPanel('baby')">
 
-<strong>Baby Care</strong>
+   <div class="service-icon">
+    👶
+   </div>
+
+   <strong>
+    Baby Care
+   </strong>
 
    <small>
     Baby care, hygiene ଓ safety guidance।
@@ -849,12 +1050,18 @@ onclick="openPanel('baby')">
 
   </button>
 
-<button class="service-card pink"
-onclick="openPanel('kitchen')">
 
-   <div class="service-icon">🍳</div>
+  <button
+   class="service-card pink"
+   onclick="openPanel('kitchen')">
 
-<strong>Kitchen & Recipes</strong>
+   <div class="service-icon">
+    🍳
+   </div>
+
+   <strong>
+    Kitchen & Recipes
+   </strong>
 
    <small>
     Ingredients ଅନୁସାରେ recipe ideas।
@@ -862,12 +1069,18 @@ onclick="openPanel('kitchen')">
 
   </button>
 
-<button class="service-card gold"
-onclick="openPanel('buySell')">
 
-   <div class="service-icon">🛍️</div>
+  <button
+   class="service-card gold"
+   onclick="openPanel('buySell')">
 
-<strong>Buy & Sell</strong>
+   <div class="service-icon">
+    🛍️
+   </div>
+
+   <strong>
+    Buy & Sell
+   </strong>
 
    <small>
     Old/used ଜିନିଷ buy କିମ୍ବା sell।
@@ -875,12 +1088,18 @@ onclick="openPanel('buySell')">
 
   </button>
 
-<button class="service-card purple"
-onclick="openPanel('lostFound')">
 
-   <div class="service-icon">🔎</div>
+  <button
+   class="service-card purple"
+   onclick="openPanel('lostFound')">
 
-<strong>Lost & Found</strong>
+   <div class="service-icon">
+    🔎
+   </div>
+
+   <strong>
+    Lost & Found
+   </strong>
 
    <small>
     ହଜିଥିବା/ମିଳିଥିବା ଜିନିଷ ପାଇଁ help।
@@ -888,12 +1107,18 @@ onclick="openPanel('lostFound')">
 
   </button>
 
-<button class="service-card blue"
-onclick="openPanel('jobs')">
 
-   <div class="service-icon">💼</div>
+  <button
+   class="service-card blue"
+   onclick="openPanel('jobs')">
 
-<strong>Jobs & Career</strong>
+   <div class="service-icon">
+    💼
+   </div>
+
+   <strong>
+    Jobs & Career
+   </strong>
 
    <small>
     Job information ଓ career guidance।
@@ -901,12 +1126,18 @@ onclick="openPanel('jobs')">
 
   </button>
 
-<button class="service-card blue"
-onclick="openPanel('maps')">
 
-   <div class="service-icon">🗺️</div>
+  <button
+   class="service-card blue"
+   onclick="openPanel('maps')">
 
-<strong>Maps & Places</strong>
+   <div class="service-icon">
+    🗺️
+   </div>
+
+   <strong>
+    Maps & Places
+   </strong>
 
    <small>
     Nearby useful places ଖୋଜନ୍ତୁ।
@@ -914,12 +1145,18 @@ onclick="openPanel('maps')">
 
   </button>
 
-<button class="service-card blue"
-onclick="openPanel('weather')">
 
-   <div class="service-icon">🌦️</div>
+  <button
+   class="service-card blue"
+   onclick="openPanel('weather')">
 
-<strong>Weather</strong>
+   <div class="service-icon">
+    🌦️
+   </div>
+
+   <strong>
+    Weather
+   </strong>
 
    <small>
     Current weather ଓ forecast foundation।
@@ -927,12 +1164,18 @@ onclick="openPanel('weather')">
 
   </button>
 
-<button class="service-card green"
-onclick="openPanel('market')">
 
-   <div class="service-icon">🛒</div>
+  <button
+   class="service-card green"
+   onclick="openPanel('market')">
 
-<strong>Smart Market</strong>
+   <div class="service-icon">
+    🛒
+   </div>
+
+   <strong>
+    Smart Market
+   </strong>
 
    <small>
     ଜିନିଷ କେଉଁଠି ମିଳିବ ଖୋଜିବାର help।
@@ -940,12 +1183,18 @@ onclick="openPanel('market')">
 
   </button>
 
-<button class="service-card orange"
-onclick="openPanel('vehicle')">
 
-   <div class="service-icon">🏍️</div>
+  <button
+   class="service-card orange"
+   onclick="openPanel('vehicle')">
 
-<strong>Vehicle Help</strong>
+   <div class="service-icon">
+    🏍️
+   </div>
+
+   <strong>
+    Vehicle Help
+   </strong>
 
    <small>
     Bike, car ଓ scooter basic help।
@@ -953,12 +1202,18 @@ onclick="openPanel('vehicle')">
 
   </button>
 
-<button class="service-card blue"
-onclick="openPanel('mobile')">
 
-   <div class="service-icon">📱</div>
+  <button
+   class="service-card blue"
+   onclick="openPanel('mobile')">
 
-<strong>Mobile Help</strong>
+   <div class="service-icon">
+    📱
+   </div>
+
+   <strong>
+    Mobile Help
+   </strong>
 
    <small>
     Phone, battery, network ଓ Wi-Fi help।
@@ -966,12 +1221,18 @@ onclick="openPanel('mobile')">
 
   </button>
 
-<button class="service-card purple"
-onclick="openPanel('smartHome')">
 
-   <div class="service-icon">🏠</div>
+  <button
+   class="service-card purple"
+   onclick="openPanel('smartHome')">
 
-<strong>Smart Home</strong>
+   <div class="service-icon">
+    🏠
+   </div>
+
+   <strong>
+    Smart Home
+   </strong>
 
    <small>
     Supported smart-device integration।
@@ -979,12 +1240,18 @@ onclick="openPanel('smartHome')">
 
   </button>
 
-<button class="service-card gold"
-onclick="openPanel('reminder')">
 
-   <div class="service-icon">⏰</div>
+  <button
+   class="service-card gold"
+   onclick="openPanel('reminder')">
 
-<strong>Smart Reminder</strong>
+   <div class="service-icon">
+    ⏰
+   </div>
+
+   <strong>
+    Smart Reminder
+   </strong>
 
    <small>
     Important କାମ ମନେ ପକାଇବା।
@@ -992,12 +1259,18 @@ onclick="openPanel('reminder')">
 
   </button>
 
-<button class="service-card red"
-onclick="openPanel('emergency')">
 
-   <div class="service-icon">🆘</div>
+  <button
+   class="service-card red"
+   onclick="openPanel('emergency')">
 
-<strong>Emergency Help</strong>
+   <div class="service-icon">
+    🆘
+   </div>
+
+   <strong>
+    Emergency Help
+   </strong>
 
    <small>
     Emergency situationରେ quick guidance।
@@ -1005,12 +1278,18 @@ onclick="openPanel('emergency')">
 
   </button>
 
-<button class="service-card pink"
-onclick="openPanel('camera')">
 
-   <div class="service-icon">📷</div>
+  <button
+   class="service-card pink"
+   onclick="openPanel('camera')">
 
-<strong>Camera AI</strong>
+   <div class="service-icon">
+    📷
+   </div>
+
+   <strong>
+    Camera AI
+   </strong>
 
    <small>
     Photo-based AI information foundation।
@@ -1018,12 +1297,18 @@ onclick="openPanel('camera')">
 
   </button>
 
-<button class="service-card gold"
-onclick="openPanel('movies')">
 
-   <div class="service-icon">🎬</div>
+  <button
+   class="service-card gold"
+   onclick="openPanel('movies')">
 
-<strong>Movie & Ticket</strong>
+   <div class="service-icon">
+    🎬
+   </div>
+
+   <strong>
+    Movie & Ticket
+   </strong>
 
    <small>
     Movie show ଓ official ticket information।
@@ -1031,12 +1316,18 @@ onclick="openPanel('movies')">
 
   </button>
 
-<button class="service-card purple"
-onclick="openPanel('daily')">
 
-   <div class="service-icon">🧠</div>
+  <button
+   class="service-card purple"
+   onclick="openPanel('daily')">
 
-<strong>Daily Life AI</strong>
+   <div class="service-icon">
+    🧠
+   </div>
+
+   <strong>
+    Daily Life AI
+   </strong>
 
    <small>
     Planning, tasks ଓ general help।
@@ -1048,11 +1339,14 @@ onclick="openPanel('daily')">
 
 </section>
 
+
 <!-- STUDENT -->
 
 <div id="student" class="panel">
 
- <h3>📚 Student AI</h3>
+ <h3>
+  📚 Student AI
+ </h3>
 
  <p class="panel-description">
   ପଢ଼ାରେ problem ହେଲେ SAKHAକୁ ପଚାରନ୍ତୁ।
@@ -1085,11 +1379,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- FARMER -->
 
 <div id="farmer" class="panel">
 
- <h3>🌾 Farmer AI</h3>
+ <h3>
+  🌾 Farmer AI
+ </h3>
 
  <p class="panel-description">
   Farming, crop ଓ field-related general guidance।
@@ -1122,11 +1419,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- ANIMAL CARE -->
 
 <div id="animalCare" class="panel">
 
- <h3>🐄 Animal Care</h3>
+ <h3>
+  🐄 Animal Care
+ </h3>
 
  <p class="panel-description">
   ପଶୁଙ୍କ basic care ଓ general information।
@@ -1160,11 +1460,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- ANIMAL RESCUE -->
 
 <div id="animalRescue" class="panel">
 
- <h3>🐾 Animal Rescue</h3>
+ <h3>
+  🐾 Animal Rescue
+ </h3>
 
  <p class="panel-description">
   ଆହତ କିମ୍ବା ବିପଦରେ ଥିବା ପଶୁ ପାଇଁ
@@ -1183,7 +1486,7 @@ onclick="openPanel('daily')">
   <div class="info-box">
    <strong>📍 Location</strong>
    <p>
-    Nearby veterinary service future integration।
+    Nearby veterinary service integration।
    </p>
   </div>
 
@@ -1198,11 +1501,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- BABY -->
 
 <div id="baby" class="panel">
 
- <h3>👶 Baby Care</h3>
+ <h3>
+  👶 Baby Care
+ </h3>
 
  <p class="panel-description">
   Baby care, hygiene ଓ safety ବିଷୟରେ general information।
@@ -1236,11 +1542,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- KITCHEN -->
 
 <div id="kitchen" class="panel">
 
- <h3>🍳 Kitchen & Recipes</h3>
+ <h3>
+  🍳 Kitchen & Recipes
+ </h3>
 
  <p class="panel-description">
   ଘରେ ଥିବା ingredients କହନ୍ତୁ, SAKHA recipe ideas ଦେବ।
@@ -1273,11 +1582,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- BUY SELL -->
 
 <div id="buySell" class="panel">
 
- <h3>🛍️ Buy & Sell</h3>
+ <h3>
+  🛍️ Buy & Sell
+ </h3>
 
  <p class="panel-description">
   Old/used ଜିନିଷ buy କିମ୍ବା sell କରିବାର marketplace foundation।
@@ -1310,11 +1622,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- LOST FOUND -->
 
 <div id="lostFound" class="panel">
 
- <h3>🔎 Lost & Found</h3>
+ <h3>
+  🔎 Lost & Found
+ </h3>
 
  <p class="panel-description">
   ହଜିଥିବା କିମ୍ବା ମିଳିଥିବା ଜିନିଷର information share କରିବାର feature।
@@ -1347,11 +1662,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- JOBS -->
 
 <div id="jobs" class="panel">
 
- <h3>💼 Jobs & Career</h3>
+ <h3>
+  💼 Jobs & Career
+ </h3>
 
  <p class="panel-description">
   Government/private job information ଓ career guidance।
@@ -1384,11 +1702,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- MAPS -->
 
 <div id="maps" class="panel">
 
- <h3>🗺️ Maps & Places</h3>
+ <h3>
+  🗺️ Maps & Places
+ </h3>
 
  <p class="panel-description">
   Location permission ଦିଆଗଲେ nearby useful places search କରିବାର system।
@@ -1421,11 +1742,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- WEATHER -->
 
 <div id="weather" class="panel">
 
- <h3>🌦️ Weather</h3>
+ <h3>
+  🌦️ Weather
+ </h3>
 
  <p class="panel-description">
   Live weather API connect କଲେ location-based current weather
@@ -1434,11 +1758,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- MARKET -->
 
 <div id="market" class="panel">
 
- <h3>🛒 Smart Market</h3>
+ <h3>
+  🛒 Smart Market
+ </h3>
 
  <p class="panel-description">
   “ଏହି ଜିନିଷ କେଉଁଠି ମିଳିବ?” କହିଲେ
@@ -1447,11 +1774,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- VEHICLE -->
 
 <div id="vehicle" class="panel">
 
- <h3>🏍️ Vehicle Help</h3>
+ <h3>
+  🏍️ Vehicle Help
+ </h3>
 
  <p class="panel-description">
   Bike/car problem କହିଲେ safe basic troubleshooting guidance।
@@ -1460,11 +1790,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- MOBILE -->
 
 <div id="mobile" class="panel">
 
- <h3>📱 Mobile Help</h3>
+ <h3>
+  📱 Mobile Help
+ </h3>
 
  <p class="panel-description">
   Phone slow, battery, charging, network, Wi-Fi ଓ storage
@@ -1473,11 +1806,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- SMART HOME -->
 
 <div id="smartHome" class="panel">
 
- <h3>🏠 Smart Home</h3>
+ <h3>
+  🏠 Smart Home
+ </h3>
 
  <p class="panel-description">
   Compatible smart devices ଏବଂ proper permissions/integrations
@@ -1486,11 +1822,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- CAMERA -->
 
 <div id="camera" class="panel">
 
- <h3>📷 Camera AI</h3>
+ <h3>
+  📷 Camera AI
+ </h3>
 
  <p class="panel-description">
   Camera/photo integration ପରେ image-based AI information
@@ -1499,11 +1838,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- MOVIES -->
 
 <div id="movies" class="panel">
 
- <h3>🎬 Movie & Ticket</h3>
+ <h3>
+  🎬 Movie & Ticket
+ </h3>
 
  <p class="panel-description">
   Live movie showtime ଓ official ticket booking services
@@ -1512,11 +1854,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- DAILY -->
 
 <div id="daily" class="panel">
 
- <h3>🧠 Daily Life AI</h3>
+ <h3>
+  🧠 Daily Life AI
+ </h3>
 
  <p class="panel-description">
   Daily planning, shopping, learning, reminders ଓ general
@@ -1525,11 +1870,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- EMERGENCY -->
 
 <div id="emergency" class="panel">
 
- <h3>🆘 Emergency Help</h3>
+ <h3>
+  🆘 Emergency Help
+ </h3>
 
  <p class="panel-description">
   Emergencyରେ local emergency services, trusted adults/family
@@ -1539,11 +1887,14 @@ onclick="openPanel('daily')">
 
 </div>
 
+
 <!-- REMINDER -->
 
 <div id="reminder" class="panel">
 
- <h3>⏰ Smart Reminder</h3>
+ <h3>
+  ⏰ Smart Reminder
+ </h3>
 
  <p class="panel-description">
   Important କାମ ପାଇଁ reminder set କରନ୍ତୁ।
@@ -1551,19 +1902,19 @@ onclick="openPanel('daily')">
 
  <div class="reminder-form">
 
-<input
-id="reminderText"
-placeholder="ଯେପରି: କାଲି market ଯିବି">
+  <input
+   id="reminderText"
+   placeholder="ଯେପରି: କାଲି market ଯିବି">
 
-<input
-id="reminderTime"
-type="datetime-local">
+  <input
+   id="reminderTime"
+   type="datetime-local">
 
-<button
-class="add-button"
-onclick="addReminder()">
+  <button
+   class="add-button"
+   onclick="addReminder()">
 
-Add
+   Add
 
   </button>
 
@@ -1572,9 +1923,11 @@ Add
  <div
   id="reminderList"
   class="reminder-list">
+
  </div>
 
 </div>
+
 
 <!-- FOOTER -->
 
@@ -1593,23 +1946,27 @@ Add
  </div>
 
  <div class="credit">
-  Created by <strong>Babulu Naik ❤️</strong>
+  Created by
+  <strong>
+   Babulu Naik ❤️
+  </strong>
  </div>
 
 </footer>
 
 </div>
 
+
 <script>
 
 /* =========================================================
-   SAKHA — FINAL SINGLE JAVASCRIPT ENGINE
-   UI + REAL AI + VOICE + REMINDER
+   🤖 SAKHA FINAL SINGLE ENGINE
+   Created by Babulu Naik
 ========================================================= */
 
 
 /* =========================================================
-   SUPABASE CONFIG
+   SUPABASE
 ========================================================= */
 
 const SUPABASE_URL =
@@ -1624,7 +1981,7 @@ SUPABASE_URL +
 
 
 /* =========================================================
-   GLOBAL STATE
+   STATE
 ========================================================= */
 
 let currentLanguage = "or";
@@ -1633,12 +1990,28 @@ let voices = [];
 
 let recognition = null;
 
-let reminders =
- JSON.parse(
-  localStorage.getItem(
-   "sakha_reminders"
-  ) || "[]"
- );
+let isListening = false;
+
+let reminders = [];
+
+try{
+
+ reminders =
+  JSON.parse(
+   localStorage.getItem(
+    "sakha_reminders"
+   ) || "[]"
+  );
+
+ if(!Array.isArray(reminders)){
+  reminders = [];
+ }
+
+}catch(error){
+
+ reminders = [];
+
+}
 
 
 /* =========================================================
@@ -1646,20 +2019,20 @@ let reminders =
 ========================================================= */
 
 const messages =
- document.getElementById("messages");
+document.getElementById("messages");
 
 const chatInput =
- document.getElementById("chatInput");
+document.getElementById("chatInput");
 
 const voiceButton =
- document.getElementById("voiceButton");
+document.getElementById("voiceButton");
 
 const voiceStatus =
- document.getElementById("voiceStatus");
+document.getElementById("voiceStatus");
 
 
 /* =========================================================
-   SPEECH SYNTHESIS
+   VOICE OUTPUT
 ========================================================= */
 
 function loadVoices(){
@@ -1670,9 +2043,10 @@ function loadVoices(){
 
   voices =
    speechSynthesis.getVoices();
- }
-}
 
+ }
+
+}
 
 loadVoices();
 
@@ -1683,6 +2057,7 @@ if(
 
  speechSynthesis.onvoiceschanged =
   loadVoices;
+
 }
 
 
@@ -1691,46 +2066,47 @@ function getBestVoice(language){
  if(!voices.length){
 
   return null;
+
  }
 
 
- let preferred = [];
+ let preferred;
 
 
  if(language === "or"){
 
-  preferred = [
-   "or-IN",
-   "or"
-  ];
- }
+  preferred =
+   ["or-IN","or"];
 
+ }
 
  else if(language === "hi"){
 
-  preferred = [
-   "hi-IN",
-   "hi"
-  ];
- }
+  preferred =
+   ["hi-IN","hi"];
 
+ }
 
  else{
 
-  preferred = [
-   "en-IN",
-   "en-GB",
-   "en-US",
-   "en"
-  ];
+  preferred =
+   [
+    "en-IN",
+    "en-GB",
+    "en-US",
+    "en"
+   ];
+
  }
 
+
+ /* EXACT */
 
  for(
   const code of preferred
  ){
 
-  const exact =
+  const voice =
    voices.find(
     v =>
      v.lang &&
@@ -1738,75 +2114,48 @@ function getBestVoice(language){
      code.toLowerCase()
    );
 
+  if(voice){
 
-  if(exact){
+   return voice;
 
-   return exact;
   }
+
  }
 
 
- if(language === "en"){
+ /* PARTIAL */
 
-  const indian =
+ for(
+  const code of preferred
+ ){
+
+  const base =
+   code
+    .split("-")[0]
+    .toLowerCase();
+
+  const voice =
    voices.find(
     v =>
-     /en-IN/i.test(
-      v.lang
-     )
+     v.lang &&
+     v.lang
+      .toLowerCase()
+      .startsWith(base)
    );
 
+  if(voice){
 
-  if(indian){
+   return voice;
 
-   return indian;
   }
+
  }
 
 
- if(language === "hi"){
+ return voices[0] || null;
 
-  const hindi =
-   voices.find(
-    v =>
-     /hi-IN|hi/i.test(
-      v.lang
-     )
-   );
-
-
-  if(hindi){
-
-   return hindi;
-  }
- }
-
-
- const partial =
-  voices.find(
-   v =>
-    preferred.some(
-     x =>
-      v.lang
-       .toLowerCase()
-       .startsWith(
-        x
-         .toLowerCase()
-         .split("-")[0]
-       )
-    )
-  );
-
-
- return partial ||
-        voices[0] ||
-        null;
 }
 
-
-/* =========================================================
-   SPEAK AI ANSWER
-========================================================= */
 
 function speak(text){
 
@@ -1815,13 +2164,11 @@ function speak(text){
  ){
 
   return;
+
  }
 
 
- speechSynthesis.cancel();
-
-
- const clean =
+ let clean =
   String(text)
    .replace(
     /https?:\/\/\S+/gi,
@@ -1833,57 +2180,82 @@ function speak(text){
  if(!clean){
 
   return;
+
  }
 
 
- const utterance =
-  new SpeechSynthesisUtterance(
-   clean
+ try{
+
+  speechSynthesis.cancel();
+
+
+  const utterance =
+   new SpeechSynthesisUtterance(
+    clean
+   );
+
+
+  const voice =
+   getBestVoice(
+    currentLanguage
+   );
+
+
+  if(voice){
+
+   utterance.voice =
+    voice;
+
+  }
+
+
+  utterance.lang =
+   currentLanguage === "or"
+   ? "or-IN"
+   : currentLanguage === "hi"
+   ? "hi-IN"
+   : "en-IN";
+
+
+  utterance.rate = 0.88;
+
+  utterance.pitch = 1.02;
+
+  utterance.volume = 1;
+
+
+  speechSynthesis.speak(
+   utterance
   );
 
 
- const voice =
-  getBestVoice(
-   currentLanguage
+ }catch(error){
+
+  console.log(
+   "Speech error:",
+   error
   );
 
-
- if(voice){
-
-  utterance.voice =
-   voice;
  }
 
-
- utterance.lang =
-  currentLanguage === "or"
-  ? "or-IN"
-  : currentLanguage === "hi"
-  ? "hi-IN"
-  : "en-IN";
-
-
- utterance.rate = 0.88;
-
- utterance.pitch = 1.02;
-
- utterance.volume = 1;
-
-
- speechSynthesis.speak(
-  utterance
- );
 }
 
 
 /* =========================================================
-   CHAT MESSAGE
+   ADD MESSAGE
 ========================================================= */
 
 function addMessage(
  text,
  type
 ){
+
+ if(!messages){
+
+  return null;
+
+ }
+
 
  const div =
   document.createElement(
@@ -1909,6 +2281,187 @@ function addMessage(
 
 
  return div;
+
+}
+
+
+/* =========================================================
+   THINKING
+========================================================= */
+
+function showThinking(){
+
+ removeThinking();
+
+
+ const div =
+  document.createElement(
+   "div"
+  );
+
+
+ div.className =
+  "message ai thinking";
+
+
+ div.id =
+  "sakhaThinking";
+
+
+ div.textContent =
+  currentLanguage === "or"
+  ? "🤖 SAKHA ଭାବୁଛି…"
+  : currentLanguage === "hi"
+  ? "🤖 SAKHA सोच रहा है…"
+  : "🤖 SAKHA is thinking…";
+
+
+ messages.appendChild(
+  div
+ );
+
+
+ messages.scrollTop =
+  messages.scrollHeight;
+
+}
+
+
+function removeThinking(){
+
+ const old =
+  document.getElementById(
+   "sakhaThinking"
+  );
+
+
+ if(old){
+
+  old.remove();
+
+ }
+
+}
+
+
+/* =========================================================
+   AI RESPONSE PARSER
+========================================================= */
+
+function extractAIAnswer(data){
+
+ let answer = null;
+
+
+ /* STRING */
+
+ if(
+  typeof data === "string"
+ ){
+
+  answer =
+   data;
+
+ }
+
+
+ /* COMMON */
+
+ if(
+  !answer &&
+  data &&
+  typeof data === "object"
+ ){
+
+  answer =
+   data.answer ||
+   data.message ||
+   data.response ||
+   data.text ||
+   data.result ||
+   data?.data?.answer ||
+   data?.data?.message ||
+   data?.data?.text ||
+   null;
+
+ }
+
+
+ /* OPENAI */
+
+ if(
+  !answer &&
+  Array.isArray(
+   data?.output
+  )
+ ){
+
+  try{
+
+   answer =
+    data.output
+     .flatMap(
+      item =>
+       item.content || []
+     )
+     .map(
+      item =>
+       item.text || ""
+     )
+     .join(" ")
+     .trim();
+
+  }catch(error){
+
+   console.log(
+    "OpenAI parse error:",
+    error
+   );
+
+  }
+
+ }
+
+
+ /* GEMINI */
+
+ if(
+  !answer &&
+  Array.isArray(
+   data?.candidates
+  )
+ ){
+
+  try{
+
+   answer =
+    data
+     .candidates?.[0]
+     ?.content
+     ?.parts
+     ?.map(
+      part =>
+       part.text || ""
+     )
+     .join(" ")
+     .trim();
+
+  }catch(error){
+
+   console.log(
+    "Gemini parse error:",
+    error
+   );
+
+  }
+
+ }
+
+
+ return answer
+  ? String(answer).trim()
+  : "";
+
 }
 
 
@@ -1955,197 +2508,334 @@ async function askSakhaAI(
   prompt:userText,
 
   user_question:userText
+
  };
 
 
- const response =
-  await fetch(
-   SAKHA_AI_URL,
-   {
-
-    method:"POST",
-
-    headers:{
-     "Content-Type":
-      "application/json",
-
-     "apikey":
-      SUPABASE_PUBLISHABLE_KEY,
-
-     "Authorization":
-      "Bearer " +
-      SUPABASE_PUBLISHABLE_KEY
-    },
-
-    body:
-     JSON.stringify(
-      payload
-     )
-   }
-  );
+ let lastError =
+  null;
 
 
- let data;
+ /* RETRY 3 TIMES */
 
-
- try{
-
-  data =
-   await response.json();
-
- }
- catch(error){
-
-  throw new Error(
-   "AI server returned invalid response."
-  );
- }
-
-
- if(!response.ok){
-
-  console.error(
-   "SAKHA AI ERROR:",
-   data
-  );
-
-
-  throw new Error(
-   data?.message ||
-   data?.error ||
-   data?.details ||
-   "AI service error"
-  );
- }
-
-
- let answer =
-
-  data?.answer ||
-
-  data?.message ||
-
-  data?.response ||
-
-  data?.text ||
-
-  data?.output_text ||
-
-  data?.result ||
-
-  data?.data?.answer ||
-
-  data?.data?.message ||
-
-  data?.data?.text;
-
-
- /* OpenAI Responses style */
-
- if(
-  !answer &&
-  Array.isArray(
-   data?.output
-  )
+ for(
+  let attempt = 1;
+  attempt <= 3;
+  attempt++
  ){
 
   try{
 
-   answer =
-    data.output
-     .flatMap(
-      item =>
-       item.content || []
-     )
-     .map(
-      item =>
-       item.text || ""
-     )
-     .join(" ")
-     .trim();
+   const response =
+    await fetch(
+     SAKHA_AI_URL,
+     {
 
-  }
-  catch(error){
+      method:"POST",
+
+      headers:{
+
+       "Content-Type":
+        "application/json",
+
+       "apikey":
+        SUPABASE_PUBLISHABLE_KEY,
+
+       "Authorization":
+        "Bearer " +
+        SUPABASE_PUBLISHABLE_KEY
+
+      },
+
+      body:
+       JSON.stringify(
+        payload
+       )
+
+     }
+    );
+
+
+   let data =
+    null;
+
+
+   try{
+
+    data =
+     await response.json();
+
+   }catch(error){
+
+    data =
+     {};
+
+   }
+
 
    console.log(
-    "Output parse error:",
-    error
+    "SAKHA AI RESPONSE:",
+    data
    );
+
+
+   if(
+    response.ok
+   ){
+
+    const answer =
+     extractAIAnswer(
+      data
+     );
+
+
+    if(answer){
+
+     return answer;
+
+    }
+
+
+    throw new Error(
+     "AI answer পাওয়া যায়নি।"
+    );
+
+   }
+
+
+   const errorMessage =
+    data?.message ||
+    data?.error ||
+    data?.details ||
+    data?.hint ||
+    `Server error ${response.status}`;
+
+
+   lastError =
+    new Error(
+     errorMessage
+    );
+
+
+   /*
+      429 / 500 / 502 / 503 / 504
+      ହେଲେ retry
+   */
+
+   if(
+    response.status === 429 ||
+    response.status === 500 ||
+    response.status === 502 ||
+    response.status === 503 ||
+    response.status === 504
+   ){
+
+    if(
+     attempt < 3
+    ){
+
+     await new Promise(
+      resolve =>
+       setTimeout(
+        resolve,
+        attempt * 1500
+       )
+     );
+
+     continue;
+
+    }
+
+   }
+
+
+   throw lastError;
+
+
+  }catch(error){
+
+   lastError =
+    error;
+
+
+   /*
+      Network error
+   */
+
+   if(
+    attempt < 3
+   ){
+
+    await new Promise(
+     resolve =>
+      setTimeout(
+       resolve,
+       attempt * 1200
+      )
+    );
+
+    continue;
+
+   }
+
   }
+
  }
 
 
- /* Gemini style */
+ throw (
+  lastError ||
+  new Error(
+   "AI service unavailable"
+  )
+ );
 
- if(
-  !answer &&
-  data?.candidates?.[0]
-   ?.content?.parts
- ){
-
-  answer =
-   data.candidates[0]
-    .content.parts
-    .map(
-     part =>
-      part.text || ""
-    )
-    .join(" ")
-    .trim();
- }
-
-
- /* Nested response */
-
- if(
-  !answer &&
-  data?.data
- ){
-
-  if(
-   typeof data.data ===
-   "string"
-  ){
-
-   answer =
-    data.data;
-  }
- }
-
-
- if(
-  !answer &&
-  typeof data ===
-  "string"
- ){
-
-  answer =
-   data;
- }
-
-
- if(!answer){
-
-  console.error(
-   "Unknown AI response:",
-   data
-  );
-
-
-  throw new Error(
-   "AI answer পাওয়া যায়নি।"
-  );
- }
-
-
- return String(
-  answer
- ).trim();
 }
 
 
 /* =========================================================
-   AI PROCESS
+   ERROR MESSAGE
+========================================================= */
+
+function getFriendlyError(
+ error
+){
+
+ const raw =
+  String(
+   error?.message ||
+   error ||
+   ""
+  );
+
+
+ console.error(
+  "FINAL SAKHA ERROR:",
+  raw
+ );
+
+
+ if(
+  /429|too many|rate limit/i
+   .test(raw)
+ ){
+
+  if(
+   currentLanguage === "or"
+  ){
+
+   return (
+    "⚠️ SAKHA AI ରେ ବର୍ତ୍ତମାନ ବହୁତ request ଆସୁଛି। " +
+    "10–20 ସେକେଣ୍ଡ ପରେ ପୁଣି ପଚାରନ୍ତୁ।"
+   );
+
+  }
+
+
+  if(
+   currentLanguage === "hi"
+  ){
+
+   return (
+    "⚠️ अभी AI service पर बहुत requests हैं। " +
+    "10–20 सेकंड बाद फिर कोशिश करें।"
+   );
+
+  }
+
+
+  return (
+   "⚠️ AI service is busy right now. " +
+   "Please try again after 10–20 seconds."
+  );
+
+ }
+
+
+ if(
+  /401|403|invalid credentials|unauthorized/i
+   .test(raw)
+ ){
+
+  if(
+   currentLanguage === "or"
+  ){
+
+   return (
+    "🔐 AI connection credentials problem ଅଛି। " +
+    "Supabase Edge Functionର authentication/settings check କରନ୍ତୁ।"
+   );
+
+  }
+
+
+  return (
+   "🔐 AI authentication problem. " +
+   "Please check the Supabase Edge Function settings."
+  );
+
+ }
+
+
+ if(
+  /failed to fetch|network|connection/i
+   .test(raw)
+ ){
+
+  if(
+   currentLanguage === "or"
+  ){
+
+   return (
+    "🌐 SAKHA server ସହିତ connection ହେଉନାହିଁ। " +
+    "Internet ଓ Edge Function deployment check କରନ୍ତୁ।"
+   );
+
+  }
+
+
+  return (
+   "🌐 SAKHA server connection failed. " +
+   "Please check the internet and Edge Function deployment."
+  );
+
+ }
+
+
+ if(
+  currentLanguage === "or"
+ ){
+
+  return (
+   "❌ SAKHA AI response ଦେଇପାରିଲା ନାହିଁ। " +
+   "କିଛି ସମୟ ପରେ ପୁଣି try କରନ୍ତୁ।"
+  );
+
+ }
+
+
+ if(
+  currentLanguage === "hi"
+ ){
+
+  return (
+   "❌ SAKHA AI अभी जवाब नहीं दे पाया। " +
+   "थोड़ी देर बाद फिर कोशिश करें।"
+  );
+
+ }
+
+
+ return (
+  "❌ SAKHA AI could not answer right now. " +
+  "Please try again shortly."
+ );
+
+}
+
+
+/* =========================================================
+   MAIN COMMAND
 ========================================================= */
 
 async function processCommand(
@@ -2159,18 +2849,11 @@ async function processCommand(
  if(!userText){
 
   return;
+
  }
 
 
- const thinking =
-  addMessage(
-   currentLanguage === "or"
-   ? "🤖 SAKHA ଭାବୁଛି…"
-   : currentLanguage === "hi"
-   ? "🤖 SAKHA सोच रहा है…"
-   : "🤖 SAKHA is thinking…",
-   "ai thinking"
-  );
+ showThinking();
 
 
  try{
@@ -2181,7 +2864,7 @@ async function processCommand(
    );
 
 
-  thinking.remove();
+  removeThinking();
 
 
   addMessage(
@@ -2190,54 +2873,39 @@ async function processCommand(
   );
 
 
-  speak(answer);
+  setTimeout(
+   function(){
 
- }
- catch(error){
+    speak(answer);
 
-  console.error(
-   "SAKHA AI ERROR:",
-   error
+   },
+   100
   );
 
 
-  thinking.remove();
+ }catch(error){
+
+  removeThinking();
 
 
-  let fallback;
-
-
-  if(currentLanguage === "or"){
-
-   fallback =
-    "ଦୁଃଖିତ 🙏 SAKHA AI server ସହିତ ଏବେ connection ହେଉନାହିଁ। କିଛି ସମୟ ପରେ ପୁଣି try କରନ୍ତୁ।";
-  }
-
-  else if(
-   currentLanguage === "hi"
-  ){
-
-   fallback =
-    "माफ़ कीजिए 🙏 अभी SAKHA AI server से connection नहीं हो पा रहा है। थोड़ी देर बाद फिर कोशिश करें।";
-  }
-
-  else{
-
-   fallback =
-    "Sorry 🙏 SAKHA AI server is not connected right now. Please try again shortly.";
-  }
+  const message =
+   getFriendlyError(
+    error
+   );
 
 
   addMessage(
-   fallback,
+   message,
    "ai"
   );
 
 
   speak(
-   fallback
+   message
   );
+
  }
+
 }
 
 
@@ -2247,6 +2915,13 @@ async function processCommand(
 
 function sendMessage(){
 
+ if(!chatInput){
+
+  return;
+
+ }
+
+
  const text =
   chatInput.value.trim();
 
@@ -2254,6 +2929,7 @@ function sendMessage(){
  if(!text){
 
   return;
+
  }
 
 
@@ -2270,27 +2946,38 @@ function sendMessage(){
  processCommand(
   text
  );
+
 }
 
 
-chatInput.addEventListener(
- "keydown",
- event => {
+/* =========================================================
+   ENTER
+========================================================= */
 
-  if(
-   event.key === "Enter"
-  ){
+if(chatInput){
 
-   event.preventDefault();
+ chatInput.addEventListener(
+  "keydown",
+  function(event){
 
-   sendMessage();
+   if(
+    event.key === "Enter"
+   ){
+
+    event.preventDefault();
+
+    sendMessage();
+
+   }
+
   }
- }
-);
+ );
+
+}
 
 
 /* =========================================================
-   OPEN SERVICE PANEL
+   PANEL
 ========================================================= */
 
 function openPanel(
@@ -2318,6 +3005,7 @@ function openPanel(
  if(!panel){
 
   return;
+
  }
 
 
@@ -2327,7 +3015,7 @@ function openPanel(
 
 
  setTimeout(
-  () => {
+  function(){
 
    panel.scrollIntoView({
     behavior:"smooth",
@@ -2335,8 +3023,9 @@ function openPanel(
    });
 
   },
-  40
+  50
  );
+
 }
 
 
@@ -2370,36 +3059,58 @@ if(Recognition){
  recognition.onstart =
   function(){
 
-   voiceButton.classList.add(
-    "listening"
-   );
+   isListening =
+    true;
 
 
-   voiceStatus.textContent =
+   if(voiceButton){
 
-    currentLanguage === "or"
+    voiceButton.classList.add(
+     "listening"
+    );
 
-    ? "🎙️ ଶୁଣୁଛି… କହନ୍ତୁ"
+   }
 
-    : currentLanguage === "hi"
 
-    ? "🎙️ सुन रहा हूँ… बोलिए"
+   if(voiceStatus){
 
-    : "🎙️ Listening… speak now";
+    voiceStatus.textContent =
+     currentLanguage === "or"
+     ? "🎙️ ଶୁଣୁଛି… କହନ୍ତୁ"
+     : currentLanguage === "hi"
+     ? "🎙️ सुन रहा हूँ… बोलिए"
+     : "🎙️ Listening… speak now";
+
+   }
+
   };
 
 
  recognition.onresult =
   function(event){
 
+   const result =
+    event
+     .results?.[0]?.[0];
+
+
+   if(!result){
+
+    return;
+
+   }
+
+
    const text =
-    event.results[0][0]
-     .transcript;
+    result
+     .transcript
+     .trim();
 
 
    if(!text){
 
     return;
+
    }
 
 
@@ -2412,6 +3123,7 @@ if(Recognition){
    processCommand(
     text
    );
+
   };
 
 
@@ -2419,14 +3131,22 @@ if(Recognition){
   function(event){
 
    console.log(
-    "Voice error:",
+    "VOICE ERROR:",
     event.error
    );
 
 
-   voiceButton.classList.remove(
-    "listening"
-   );
+   isListening =
+    false;
+
+
+   if(voiceButton){
+
+    voiceButton.classList.remove(
+     "listening"
+    );
+
+   }
 
 
    let msg;
@@ -2443,43 +3163,58 @@ if(Recognition){
      : currentLanguage === "hi"
      ? "🎙️ Microphone permission दें।"
      : "🎙️ Please allow microphone permission.";
+
    }
 
    else{
 
     msg =
      currentLanguage === "or"
-     ? "ପୁଣି try କରନ୍ତୁ…"
+     ? "🎙️ Voice ପୁଣି ଥରେ try କରନ୍ତୁ।"
      : currentLanguage === "hi"
-     ? "फिर से कोशिश करें…"
-     : "Please try again…";
+     ? "🎙️ Voice फिर से try करें।"
+     : "🎙️ Please try voice again.";
+
    }
 
 
-   voiceStatus.textContent =
-    msg;
+   if(voiceStatus){
+
+    voiceStatus.textContent =
+     msg;
+
+   }
+
   };
 
 
  recognition.onend =
   function(){
 
-   voiceButton.classList.remove(
-    "listening"
-   );
+   isListening =
+    false;
 
 
-   voiceStatus.textContent =
+   if(voiceButton){
 
-    currentLanguage === "or"
+    voiceButton.classList.remove(
+     "listening"
+    );
 
-    ? "କହନ୍ତୁ… SAKHA ଶୁଣୁଛି"
+   }
 
-    : currentLanguage === "hi"
 
-    ? "बोलिए… SAKHA सुन रहा है"
+   if(voiceStatus){
 
-    : "Speak… SAKHA is listening";
+    voiceStatus.textContent =
+     currentLanguage === "or"
+     ? "କହନ୍ତୁ… SAKHA ଶୁଣୁଛି"
+     : currentLanguage === "hi"
+     ? "बोलिए… SAKHA सुन रहा है"
+     : "Speak… SAKHA is listening";
+
+   }
+
   };
 
 }
@@ -2495,35 +3230,43 @@ function startVoice(){
 
   const msg =
    currentLanguage === "or"
-   ? "🎙️ ଏହି browser voice recognition support କରୁନାହିଁ। Chrome Android/compatible browserରେ try କରନ୍ତୁ।"
+   ? "🎙️ ଏହି browser voice recognition support କରୁନାହିଁ। Chrome browserରେ try କରନ୍ତୁ।"
    : currentLanguage === "hi"
-   ? "🎙️ यह browser voice recognition support नहीं करता। Chrome Android/compatible browser में try करें।"
-   : "🎙️ This browser does not support voice recognition. Try Chrome or another compatible browser.";
-
+   ? "🎙️ यह browser voice recognition support नहीं करता। Chrome browser में try करें।"
+   : "🎙️ This browser does not support voice recognition. Try Chrome.";
 
   addMessage(
    msg,
    "ai"
   );
 
-
-  speak(msg);
-
+  speak(
+   msg
+  );
 
   return;
+
+ }
+
+
+ if(isListening){
+
+  try{
+
+   recognition.stop();
+
+  }catch(error){}
+
+  return;
+
  }
 
 
  recognition.lang =
-
   currentLanguage === "or"
-
   ? "or-IN"
-
   : currentLanguage === "hi"
-
   ? "hi-IN"
-
   : "en-IN";
 
 
@@ -2531,14 +3274,15 @@ function startVoice(){
 
   recognition.start();
 
- }
- catch(error){
+ }catch(error){
 
   console.log(
-   "Recognition start:",
+   "Recognition start error:",
    error
   );
+
  }
+
 }
 
 
@@ -2561,12 +3305,21 @@ function setLanguage(
   language === "or"
  ){
 
-  voiceStatus.textContent =
-   "କହନ୍ତୁ… SAKHA ଶୁଣୁଛି";
+  if(voiceStatus){
+
+   voiceStatus.textContent =
+    "କହନ୍ତୁ… SAKHA ଶୁଣୁଛି";
+
+  }
 
 
-  chatInput.placeholder =
-   "ତୁମ problem ଲେଖ…";
+  if(chatInput){
+
+   chatInput.placeholder =
+    "ତୁମ problem ଲେଖ…";
+
+  }
+
  }
 
 
@@ -2574,24 +3327,43 @@ function setLanguage(
   language === "hi"
  ){
 
-  voiceStatus.textContent =
-   "बोलिए… SAKHA सुन रहा है";
+  if(voiceStatus){
+
+   voiceStatus.textContent =
+    "बोलिए… SAKHA सुन रहा है";
+
+  }
 
 
-  chatInput.placeholder =
-   "अपनी समस्या लिखें…";
+  if(chatInput){
+
+   chatInput.placeholder =
+    "अपनी समस्या लिखें…";
+
+  }
+
  }
 
 
  else{
 
-  voiceStatus.textContent =
-   "Speak… SAKHA is listening";
+  if(voiceStatus){
+
+   voiceStatus.textContent =
+    "Speak… SAKHA is listening";
+
+  }
 
 
-  chatInput.placeholder =
-   "Type your problem…";
+  if(chatInput){
+
+   chatInput.placeholder =
+    "Type your problem…";
+
+  }
+
  }
+
 }
 
 
@@ -2601,12 +3373,24 @@ function setLanguage(
 
 function saveReminders(){
 
- localStorage.setItem(
-  "sakha_reminders",
-  JSON.stringify(
-   reminders
-  )
- );
+ try{
+
+  localStorage.setItem(
+   "sakha_reminders",
+   JSON.stringify(
+    reminders
+   )
+  );
+
+ }catch(error){
+
+  console.log(
+   "Reminder storage error:",
+   error
+  );
+
+ }
+
 }
 
 
@@ -2619,26 +3403,32 @@ function escapeHTML(
 ){
 
  return String(text)
+
   .replaceAll(
    "&",
    "&amp;"
   )
+
   .replaceAll(
    "<",
    "&lt;"
   )
+
   .replaceAll(
    ">",
    "&gt;"
   )
+
   .replaceAll(
    '"',
    "&quot;"
   )
+
   .replaceAll(
    "'",
    "&#039;"
   );
+
 }
 
 
@@ -2657,6 +3447,7 @@ function renderReminders(){
  if(!list){
 
   return;
+
  }
 
 
@@ -2670,14 +3461,15 @@ function renderReminders(){
    "<div style='color:#aeb1d0'>No reminders yet.</div>";
 
   return;
+
  }
 
 
  reminders.forEach(
-  (
+  function(
    reminder,
    index
-  ) => {
+  ){
 
    const div =
     document.createElement(
@@ -2695,6 +3487,14 @@ function renderReminders(){
     );
 
 
+   const displayDate =
+    isNaN(
+     date.getTime()
+    )
+    ? "Invalid time"
+    : date.toLocaleString();
+
+
    div.innerHTML = `
 
     <div>
@@ -2710,16 +3510,13 @@ function renderReminders(){
       font-size:12px;
       margin-top:4px">
 
-      ${isNaN(
-       date.getTime()
-      )
-      ? "Invalid time"
-      : date.toLocaleString()}
+      ${escapeHTML(
+       displayDate
+      )}
 
      </div>
 
     </div>
-
 
     <button
      class="delete-button"
@@ -2728,14 +3525,17 @@ function renderReminders(){
      Delete
 
     </button>
+
    `;
 
 
    list.appendChild(
     div
    );
+
   }
  );
+
 }
 
 
@@ -2750,7 +3550,7 @@ function addReminder(){
    .getElementById(
     "reminderText"
    )
-   .value
+   ?.value
    .trim();
 
 
@@ -2759,7 +3559,7 @@ function addReminder(){
    .getElementById(
     "reminderTime"
    )
-   .value;
+   ?.value;
 
 
  if(
@@ -2771,8 +3571,8 @@ function addReminder(){
    "Reminder text ଏବଂ time ଦିଅନ୍ତୁ।"
   );
 
-
   return;
+
  }
 
 
@@ -2790,8 +3590,8 @@ function addReminder(){
    "ଦୟାକରି valid date/time select କରନ୍ତୁ।"
   );
 
-
   return;
+
  }
 
 
@@ -2803,8 +3603,8 @@ function addReminder(){
    "Future time select କରନ୍ତୁ।"
   );
 
-
   return;
+
  }
 
 
@@ -2815,6 +3615,7 @@ function addReminder(){
   time:time,
 
   notified:false
+
  });
 
 
@@ -2823,20 +3624,14 @@ function addReminder(){
  renderReminders();
 
 
- document
-  .getElementById(
-   "reminderText"
-  )
-  .value =
-  "";
+ document.getElementById(
+  "reminderText"
+ ).value = "";
 
 
- document
-  .getElementById(
-   "reminderTime"
-  )
-  .value =
-  "";
+ document.getElementById(
+  "reminderTime"
+ ).value = "";
 
 
  const msg =
@@ -2853,6 +3648,7 @@ function addReminder(){
  speak(
   msg
  );
+
 }
 
 
@@ -2870,6 +3666,7 @@ function deleteReminder(
  ){
 
   return;
+
  }
 
 
@@ -2882,6 +3679,7 @@ function deleteReminder(
  saveReminders();
 
  renderReminders();
+
 }
 
 
@@ -2903,11 +3701,16 @@ setInterval(
   reminders.forEach(
    function(reminder){
 
-    if(
-     !reminder.notified &&
+    const reminderTime =
      new Date(
       reminder.time
-     ).getTime() <= now
+     ).getTime();
+
+
+    if(
+     !reminder.notified &&
+     !isNaN(reminderTime) &&
+     reminderTime <= now
     ){
 
      reminder.notified =
@@ -2930,14 +3733,12 @@ setInterval(
 
 
      speak(
-      "Reminder. " +
-      reminder.text
+      text
      );
 
 
      if(
-      "Notification"
-      in window &&
+      "Notification" in window &&
       Notification.permission ===
       "granted"
      ){
@@ -2952,16 +3753,19 @@ setInterval(
         }
        );
 
-      }
-      catch(error){
+      }catch(error){
 
        console.log(
         "Notification error:",
         error
        );
+
       }
+
      }
+
     }
+
    }
   );
 
@@ -2971,6 +3775,7 @@ setInterval(
    saveReminders();
 
    renderReminders();
+
   }
 
  },
@@ -2995,21 +3800,14 @@ function requestNotificationPermission(){
    .catch(
     () => {}
    );
+
  }
+
 }
 
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-renderReminders();
-
-
 /*
- Do not automatically ask for notification
- permission immediately on page load.
- It is better to request it after user interaction.
+   Ask permission only after user interaction
 */
 
 document.addEventListener(
@@ -3025,8 +3823,15 @@ document.addEventListener(
 );
 
 
+/* =========================================================
+   INIT
+========================================================= */
+
+renderReminders();
+
+
 console.log(
- "🤖 SAKHA AI initialized"
+ "🤖 SAKHA FINAL ENGINE READY"
 );
 
 console.log(
@@ -3035,1234 +3840,6 @@ console.log(
 );
 
 </script>
-<script>
-/* =========================================================
-   🤖 SAKHA — FINAL AI + VOICE ENGINE
-   Created by Babulu Naik
-========================================================= */
 
-const SUPABASE_URL =
-"https://hsexaatuacdnumxnkehx.supabase.co";
-
-const SUPABASE_PUBLISHABLE_KEY =
-"sb_publishable_mkUyaXPtvVNxFTrGOwErvw_rKhV7t8I";
-
-const SAKHA_AI_URL =
-SUPABASE_URL + "/functions/v1/smart-endpoint";
-
-
-/* =========================================================
-   GLOBAL STATE
-========================================================= */
-
-let currentLanguage = "or";
-let voices = [];
-let recognition = null;
-let isListening = false;
-
-const messages = document.getElementById("messages");
-const chatInput = document.getElementById("chatInput");
-const voiceButton = document.getElementById("voiceButton");
-const voiceStatus = document.getElementById("voiceStatus");
-
-
-/* =========================================================
-   VOICE OUTPUT
-========================================================= */
-
-function loadVoices(){
-
-    if("speechSynthesis" in window){
-        voices = speechSynthesis.getVoices();
-    }
-}
-
-loadVoices();
-
-if("speechSynthesis" in window){
-    speechSynthesis.onvoiceschanged = loadVoices;
-}
-
-
-function getBestVoice(lang){
-
-    if(!voices.length) return null;
-
-    let preferred = [];
-
-    if(lang === "or"){
-        preferred = ["or-IN","or"];
-    }
-
-    else if(lang === "hi"){
-        preferred = ["hi-IN","hi"];
-    }
-
-    else{
-        preferred = [
-            "en-IN",
-            "en-GB",
-            "en-US",
-            "en"
-        ];
-    }
-
-
-    /* Exact voice */
-
-    for(const code of preferred){
-
-        const voice = voices.find(v =>
-            v.lang &&
-            v.lang.toLowerCase() ===
-            code.toLowerCase()
-        );
-
-        if(voice) return voice;
-    }
-
-
-    /* Partial voice */
-
-    for(const code of preferred){
-
-        const base =
-            code.split("-")[0].toLowerCase();
-
-        const voice = voices.find(v =>
-            v.lang &&
-            v.lang.toLowerCase()
-                .startsWith(base)
-        );
-
-        if(voice) return voice;
-    }
-
-
-    return voices[0] || null;
-}
-
-
-function speak(text){
-
-    if(!("speechSynthesis" in window)){
-        return;
-    }
-
-    const clean =
-        String(text)
-        .replace(/https?:\/\/\S+/gi,"")
-        .trim();
-
-    if(!clean) return;
-
-
-    try{
-
-        speechSynthesis.cancel();
-
-        const utterance =
-            new SpeechSynthesisUtterance(clean);
-
-        const voice =
-            getBestVoice(currentLanguage);
-
-        if(voice){
-            utterance.voice = voice;
-        }
-
-
-        utterance.lang =
-            currentLanguage === "or"
-            ? "or-IN"
-            : currentLanguage === "hi"
-            ? "hi-IN"
-            : "en-IN";
-
-
-        utterance.rate = 0.88;
-        utterance.pitch = 1.02;
-        utterance.volume = 1;
-
-
-        speechSynthesis.speak(
-            utterance
-        );
-
-    }catch(error){
-
-        console.log(
-            "Speech error:",
-            error
-        );
-    }
-}
-
-
-/* =========================================================
-   CHAT MESSAGE
-========================================================= */
-
-function addMessage(text,type){
-
-    if(!messages) return;
-
-    const div =
-        document.createElement("div");
-
-    div.className =
-        "message " + type;
-
-    div.textContent =
-        String(text);
-
-    messages.appendChild(div);
-
-    messages.scrollTop =
-        messages.scrollHeight;
-}
-
-
-/* =========================================================
-   THINKING MESSAGE
-========================================================= */
-
-function showThinking(){
-
-    removeThinking();
-
-
-    const div =
-        document.createElement("div");
-
-    div.className =
-        "message ai";
-
-    div.id =
-        "sakhaThinking";
-
-
-    div.textContent =
-        currentLanguage === "or"
-        ? "🤖 SAKHA ଭାବୁଛି…"
-        : currentLanguage === "hi"
-        ? "🤖 SAKHA सोच रहा है…"
-        : "🤖 SAKHA is thinking…";
-
-
-    messages.appendChild(div);
-
-    messages.scrollTop =
-        messages.scrollHeight;
-}
-
-
-function removeThinking(){
-
-    const old =
-        document.getElementById(
-            "sakhaThinking"
-        );
-
-    if(old){
-        old.remove();
-    }
-}
-
-
-/* =========================================================
-   REAL AI
-========================================================= */
-
-async function askSakhaAI(userText){
-
-    const payload = {
-
-        exam_id:null,
-
-        exam_name:"SAKHA",
-
-        category:"general",
-
-        subject:"daily life assistant",
-
-        topic:userText,
-
-        difficulty:"medium",
-
-        question_type:"general",
-
-        pyq_year:null,
-
-        count:1,
-
-        language:
-            currentLanguage === "or"
-            ? "odia"
-            : currentLanguage === "hi"
-            ? "hindi"
-            : "english",
-
-        message:userText,
-
-        prompt:userText,
-
-        user_question:userText
-    };
-
-
-    const response =
-        await fetch(
-            SAKHA_AI_URL,
-            {
-                method:"POST",
-
-                headers:{
-                    "Content-Type":
-                        "application/json",
-
-                    "apikey":
-                        SUPABASE_PUBLISHABLE_KEY,
-
-                    "Authorization":
-                        "Bearer " +
-                        SUPABASE_PUBLISHABLE_KEY
-                },
-
-                body:
-                    JSON.stringify(payload)
-            }
-        );
-
-
-    let data;
-
-    try{
-
-        data =
-            await response.json();
-
-    }catch(error){
-
-        throw new Error(
-            "AI server response invalid."
-        );
-    }
-
-
-    console.log(
-        "SAKHA RESPONSE:",
-        data
-    );
-
-
-    if(!response.ok){
-
-        throw new Error(
-            data?.message ||
-            data?.error ||
-            "AI server error"
-        );
-    }
-
-
-    let answer = null;
-
-
-    /* Common formats */
-
-    if(typeof data === "string"){
-        answer = data;
-    }
-
-    else{
-
-        answer =
-            data?.answer ||
-            data?.message ||
-            data?.response ||
-            data?.text ||
-            data?.result ||
-            data?.data?.answer ||
-            data?.data?.message ||
-            data?.data?.text;
-    }
-
-
-    /* OpenAI response */
-
-    if(
-        !answer &&
-        Array.isArray(data?.output)
-    ){
-
-        try{
-
-            answer =
-                data.output
-                .flatMap(item =>
-                    item.content || []
-                )
-                .map(item =>
-                    item.text || ""
-                )
-                .join(" ")
-                .trim();
-
-        }catch(error){
-
-            console.log(error);
-        }
-    }
-
-
-    /* Gemini response */
-
-    if(
-        !answer &&
-        Array.isArray(
-            data?.candidates
-        )
-    ){
-
-        try{
-
-            answer =
-                data.candidates[0]
-                ?.content
-                ?.parts
-                ?.map(item =>
-                    item.text || ""
-                )
-                ?.join(" ")
-                ?.trim();
-
-        }catch(error){
-
-            console.log(error);
-        }
-    }
-
-
-    if(!answer){
-
-        throw new Error(
-            "AI answer পাওয়া যায়নি."
-        );
-    }
-
-
-    return String(answer).trim();
-}
-
-
-/* =========================================================
-   SAKHA MAIN COMMAND
-========================================================= */
-
-async function processCommand(text){
-
-    const userText =
-        String(text).trim();
-
-    if(!userText) return;
-
-
-    showThinking();
-
-
-    try{
-
-        const answer =
-            await askSakhaAI(
-                userText
-            );
-
-
-        removeThinking();
-
-
-        addMessage(
-            answer,
-            "ai"
-        );
-
-
-        /* AI answer voice */
-
-        setTimeout(()=>{
-
-            speak(answer);
-
-        },100);
-
-
-    }catch(error){
-
-        console.error(
-            "SAKHA AI ERROR:",
-            error
-        );
-
-
-        removeThinking();
-
-
-        let fallback;
-
-
-        if(currentLanguage === "or"){
-
-            fallback =
-            "ଦୁଃଖିତ 🙏 SAKHA AI server ସହିତ ଏବେ connection ହେଉନାହିଁ। କିଛି ସମୟ ପରେ ପୁଣି try କରନ୍ତୁ।";
-        }
-
-        else if(currentLanguage === "hi"){
-
-            fallback =
-            "माफ़ कीजिए 🙏 अभी SAKHA AI server से connection नहीं हो पा रहा है। थोड़ी देर बाद फिर कोशिश करें।";
-        }
-
-        else{
-
-            fallback =
-            "Sorry 🙏 SAKHA AI server is not connected right now. Please try again shortly.";
-        }
-
-
-        addMessage(
-            fallback,
-            "ai"
-        );
-
-
-        speak(
-            fallback
-        );
-    }
-}
-
-
-/* =========================================================
-   SEND MESSAGE
-========================================================= */
-
-function sendMessage(){
-
-    if(!chatInput) return;
-
-
-    const text =
-        chatInput.value.trim();
-
-
-    if(!text) return;
-
-
-    addMessage(
-        text,
-        "user"
-    );
-
-
-    chatInput.value = "";
-
-
-    processCommand(
-        text
-    );
-}
-
-
-/* =========================================================
-   ENTER KEY
-========================================================= */
-
-if(chatInput){
-
-    chatInput.addEventListener(
-        "keydown",
-        function(event){
-
-            if(event.key === "Enter"){
-
-                event.preventDefault();
-
-                sendMessage();
-            }
-        }
-    );
-}
-
-
-/* =========================================================
-   VOICE RECOGNITION
-========================================================= */
-
-const Recognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-
-if(Recognition){
-
-    recognition =
-        new Recognition();
-
-
-    recognition.continuous =
-        false;
-
-
-    recognition.interimResults =
-        false;
-
-
-    recognition.maxAlternatives =
-        1;
-
-
-    recognition.onstart =
-        function(){
-
-            isListening = true;
-
-
-            if(voiceButton){
-                voiceButton.classList.add(
-                    "listening"
-                );
-            }
-
-
-            if(voiceStatus){
-
-                voiceStatus.textContent =
-
-                    currentLanguage === "or"
-
-                    ? "🎙️ ଶୁଣୁଛି… କହନ୍ତୁ"
-
-                    : currentLanguage === "hi"
-
-                    ? "🎙️ सुन रहा हूँ… बोलिए"
-
-                    : "🎙️ Listening… speak now";
-            }
-        };
-
-
-    recognition.onresult =
-        function(event){
-
-            const result =
-                event.results?.[0]?.[0];
-
-
-            if(!result) return;
-
-
-            const text =
-                result.transcript.trim();
-
-
-            if(!text) return;
-
-
-            /* Show voice command */
-
-            addMessage(
-                text,
-                "user"
-            );
-
-
-            /* Send to AI */
-
-            processCommand(
-                text
-            );
-        };
-
-
-    recognition.onerror =
-        function(event){
-
-            console.log(
-                "VOICE ERROR:",
-                event.error
-            );
-
-
-            isListening = false;
-
-
-            if(voiceButton){
-
-                voiceButton.classList.remove(
-                    "listening"
-                );
-            }
-
-
-            let msg;
-
-
-            if(
-                event.error ===
-                "not-allowed"
-            ){
-
-                msg =
-                currentLanguage === "or"
-                ? "🎙️ Microphone permission ଦିଅନ୍ତୁ।"
-                : currentLanguage === "hi"
-                ? "🎙️ Microphone permission दें।"
-                : "🎙️ Please allow microphone permission.";
-            }
-
-            else{
-
-                msg =
-                currentLanguage === "or"
-                ? "ପୁଣି ଥରେ try କରନ୍ତୁ।"
-                : currentLanguage === "hi"
-                ? "फिर से कोशिश करें।"
-                : "Please try again.";
-            }
-
-
-            if(voiceStatus){
-
-                voiceStatus.textContent =
-                    msg;
-            }
-        };
-
-
-    recognition.onend =
-        function(){
-
-            isListening = false;
-
-
-            if(voiceButton){
-
-                voiceButton.classList.remove(
-                    "listening"
-                );
-            }
-
-
-            if(voiceStatus){
-
-                voiceStatus.textContent =
-
-                    currentLanguage === "or"
-
-                    ? "କହନ୍ତୁ… SAKHA ଶୁଣୁଛି"
-
-                    : currentLanguage === "hi"
-
-                    ? "बोलिए… SAKHA सुन रहा है"
-
-                    : "Speak… SAKHA is listening";
-            }
-        };
-
-}
-
-
-/* =========================================================
-   START VOICE
-========================================================= */
-
-function startVoice(){
-
-    if(!recognition){
-
-        const msg =
-            currentLanguage === "or"
-
-            ? "🎙️ ଏହି browser voice recognition support କରୁନାହିଁ। Chrome Androidରେ try କରନ୍ତୁ।"
-
-            : currentLanguage === "hi"
-
-            ? "🎙️ यह browser voice recognition support नहीं करता। Chrome Android में try करें।"
-
-            : "🎙️ This browser does not support voice recognition. Try Chrome Android.";
-
-
-        addMessage(
-            msg,
-            "ai"
-        );
-
-
-        speak(msg);
-
-        return;
-    }
-
-
-    if(isListening){
-
-        try{
-            recognition.stop();
-        }catch(error){}
-
-        return;
-    }
-
-
-    recognition.lang =
-
-        currentLanguage === "or"
-
-        ? "or-IN"
-
-        : currentLanguage === "hi"
-
-        ? "hi-IN"
-
-        : "en-IN";
-
-
-    try{
-
-        recognition.start();
-
-    }catch(error){
-
-        console.log(
-            "Recognition start:",
-            error
-        );
-    }
-}
-
-
-/* =========================================================
-   LANGUAGE
-========================================================= */
-
-function setLanguage(language){
-
-    currentLanguage =
-        language;
-
-
-    loadVoices();
-
-
-    if(language === "or"){
-
-        if(voiceStatus)
-            voiceStatus.textContent =
-                "କହନ୍ତୁ… SAKHA ଶୁଣୁଛି";
-
-
-        if(chatInput)
-            chatInput.placeholder =
-                "ତୁମ problem ଲେଖ…";
-    }
-
-
-    else if(language === "hi"){
-
-        if(voiceStatus)
-            voiceStatus.textContent =
-                "बोलिए… SAKHA सुन रहा है";
-
-
-        if(chatInput)
-            chatInput.placeholder =
-                "अपनी समस्या लिखें…";
-    }
-
-
-    else{
-
-        if(voiceStatus)
-            voiceStatus.textContent =
-                "Speak… SAKHA is listening";
-
-
-        if(chatInput)
-            chatInput.placeholder =
-                "Type your problem…";
-    }
-}
-
-
-/* =========================================================
-   PANEL SYSTEM
-========================================================= */
-
-function openPanel(id){
-
-    document
-        .querySelectorAll(".panel")
-        .forEach(panel =>
-            panel.classList.remove(
-                "show"
-            )
-        );
-
-
-    const panel =
-        document.getElementById(id);
-
-
-    if(!panel) return;
-
-
-    panel.classList.add(
-        "show"
-    );
-
-
-    setTimeout(
-        function(){
-
-            panel.scrollIntoView({
-                behavior:"smooth",
-                block:"start"
-            });
-
-        },
-        50
-    );
-}
-
-
-/* =========================================================
-   REMINDERS
-========================================================= */
-
-let reminders =
-    JSON.parse(
-        localStorage.getItem(
-            "sakha_reminders"
-        ) || "[]"
-    );
-
-
-function saveReminders(){
-
-    localStorage.setItem(
-        "sakha_reminders",
-        JSON.stringify(
-            reminders
-        )
-    );
-}
-
-
-function escapeHTML(text){
-
-    return String(text)
-
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
-}
-
-
-function renderReminders(){
-
-    const list =
-        document.getElementById(
-            "reminderList"
-        );
-
-
-    if(!list) return;
-
-
-    list.innerHTML = "";
-
-
-    if(!reminders.length){
-
-        list.innerHTML =
-            "<div style='color:#aeb1d0'>No reminders yet.</div>";
-
-        return;
-    }
-
-
-    reminders.forEach(
-        function(r,index){
-
-            const div =
-                document.createElement(
-                    "div"
-                );
-
-
-            div.className =
-                "reminder";
-
-
-            div.innerHTML = `
-
-                <div>
-
-                    <strong>
-                        ${escapeHTML(r.text)}
-                    </strong>
-
-                    <div style="
-                        color:#aeb1d0;
-                        font-size:12px;
-                        margin-top:4px">
-
-                        ${new Date(
-                            r.time
-                        ).toLocaleString()}
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    class="delete-button"
-                    onclick="deleteReminder(${index})">
-
-                    Delete
-
-                </button>
-            `;
-
-
-            list.appendChild(
-                div
-            );
-        }
-    );
-}
-
-
-function addReminder(){
-
-    const text =
-        document.getElementById(
-            "reminderText"
-        )?.value.trim();
-
-
-    const time =
-        document.getElementById(
-            "reminderTime"
-        )?.value;
-
-
-    if(!text || !time){
-
-        alert(
-            "Reminder text ଏବଂ time ଦିଅନ୍ତୁ।"
-        );
-
-        return;
-    }
-
-
-    reminders.push({
-
-        text:text,
-
-        time:time,
-
-        notified:false
-    });
-
-
-    saveReminders();
-
-    renderReminders();
-
-
-    document.getElementById(
-        "reminderText"
-    ).value = "";
-
-
-    document.getElementById(
-        "reminderTime"
-    ).value = "";
-
-
-    const msg =
-        "⏰ Reminder set କରାଗଲା: " +
-        text;
-
-
-    addMessage(
-        msg,
-        "ai"
-    );
-
-
-    speak(
-        "Reminder set କରାଗଲା"
-    );
-}
-
-
-function deleteReminder(index){
-
-    reminders.splice(
-        index,
-        1
-    );
-
-
-    saveReminders();
-
-    renderReminders();
-}
-
-
-/* =========================================================
-   REMINDER CHECK
-========================================================= */
-
-setInterval(
-    function(){
-
-        const now =
-            Date.now();
-
-        let changed =
-            false;
-
-
-        reminders.forEach(
-            function(r){
-
-                if(
-                    !r.notified &&
-                    new Date(
-                        r.time
-                    ).getTime() <= now
-                ){
-
-                    r.notified =
-                        true;
-
-                    changed =
-                        true;
-
-
-                    const text =
-                        "⏰ Reminder: " +
-                        r.text;
-
-
-                    addMessage(
-                        text,
-                        "ai"
-                    );
-
-
-                    speak(
-                        "Reminder. " +
-                        r.text
-                    );
-
-
-                    if(
-                        "Notification"
-                        in window &&
-                        Notification.permission ===
-                        "granted"
-                    ){
-
-                        try{
-
-                            new Notification(
-                                "SAKHA Reminder",
-                                {
-                                    body:r.text
-                                }
-                            );
-
-                        }catch(error){}
-                    }
-                }
-            }
-        );
-
-
-        if(changed){
-
-            saveReminders();
-
-            renderReminders();
-        }
-
-    },
-    10000
-);
-
-
-/* =========================================================
-   NOTIFICATION
-========================================================= */
-
-if(
-    "Notification" in window &&
-    Notification.permission ===
-    "default"
-){
-
-    Notification
-        .requestPermission()
-        .catch(
-            ()=>{}
-        );
-}
-
-
-/* =========================================================
-   START
-========================================================= */
-
-renderReminders();
-
-
-console.log(
-    "🤖 SAKHA FINAL AI ENGINE READY"
-);
-
-console.log(
-    "Endpoint:",
-    SAKHA_AI_URL
-);
-
-</script>
 </body>
 </html>
