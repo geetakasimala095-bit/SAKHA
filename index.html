@@ -3035,6 +3035,1234 @@ console.log(
 );
 
 </script>
+<script>
+/* =========================================================
+   🤖 SAKHA — FINAL AI + VOICE ENGINE
+   Created by Babulu Naik
+========================================================= */
 
+const SUPABASE_URL =
+"https://hsexaatuacdnumxnkehx.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_mkUyaXPtvVNxFTrGOwErvw_rKhV7t8I";
+
+const SAKHA_AI_URL =
+SUPABASE_URL + "/functions/v1/smart-endpoint";
+
+
+/* =========================================================
+   GLOBAL STATE
+========================================================= */
+
+let currentLanguage = "or";
+let voices = [];
+let recognition = null;
+let isListening = false;
+
+const messages = document.getElementById("messages");
+const chatInput = document.getElementById("chatInput");
+const voiceButton = document.getElementById("voiceButton");
+const voiceStatus = document.getElementById("voiceStatus");
+
+
+/* =========================================================
+   VOICE OUTPUT
+========================================================= */
+
+function loadVoices(){
+
+    if("speechSynthesis" in window){
+        voices = speechSynthesis.getVoices();
+    }
+}
+
+loadVoices();
+
+if("speechSynthesis" in window){
+    speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+
+function getBestVoice(lang){
+
+    if(!voices.length) return null;
+
+    let preferred = [];
+
+    if(lang === "or"){
+        preferred = ["or-IN","or"];
+    }
+
+    else if(lang === "hi"){
+        preferred = ["hi-IN","hi"];
+    }
+
+    else{
+        preferred = [
+            "en-IN",
+            "en-GB",
+            "en-US",
+            "en"
+        ];
+    }
+
+
+    /* Exact voice */
+
+    for(const code of preferred){
+
+        const voice = voices.find(v =>
+            v.lang &&
+            v.lang.toLowerCase() ===
+            code.toLowerCase()
+        );
+
+        if(voice) return voice;
+    }
+
+
+    /* Partial voice */
+
+    for(const code of preferred){
+
+        const base =
+            code.split("-")[0].toLowerCase();
+
+        const voice = voices.find(v =>
+            v.lang &&
+            v.lang.toLowerCase()
+                .startsWith(base)
+        );
+
+        if(voice) return voice;
+    }
+
+
+    return voices[0] || null;
+}
+
+
+function speak(text){
+
+    if(!("speechSynthesis" in window)){
+        return;
+    }
+
+    const clean =
+        String(text)
+        .replace(/https?:\/\/\S+/gi,"")
+        .trim();
+
+    if(!clean) return;
+
+
+    try{
+
+        speechSynthesis.cancel();
+
+        const utterance =
+            new SpeechSynthesisUtterance(clean);
+
+        const voice =
+            getBestVoice(currentLanguage);
+
+        if(voice){
+            utterance.voice = voice;
+        }
+
+
+        utterance.lang =
+            currentLanguage === "or"
+            ? "or-IN"
+            : currentLanguage === "hi"
+            ? "hi-IN"
+            : "en-IN";
+
+
+        utterance.rate = 0.88;
+        utterance.pitch = 1.02;
+        utterance.volume = 1;
+
+
+        speechSynthesis.speak(
+            utterance
+        );
+
+    }catch(error){
+
+        console.log(
+            "Speech error:",
+            error
+        );
+    }
+}
+
+
+/* =========================================================
+   CHAT MESSAGE
+========================================================= */
+
+function addMessage(text,type){
+
+    if(!messages) return;
+
+    const div =
+        document.createElement("div");
+
+    div.className =
+        "message " + type;
+
+    div.textContent =
+        String(text);
+
+    messages.appendChild(div);
+
+    messages.scrollTop =
+        messages.scrollHeight;
+}
+
+
+/* =========================================================
+   THINKING MESSAGE
+========================================================= */
+
+function showThinking(){
+
+    removeThinking();
+
+
+    const div =
+        document.createElement("div");
+
+    div.className =
+        "message ai";
+
+    div.id =
+        "sakhaThinking";
+
+
+    div.textContent =
+        currentLanguage === "or"
+        ? "🤖 SAKHA ଭାବୁଛି…"
+        : currentLanguage === "hi"
+        ? "🤖 SAKHA सोच रहा है…"
+        : "🤖 SAKHA is thinking…";
+
+
+    messages.appendChild(div);
+
+    messages.scrollTop =
+        messages.scrollHeight;
+}
+
+
+function removeThinking(){
+
+    const old =
+        document.getElementById(
+            "sakhaThinking"
+        );
+
+    if(old){
+        old.remove();
+    }
+}
+
+
+/* =========================================================
+   REAL AI
+========================================================= */
+
+async function askSakhaAI(userText){
+
+    const payload = {
+
+        exam_id:null,
+
+        exam_name:"SAKHA",
+
+        category:"general",
+
+        subject:"daily life assistant",
+
+        topic:userText,
+
+        difficulty:"medium",
+
+        question_type:"general",
+
+        pyq_year:null,
+
+        count:1,
+
+        language:
+            currentLanguage === "or"
+            ? "odia"
+            : currentLanguage === "hi"
+            ? "hindi"
+            : "english",
+
+        message:userText,
+
+        prompt:userText,
+
+        user_question:userText
+    };
+
+
+    const response =
+        await fetch(
+            SAKHA_AI_URL,
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                        "application/json",
+
+                    "apikey":
+                        SUPABASE_PUBLISHABLE_KEY,
+
+                    "Authorization":
+                        "Bearer " +
+                        SUPABASE_PUBLISHABLE_KEY
+                },
+
+                body:
+                    JSON.stringify(payload)
+            }
+        );
+
+
+    let data;
+
+    try{
+
+        data =
+            await response.json();
+
+    }catch(error){
+
+        throw new Error(
+            "AI server response invalid."
+        );
+    }
+
+
+    console.log(
+        "SAKHA RESPONSE:",
+        data
+    );
+
+
+    if(!response.ok){
+
+        throw new Error(
+            data?.message ||
+            data?.error ||
+            "AI server error"
+        );
+    }
+
+
+    let answer = null;
+
+
+    /* Common formats */
+
+    if(typeof data === "string"){
+        answer = data;
+    }
+
+    else{
+
+        answer =
+            data?.answer ||
+            data?.message ||
+            data?.response ||
+            data?.text ||
+            data?.result ||
+            data?.data?.answer ||
+            data?.data?.message ||
+            data?.data?.text;
+    }
+
+
+    /* OpenAI response */
+
+    if(
+        !answer &&
+        Array.isArray(data?.output)
+    ){
+
+        try{
+
+            answer =
+                data.output
+                .flatMap(item =>
+                    item.content || []
+                )
+                .map(item =>
+                    item.text || ""
+                )
+                .join(" ")
+                .trim();
+
+        }catch(error){
+
+            console.log(error);
+        }
+    }
+
+
+    /* Gemini response */
+
+    if(
+        !answer &&
+        Array.isArray(
+            data?.candidates
+        )
+    ){
+
+        try{
+
+            answer =
+                data.candidates[0]
+                ?.content
+                ?.parts
+                ?.map(item =>
+                    item.text || ""
+                )
+                ?.join(" ")
+                ?.trim();
+
+        }catch(error){
+
+            console.log(error);
+        }
+    }
+
+
+    if(!answer){
+
+        throw new Error(
+            "AI answer পাওয়া যায়নি."
+        );
+    }
+
+
+    return String(answer).trim();
+}
+
+
+/* =========================================================
+   SAKHA MAIN COMMAND
+========================================================= */
+
+async function processCommand(text){
+
+    const userText =
+        String(text).trim();
+
+    if(!userText) return;
+
+
+    showThinking();
+
+
+    try{
+
+        const answer =
+            await askSakhaAI(
+                userText
+            );
+
+
+        removeThinking();
+
+
+        addMessage(
+            answer,
+            "ai"
+        );
+
+
+        /* AI answer voice */
+
+        setTimeout(()=>{
+
+            speak(answer);
+
+        },100);
+
+
+    }catch(error){
+
+        console.error(
+            "SAKHA AI ERROR:",
+            error
+        );
+
+
+        removeThinking();
+
+
+        let fallback;
+
+
+        if(currentLanguage === "or"){
+
+            fallback =
+            "ଦୁଃଖିତ 🙏 SAKHA AI server ସହିତ ଏବେ connection ହେଉନାହିଁ। କିଛି ସମୟ ପରେ ପୁଣି try କରନ୍ତୁ।";
+        }
+
+        else if(currentLanguage === "hi"){
+
+            fallback =
+            "माफ़ कीजिए 🙏 अभी SAKHA AI server से connection नहीं हो पा रहा है। थोड़ी देर बाद फिर कोशिश करें।";
+        }
+
+        else{
+
+            fallback =
+            "Sorry 🙏 SAKHA AI server is not connected right now. Please try again shortly.";
+        }
+
+
+        addMessage(
+            fallback,
+            "ai"
+        );
+
+
+        speak(
+            fallback
+        );
+    }
+}
+
+
+/* =========================================================
+   SEND MESSAGE
+========================================================= */
+
+function sendMessage(){
+
+    if(!chatInput) return;
+
+
+    const text =
+        chatInput.value.trim();
+
+
+    if(!text) return;
+
+
+    addMessage(
+        text,
+        "user"
+    );
+
+
+    chatInput.value = "";
+
+
+    processCommand(
+        text
+    );
+}
+
+
+/* =========================================================
+   ENTER KEY
+========================================================= */
+
+if(chatInput){
+
+    chatInput.addEventListener(
+        "keydown",
+        function(event){
+
+            if(event.key === "Enter"){
+
+                event.preventDefault();
+
+                sendMessage();
+            }
+        }
+    );
+}
+
+
+/* =========================================================
+   VOICE RECOGNITION
+========================================================= */
+
+const Recognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+if(Recognition){
+
+    recognition =
+        new Recognition();
+
+
+    recognition.continuous =
+        false;
+
+
+    recognition.interimResults =
+        false;
+
+
+    recognition.maxAlternatives =
+        1;
+
+
+    recognition.onstart =
+        function(){
+
+            isListening = true;
+
+
+            if(voiceButton){
+                voiceButton.classList.add(
+                    "listening"
+                );
+            }
+
+
+            if(voiceStatus){
+
+                voiceStatus.textContent =
+
+                    currentLanguage === "or"
+
+                    ? "🎙️ ଶୁଣୁଛି… କହନ୍ତୁ"
+
+                    : currentLanguage === "hi"
+
+                    ? "🎙️ सुन रहा हूँ… बोलिए"
+
+                    : "🎙️ Listening… speak now";
+            }
+        };
+
+
+    recognition.onresult =
+        function(event){
+
+            const result =
+                event.results?.[0]?.[0];
+
+
+            if(!result) return;
+
+
+            const text =
+                result.transcript.trim();
+
+
+            if(!text) return;
+
+
+            /* Show voice command */
+
+            addMessage(
+                text,
+                "user"
+            );
+
+
+            /* Send to AI */
+
+            processCommand(
+                text
+            );
+        };
+
+
+    recognition.onerror =
+        function(event){
+
+            console.log(
+                "VOICE ERROR:",
+                event.error
+            );
+
+
+            isListening = false;
+
+
+            if(voiceButton){
+
+                voiceButton.classList.remove(
+                    "listening"
+                );
+            }
+
+
+            let msg;
+
+
+            if(
+                event.error ===
+                "not-allowed"
+            ){
+
+                msg =
+                currentLanguage === "or"
+                ? "🎙️ Microphone permission ଦିଅନ୍ତୁ।"
+                : currentLanguage === "hi"
+                ? "🎙️ Microphone permission दें।"
+                : "🎙️ Please allow microphone permission.";
+            }
+
+            else{
+
+                msg =
+                currentLanguage === "or"
+                ? "ପୁଣି ଥରେ try କରନ୍ତୁ।"
+                : currentLanguage === "hi"
+                ? "फिर से कोशिश करें।"
+                : "Please try again.";
+            }
+
+
+            if(voiceStatus){
+
+                voiceStatus.textContent =
+                    msg;
+            }
+        };
+
+
+    recognition.onend =
+        function(){
+
+            isListening = false;
+
+
+            if(voiceButton){
+
+                voiceButton.classList.remove(
+                    "listening"
+                );
+            }
+
+
+            if(voiceStatus){
+
+                voiceStatus.textContent =
+
+                    currentLanguage === "or"
+
+                    ? "କହନ୍ତୁ… SAKHA ଶୁଣୁଛି"
+
+                    : currentLanguage === "hi"
+
+                    ? "बोलिए… SAKHA सुन रहा है"
+
+                    : "Speak… SAKHA is listening";
+            }
+        };
+
+}
+
+
+/* =========================================================
+   START VOICE
+========================================================= */
+
+function startVoice(){
+
+    if(!recognition){
+
+        const msg =
+            currentLanguage === "or"
+
+            ? "🎙️ ଏହି browser voice recognition support କରୁନାହିଁ। Chrome Androidରେ try କରନ୍ତୁ।"
+
+            : currentLanguage === "hi"
+
+            ? "🎙️ यह browser voice recognition support नहीं करता। Chrome Android में try करें।"
+
+            : "🎙️ This browser does not support voice recognition. Try Chrome Android.";
+
+
+        addMessage(
+            msg,
+            "ai"
+        );
+
+
+        speak(msg);
+
+        return;
+    }
+
+
+    if(isListening){
+
+        try{
+            recognition.stop();
+        }catch(error){}
+
+        return;
+    }
+
+
+    recognition.lang =
+
+        currentLanguage === "or"
+
+        ? "or-IN"
+
+        : currentLanguage === "hi"
+
+        ? "hi-IN"
+
+        : "en-IN";
+
+
+    try{
+
+        recognition.start();
+
+    }catch(error){
+
+        console.log(
+            "Recognition start:",
+            error
+        );
+    }
+}
+
+
+/* =========================================================
+   LANGUAGE
+========================================================= */
+
+function setLanguage(language){
+
+    currentLanguage =
+        language;
+
+
+    loadVoices();
+
+
+    if(language === "or"){
+
+        if(voiceStatus)
+            voiceStatus.textContent =
+                "କହନ୍ତୁ… SAKHA ଶୁଣୁଛି";
+
+
+        if(chatInput)
+            chatInput.placeholder =
+                "ତୁମ problem ଲେଖ…";
+    }
+
+
+    else if(language === "hi"){
+
+        if(voiceStatus)
+            voiceStatus.textContent =
+                "बोलिए… SAKHA सुन रहा है";
+
+
+        if(chatInput)
+            chatInput.placeholder =
+                "अपनी समस्या लिखें…";
+    }
+
+
+    else{
+
+        if(voiceStatus)
+            voiceStatus.textContent =
+                "Speak… SAKHA is listening";
+
+
+        if(chatInput)
+            chatInput.placeholder =
+                "Type your problem…";
+    }
+}
+
+
+/* =========================================================
+   PANEL SYSTEM
+========================================================= */
+
+function openPanel(id){
+
+    document
+        .querySelectorAll(".panel")
+        .forEach(panel =>
+            panel.classList.remove(
+                "show"
+            )
+        );
+
+
+    const panel =
+        document.getElementById(id);
+
+
+    if(!panel) return;
+
+
+    panel.classList.add(
+        "show"
+    );
+
+
+    setTimeout(
+        function(){
+
+            panel.scrollIntoView({
+                behavior:"smooth",
+                block:"start"
+            });
+
+        },
+        50
+    );
+}
+
+
+/* =========================================================
+   REMINDERS
+========================================================= */
+
+let reminders =
+    JSON.parse(
+        localStorage.getItem(
+            "sakha_reminders"
+        ) || "[]"
+    );
+
+
+function saveReminders(){
+
+    localStorage.setItem(
+        "sakha_reminders",
+        JSON.stringify(
+            reminders
+        )
+    );
+}
+
+
+function escapeHTML(text){
+
+    return String(text)
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+
+function renderReminders(){
+
+    const list =
+        document.getElementById(
+            "reminderList"
+        );
+
+
+    if(!list) return;
+
+
+    list.innerHTML = "";
+
+
+    if(!reminders.length){
+
+        list.innerHTML =
+            "<div style='color:#aeb1d0'>No reminders yet.</div>";
+
+        return;
+    }
+
+
+    reminders.forEach(
+        function(r,index){
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "reminder";
+
+
+            div.innerHTML = `
+
+                <div>
+
+                    <strong>
+                        ${escapeHTML(r.text)}
+                    </strong>
+
+                    <div style="
+                        color:#aeb1d0;
+                        font-size:12px;
+                        margin-top:4px">
+
+                        ${new Date(
+                            r.time
+                        ).toLocaleString()}
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="delete-button"
+                    onclick="deleteReminder(${index})">
+
+                    Delete
+
+                </button>
+            `;
+
+
+            list.appendChild(
+                div
+            );
+        }
+    );
+}
+
+
+function addReminder(){
+
+    const text =
+        document.getElementById(
+            "reminderText"
+        )?.value.trim();
+
+
+    const time =
+        document.getElementById(
+            "reminderTime"
+        )?.value;
+
+
+    if(!text || !time){
+
+        alert(
+            "Reminder text ଏବଂ time ଦିଅନ୍ତୁ।"
+        );
+
+        return;
+    }
+
+
+    reminders.push({
+
+        text:text,
+
+        time:time,
+
+        notified:false
+    });
+
+
+    saveReminders();
+
+    renderReminders();
+
+
+    document.getElementById(
+        "reminderText"
+    ).value = "";
+
+
+    document.getElementById(
+        "reminderTime"
+    ).value = "";
+
+
+    const msg =
+        "⏰ Reminder set କରାଗଲା: " +
+        text;
+
+
+    addMessage(
+        msg,
+        "ai"
+    );
+
+
+    speak(
+        "Reminder set କରାଗଲା"
+    );
+}
+
+
+function deleteReminder(index){
+
+    reminders.splice(
+        index,
+        1
+    );
+
+
+    saveReminders();
+
+    renderReminders();
+}
+
+
+/* =========================================================
+   REMINDER CHECK
+========================================================= */
+
+setInterval(
+    function(){
+
+        const now =
+            Date.now();
+
+        let changed =
+            false;
+
+
+        reminders.forEach(
+            function(r){
+
+                if(
+                    !r.notified &&
+                    new Date(
+                        r.time
+                    ).getTime() <= now
+                ){
+
+                    r.notified =
+                        true;
+
+                    changed =
+                        true;
+
+
+                    const text =
+                        "⏰ Reminder: " +
+                        r.text;
+
+
+                    addMessage(
+                        text,
+                        "ai"
+                    );
+
+
+                    speak(
+                        "Reminder. " +
+                        r.text
+                    );
+
+
+                    if(
+                        "Notification"
+                        in window &&
+                        Notification.permission ===
+                        "granted"
+                    ){
+
+                        try{
+
+                            new Notification(
+                                "SAKHA Reminder",
+                                {
+                                    body:r.text
+                                }
+                            );
+
+                        }catch(error){}
+                    }
+                }
+            }
+        );
+
+
+        if(changed){
+
+            saveReminders();
+
+            renderReminders();
+        }
+
+    },
+    10000
+);
+
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+if(
+    "Notification" in window &&
+    Notification.permission ===
+    "default"
+){
+
+    Notification
+        .requestPermission()
+        .catch(
+            ()=>{}
+        );
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+renderReminders();
+
+
+console.log(
+    "🤖 SAKHA FINAL AI ENGINE READY"
+);
+
+console.log(
+    "Endpoint:",
+    SAKHA_AI_URL
+);
+
+</script>
 </body>
 </html>
