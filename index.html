@@ -2467,13 +2467,14 @@ function extractAIAnswer(data){
 }
 
 
+
+
+
 /* =========================================================
    AI REQUEST
 ========================================================= */
 
-async function askSakhaAI(
- userText
-){
+async function askSakhaAI(userText){
 
  const language =
   currentLanguage === "or"
@@ -2482,359 +2483,153 @@ async function askSakhaAI(
   ? "hindi"
   : "english";
 
+ const cleanQuestion = String(userText).trim();
+
+ if(!cleanQuestion){
+  throw new Error("Message is empty");
+ }
+
+ const historyText = conversationHistory
+  .slice(-MAX_HISTORY)
+  .map(item =>
+   `${item.role === "user" ? "User" : "SAKHA"}: ${item.text}`
+  )
+  .join("\n");
 
  const payload = {
-
-  exam_id:null,
-
-  exam_name:"SAKHA",
-
-  category:"general",
-
-  subject:"daily life assistant",
-
-  topic:userText,
-
-  difficulty:"medium",
-
-  question_type:"general",
-
-  pyq_year:null,
-
-  count:1,
-
-  language:language,
-
-  message:userText,
-
-  prompt:userText,
-
-  user_question:userText
-
+  exam_id: null,
+  exam_name: "SAKHA",
+  category: "general",
+  subject: "daily life assistant",
+  topic: cleanQuestion,
+  difficulty: "medium",
+  question_type: "general",
+  pyq_year: null,
+  count: 1,
+  language,
+  message: cleanQuestion,
+  prompt: cleanQuestion,
+  user_question: cleanQuestion,
+  conversation_history: historyText
  };
 
+ let lastError = null;
 
- let lastError =
-  null;
-
-
- /* RETRY 3 TIMES */
-
- for(
-  let attempt = 1;
-  attempt <= 3;
-  attempt++
- ){
-
+ for(let attempt = 1; attempt <= 3; attempt++){
   try{
+   const response = await fetch(SAKHA_AI_URL, {
+    method: "POST",
+    headers: {
+     "Content-Type": "application/json",
+     "apikey": SUPABASE_PUBLISHABLE_KEY,
+     "Authorization": "Bearer " + SUPABASE_PUBLISHABLE_KEY
+    },
+    body: JSON.stringify(payload)
+   });
 
-   const response =
-    await fetch(
-     SAKHA_AI_URL,
-     {
-
-      method:"POST",
-
-      headers:{
-
-       "Content-Type":
-        "application/json",
-
-       "apikey":
-        SUPABASE_PUBLISHABLE_KEY,
-
-       "Authorization":
-        "Bearer " +
-        SUPABASE_PUBLISHABLE_KEY
-
-      },
-
-      body:
-       JSON.stringify(
-        payload
-       )
-
-     }
-    );
-
-
-   let data =
-    null;
-
-
+   let data = {};
    try{
-
-    data =
-     await response.json();
-
-   }catch(error){
-
-    data =
-     {};
-
+    data = await response.json();
+   }catch(e){
+    data = {};
    }
 
+   console.log("SAKHA RESPONSE:", data);
 
-   console.log(
-    "SAKHA AI RESPONSE:",
-    data
-   );
-
-
-   if(
-    response.ok
-   ){
-
-    const answer =
-     extractAIAnswer(
-      data
-     );
-
+   if(response.ok){
+    const answer = extractAIAnswer(data);
 
     if(answer){
+     conversationHistory.push({role:"user", text:cleanQuestion});
+     conversationHistory.push({role:"assistant", text:answer});
+
+     if(conversationHistory.length > MAX_HISTORY * 2){
+      conversationHistory = conversationHistory.slice(-MAX_HISTORY * 2);
+     }
 
      return answer;
-
     }
 
-
-    throw new Error(
-     "AI answer পাওয়া যায়নি।"
-    );
-
+    throw new Error("AI answer not found");
    }
-
 
    const errorMessage =
-    data?.message ||
+    data?.error?.message ||
     data?.error ||
+    data?.message ||
     data?.details ||
-    data?.hint ||
     `Server error ${response.status}`;
 
+   lastError = new Error(String(errorMessage));
 
-   lastError =
-    new Error(
-     errorMessage
-    );
-
-
-   /*
-      429 / 500 / 502 / 503 / 504
-      ହେଲେ retry
-   */
-
-   if(
-    response.status === 429 ||
-    response.status === 500 ||
-    response.status === 502 ||
-    response.status === 503 ||
-    response.status === 504
-   ){
-
-    if(
-     attempt < 3
-    ){
-
-     await new Promise(
-      resolve =>
-       setTimeout(
-        resolve,
-        attempt * 1500
-       )
-     );
-
-     continue;
-
-    }
-
+   if([429,500,502,503,504].includes(response.status) && attempt < 3){
+    await new Promise(resolve => setTimeout(resolve, attempt * 1500));
+    continue;
    }
-
 
    throw lastError;
 
-
   }catch(error){
+   lastError = error;
 
-   lastError =
-    error;
-
-
-   /*
-      Network error
-   */
-
-   if(
-    attempt < 3
-   ){
-
-    await new Promise(
-     resolve =>
-      setTimeout(
-       resolve,
-       attempt * 1200
-      )
-    );
-
+   if(attempt < 3){
+    await new Promise(resolve => setTimeout(resolve, attempt * 1200));
     continue;
-
    }
-
   }
-
  }
 
-
- throw (
-  lastError ||
-  new Error(
-   "AI service unavailable"
-  )
- );
-
+ throw lastError || new Error("SAKHA AI unavailable");
 }
 
 
 /* =========================================================
-   ERROR MESSAGE
+   FRIENDLY ERROR
 ========================================================= */
 
-function getFriendlyError(
- error
-){
+function getFriendlyError(error){
 
- const raw =
-  String(
-   error?.message ||
-   error ||
-   ""
-  );
+ const raw = String(error?.message || error || "");
+ console.error("FINAL SAKHA ERROR:", raw);
 
-
- console.error(
-  "FINAL SAKHA ERROR:",
-  raw
- );
-
-
- if(
-  /429|too many|rate limit/i
-   .test(raw)
- ){
-
-  if(
-   currentLanguage === "or"
-  ){
-
-   return (
-    "⚠️ SAKHA AI ରେ ବର୍ତ୍ତମାନ ବହୁତ request ଆସୁଛି। " +
-    "10–20 ସେକେଣ୍ଡ ପରେ ପୁଣି ପଚାରନ୍ତୁ।"
-   );
-
+ if(/429|too many|rate limit/i.test(raw)){
+  if(currentLanguage === "or"){
+   return "⚠️ SAKHA AI ରେ ବର୍ତ୍ତମାନ ବହୁତ request ଆସୁଛି। 10–20 ସେକେଣ୍ଡ ପରେ ପୁଣି ପଚାରନ୍ତୁ।";
   }
-
-
-  if(
-   currentLanguage === "hi"
-  ){
-
-   return (
-    "⚠️ अभी AI service पर बहुत requests हैं। " +
-    "10–20 सेकंड बाद फिर कोशिश करें।"
-   );
-
+  if(currentLanguage === "hi"){
+   return "⚠️ अभी AI service पर बहुत requests हैं। 10–20 सेकंड बाद फिर कोशिश करें।";
   }
-
-
-  return (
-   "⚠️ AI service is busy right now. " +
-   "Please try again after 10–20 seconds."
-  );
-
+  return "⚠️ AI service is busy right now. Please try again after 10–20 seconds.";
  }
 
-
- if(
-  /401|403|invalid credentials|unauthorized/i
-   .test(raw)
- ){
-
-  if(
-   currentLanguage === "or"
-  ){
-
-   return (
-    "🔐 AI connection credentials problem ଅଛି। " +
-    "Supabase Edge Functionର authentication/settings check କରନ୍ତୁ।"
-   );
-
+ if(/401|403|invalid credentials|unauthorized/i.test(raw)){
+  if(currentLanguage === "or"){
+   return "🔐 AI connection credentials problem ଅଛି। Supabase Edge Functionର authentication/settings check କରନ୍ତୁ।";
   }
-
-
-  return (
-   "🔐 AI authentication problem. " +
-   "Please check the Supabase Edge Function settings."
-  );
-
- }
-
-
- if(
-  /failed to fetch|network|connection/i
-   .test(raw)
- ){
-
-  if(
-   currentLanguage === "or"
-  ){
-
-   return (
-    "🌐 SAKHA server ସହିତ connection ହେଉନାହିଁ। " +
-    "Internet ଓ Edge Function deployment check କରନ୍ତୁ।"
-   );
-
+  if(currentLanguage === "hi"){
+   return "🔐 AI authentication problem. Supabase Edge Function settings check करें।";
   }
-
-
-  return (
-   "🌐 SAKHA server connection failed. " +
-   "Please check the internet and Edge Function deployment."
-  );
-
+  return "🔐 AI authentication problem. Please check the Supabase Edge Function settings.";
  }
 
-
- if(
-  currentLanguage === "or"
- ){
-
-  return (
-   "❌ SAKHA AI response ଦେଇପାରିଲା ନାହିଁ। " +
-   "କିଛି ସମୟ ପରେ ପୁଣି try କରନ୍ତୁ।"
-  );
-
+ if(/failed to fetch|network|connection|fetch/i.test(raw)){
+  if(currentLanguage === "or"){
+   return "🌐 SAKHA server ସହିତ connection ହେଉନାହିଁ। Internet ଓ Edge Function deployment check କରନ୍ତୁ।";
+  }
+  if(currentLanguage === "hi"){
+   return "🌐 SAKHA server connection failed. Internet और Edge Function deployment check करें।";
+  }
+  return "🌐 SAKHA server connection failed. Please check the internet and Edge Function deployment.";
  }
 
-
- if(
-  currentLanguage === "hi"
- ){
-
-  return (
-   "❌ SAKHA AI अभी जवाब नहीं दे पाया। " +
-   "थोड़ी देर बाद फिर कोशिश करें।"
-  );
-
+ if(currentLanguage === "or"){
+  return "❌ SAKHA AI response ଦେଇପାରିଲା ନାହିଁ। କିଛି ସମୟ ପରେ ପୁଣି try କରନ୍ତୁ।";
  }
-
-
- return (
-  "❌ SAKHA AI could not answer right now. " +
-  "Please try again shortly."
- );
-
+ if(currentLanguage === "hi"){
+  return "❌ SAKHA AI अभी जवाब नहीं दे पाया। थोड़ी देर बाद फिर कोशिश करें।";
+ }
+ return "❌ SAKHA AI could not answer right now. Please try again shortly.";
 }
-
 
 /* =========================================================
    MAIN COMMAND
