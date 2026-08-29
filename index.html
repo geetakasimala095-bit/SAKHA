@@ -1,5 +1,5 @@
-```html
 <!DOCTYPE html>
+
 <html lang="or">
 <head>
 <meta charset="UTF-8">
@@ -10,13 +10,22 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+
 :root{
- --bg:#06051a;--card:rgba(255,255,255,.075);
- --border:rgba(255,255,255,.14);--text:#fff;
- --muted:#aeb2d3;--gold:#ffd84d;--cyan:#36ddff;
- --purple:#8c5cff;--pink:#ff55bf;--green:#35dc9a;
+ --bg:#06051a;
+ --card:rgba(255,255,255,.075);
+ --border:rgba(255,255,255,.14);
+ --text:#fff;
+ --muted:#aeb2d3;
+ --gold:#ffd84d;
+ --cyan:#36ddff;
+ --purple:#8c5cff;
+ --pink:#ff55bf;
+ --green:#35dc9a;
 }
+
 html{scroll-behavior:smooth}
+
 body{
  color:var(--text);
  font-family:system-ui,-apple-system,BlinkMacSystemFont,
@@ -28,251 +37,656 @@ body{
  radial-gradient(circle at 50% 100%,#063f68 0,transparent 32%),
  var(--bg);
 }
+
 button,input{font:inherit}
 button{cursor:pointer}
-.app{width:min(1250px,100%);margin:auto;padding:14px}
+
+.app{
+ width:min(1250px,100%);
+ margin:auto;
+ padding:14px;
+}
 
 /* HEADER */
+
 header{
- display:flex;justify-content:space-between;align-items:center;
- gap:15px;margin-bottom:16px
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:15px;
+ margin-bottom:16px;
 }
-.logo-area{display:flex;align-items:center;gap:11px}
+
+.logo-area{
+ display:flex;
+ align-items:center;
+ gap:11px;
+}
+
 .logo{
- width:57px;height:57px;border-radius:19px;
- display:grid;place-items:center;font-size:30px;
+ width:57px;
+ height:57px;
+ border-radius:19px;
+ display:grid;
+ place-items:center;
+ font-size:30px;
  background:linear-gradient(135deg,#6855ff,#e340d7);
- box-shadow:0 0 35px #7955ff77
+ box-shadow:0 0 35px #7955ff77;
 }
-.brand h1{font-size:29px;letter-spacing:5px}
-.brand p{font-size:12px;color:var(--muted)}
-.header-actions{display:flex;gap:7px;flex-wrap:wrap}
+
+.brand h1{
+ font-size:29px;
+ letter-spacing:5px;
+}
+
+.brand p{
+ font-size:12px;
+ color:var(--muted);
+}
+
+.header-actions{
+ display:flex;
+ gap:7px;
+ flex-wrap:wrap;
+}
+
 .header-btn{
- color:white;background:var(--card);
- border:1px solid var(--border);border-radius:12px;
- padding:8px 11px
+ color:white;
+ background:var(--card);
+ border:1px solid var(--border);
+ border-radius:12px;
+ padding:8px 11px;
+}
+
+.header-btn:hover{
+ background:#ffffff18;
 }
 
 /* HERO */
+
 .hero{
- position:relative;overflow:hidden;text-align:center;
- padding:38px 15px 27px;border-radius:32px;
+ position:relative;
+ overflow:hidden;
+ text-align:center;
+ padding:38px 15px 27px;
+ border-radius:32px;
  border:1px solid var(--border);
- background:linear-gradient(135deg,
- rgba(77,37,153,.55),rgba(8,50,94,.48),rgba(111,17,83,.35));
- box-shadow:0 25px 80px #0009
+ background:
+ linear-gradient(
+  135deg,
+  rgba(77,37,153,.55),
+  rgba(8,50,94,.48),
+  rgba(111,17,83,.35)
+ );
+ box-shadow:0 25px 80px #0009;
 }
-.hero-content{position:relative;z-index:2}
+
+.hero-content{
+ position:relative;
+ z-index:2;
+}
+
 .hero-title{
  font-size:clamp(50px,10vw,84px);
- font-weight:950;letter-spacing:8px;
- background:linear-gradient(90deg,#58e9ff,#a86bff,#ff55c8,#ffd85b);
- -webkit-background-clip:text;background-clip:text;color:transparent
+ font-weight:950;
+ letter-spacing:8px;
+ background:
+ linear-gradient(
+  90deg,
+  #58e9ff,
+  #a86bff,
+  #ff55c8,
+  #ffd85b
+ );
+ -webkit-background-clip:text;
+ background-clip:text;
+ color:transparent;
 }
-.tagline{font-size:clamp(18px,4vw,29px);font-weight:900}
-.subtag{margin-top:7px;color:var(--muted)}
+
+.tagline{
+ font-size:clamp(18px,4vw,29px);
+ font-weight:900;
+}
+
+.subtag{
+ margin-top:7px;
+ color:var(--muted);
+}
 
 /* ORB */
-.ai-orb{width:185px;height:185px;position:relative;margin:28px auto 15px}
+
+.ai-orb{
+ width:185px;
+ height:185px;
+ position:relative;
+ margin:28px auto 15px;
+}
+
 .ring{
- position:absolute;inset:0;border-radius:50%;
+ position:absolute;
+ inset:0;
+ border-radius:50%;
  border:1px solid #50ddff99;
- box-shadow:0 0 25px #2ddcff55,inset 0 0 25px #8d5cff33;
- animation:spin 8s linear infinite
+ box-shadow:
+  0 0 25px #2ddcff55,
+  inset 0 0 25px #8d5cff33;
+ animation:spin 8s linear infinite;
 }
-.ring.two{inset:13px;border-color:#f65ccc88;animation-duration:5s;animation-direction:reverse}
-.ring.three{inset:26px;border-color:#ffd45c66;animation-duration:12s}
+
+.ring.two{
+ inset:13px;
+ border-color:#f65ccc88;
+ animation-duration:5s;
+ animation-direction:reverse;
+}
+
+.ring.three{
+ inset:26px;
+ border-color:#ffd45c66;
+ animation-duration:12s;
+}
+
 .orb{
- position:absolute;inset:43px;border-radius:50%;
- display:grid;place-items:center;font-size:58px;
- background:radial-gradient(circle at 35% 25%,#86f1ff,#6158ff 50%,#d629ff);
- box-shadow:0 0 35px #39d9ff,0 0 85px #824dff88;
- animation:pulse 2.5s infinite
+ position:absolute;
+ inset:43px;
+ border-radius:50%;
+ display:grid;
+ place-items:center;
+ font-size:58px;
+ background:
+ radial-gradient(
+  circle at 35% 25%,
+  #86f1ff,
+  #6158ff 50%,
+  #d629ff
+ );
+ box-shadow:
+  0 0 35px #39d9ff,
+  0 0 85px #824dff88;
+ animation:pulse 2.5s infinite;
 }
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes pulse{50%{transform:scale(1.07)}}
+
+@keyframes spin{
+ to{transform:rotate(360deg)}
+}
+
+@keyframes pulse{
+ 50%{transform:scale(1.07)}
+}
 
 /* VOICE */
+
 .voice-button{
- width:78px;height:78px;border:0;border-radius:50%;
+ width:78px;
+ height:78px;
+ border:0;
+ border-radius:50%;
  font-size:31px;
  background:linear-gradient(135deg,#ffd75a,#ff6e9d);
  box-shadow:0 10px 35px #ff719d66;
- transition:.2s
+ transition:.2s;
 }
-.voice-button:hover{transform:scale(1.06)}
+
+.voice-button:hover{
+ transform:scale(1.06);
+}
+
 .voice-button.listening{
- animation:listening 1s infinite
+ animation:listening 1s infinite;
 }
+
 @keyframes listening{
- 50%{transform:scale(1.12);box-shadow:0 0 60px #ff54d5}
+ 50%{
+  transform:scale(1.12);
+  box-shadow:0 0 60px #ff54d5;
+ }
 }
-.voice-status{color:var(--gold);font-weight:800;margin-top:10px}
-.voice-hint{color:var(--muted);font-size:12px;margin-top:5px}
+
+.voice-status{
+ color:var(--gold);
+ font-weight:800;
+ margin-top:10px;
+}
+
+.voice-hint{
+ color:var(--muted);
+ font-size:12px;
+ margin-top:5px;
+}
 
 /* CHAT */
+
 .chat{
- margin-top:16px;padding:17px;border-radius:23px;
- border:1px solid var(--border);background:var(--card);
- backdrop-filter:blur(18px)
+ margin-top:16px;
+ padding:17px;
+ border-radius:23px;
+ border:1px solid var(--border);
+ background:var(--card);
+ backdrop-filter:blur(18px);
 }
-.chat-title{font-weight:900;font-size:18px;margin-bottom:11px}
+
+.chat-title{
+ font-weight:900;
+ font-size:18px;
+ margin-bottom:11px;
+}
+
 .messages{
- min-height:58px;max-height:260px;overflow:auto;
- display:flex;flex-direction:column;gap:8px;margin-bottom:11px
+ min-height:58px;
+ max-height:320px;
+ overflow:auto;
+ display:flex;
+ flex-direction:column;
+ gap:8px;
+ margin-bottom:11px;
+ padding-right:3px;
 }
+
 .message{
- max-width:88%;padding:10px 14px;border-radius:16px;line-height:1.55;
- white-space:pre-wrap
+ max-width:88%;
+ padding:10px 14px;
+ border-radius:16px;
+ line-height:1.55;
+ white-space:pre-wrap;
+ word-break:break-word;
 }
+
 .message.ai{
  align-self:flex-start;
- background:linear-gradient(135deg,#7d4dff33,#00cfff18);
- border:1px solid #7d4dff33
+ background:
+ linear-gradient(
+  135deg,
+  #7d4dff33,
+  #00cfff18
+ );
+ border:1px solid #7d4dff33;
 }
+
 .message.user{
- align-self:flex-end;background:#1f84cb40;
- border:1px solid #2bb8ff40
+ align-self:flex-end;
+ background:#1f84cb40;
+ border:1px solid #2bb8ff40;
 }
-.chat-row{display:flex;gap:8px}
+
+.message.thinking{
+ opacity:.75;
+ font-style:italic;
+}
+
+.chat-row{
+ display:flex;
+ gap:8px;
+}
+
 .chat-row input{
- flex:1;min-width:0;padding:13px;color:white;
- background:#0007;border:1px solid var(--border);
- border-radius:14px;outline:none
+ flex:1;
+ min-width:0;
+ padding:13px;
+ color:white;
+ background:#0007;
+ border:1px solid var(--border);
+ border-radius:14px;
+ outline:none;
 }
+
+.chat-row input:focus{
+ border-color:#50ddff88;
+ box-shadow:0 0 15px #36ddff22;
+}
+
 .send-button{
- border:0;border-radius:14px;padding:0 19px;
+ border:0;
+ border-radius:14px;
+ padding:0 19px;
  background:linear-gradient(135deg,#ffd85c,#ff9f43);
- font-weight:950;color:#1b102d
+ font-weight:950;
+ color:#1b102d;
 }
 
 /* SERVICES */
-.section{margin-top:24px}
+
+.section{
+ margin-top:24px;
+}
+
 .section-heading{
- display:flex;justify-content:space-between;align-items:center;
- gap:10px;margin-bottom:12px
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ margin-bottom:12px;
 }
-.section-heading h2{font-size:23px}
-.section-heading span{color:var(--muted);font-size:12px}
+
+.section-heading h2{
+ font-size:23px;
+}
+
+.section-heading span{
+ color:var(--muted);
+ font-size:12px;
+}
+
 .service-grid{
- display:grid;grid-template-columns:repeat(4,1fr);gap:11px
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:11px;
 }
+
 .service-card{
- position:relative;overflow:hidden;min-height:145px;
- text-align:left;color:white;padding:16px;
- border:1px solid var(--border);border-radius:21px;
- background:var(--card);transition:.25s;
- backdrop-filter:blur(15px)
+ position:relative;
+ overflow:hidden;
+ min-height:145px;
+ text-align:left;
+ color:white;
+ padding:16px;
+ border:1px solid var(--border);
+ border-radius:21px;
+ background:var(--card);
+ transition:.25s;
+ backdrop-filter:blur(15px);
 }
+
 .service-card:hover{
- transform:translateY(-5px);background:rgba(255,255,255,.12);
- box-shadow:0 18px 45px #0007
+ transform:translateY(-5px);
+ background:rgba(255,255,255,.12);
+ box-shadow:0 18px 45px #0007;
 }
+
 .service-icon{
- width:48px;height:48px;border-radius:15px;
- display:grid;place-items:center;font-size:25px;
+ width:48px;
+ height:48px;
+ border-radius:15px;
+ display:grid;
+ place-items:center;
+ font-size:25px;
  margin-bottom:10px;
- background:linear-gradient(135deg,var(--glow),#ffffff1f)
+ background:
+ linear-gradient(
+  135deg,
+  var(--glow),
+  #ffffff1f
+ );
 }
-.service-card strong{display:block;font-size:16px;margin-bottom:5px}
-.service-card small{color:var(--muted);line-height:1.45}
-.purple{--glow:#925cff}.blue{--glow:#27cfff}
-.pink{--glow:#ff55bd}.green{--glow:#34d399}
-.gold{--glow:#ffd44c}.orange{--glow:#ff9f43}
+
+.service-card strong{
+ display:block;
+ font-size:16px;
+ margin-bottom:5px;
+}
+
+.service-card small{
+ color:var(--muted);
+ line-height:1.45;
+}
+
+.purple{--glow:#925cff}
+.blue{--glow:#27cfff}
+.pink{--glow:#ff55bd}
+.green{--glow:#34d399}
+.gold{--glow:#ffd44c}
+.orange{--glow:#ff9f43}
 .red{--glow:#fb6077}
 
 /* PANELS */
+
 .panel{
- display:none;margin-top:17px;padding:21px;border-radius:23px;
- border:1px solid var(--border);background:var(--card);
- backdrop-filter:blur(18px)
+ display:none;
+ margin-top:17px;
+ padding:21px;
+ border-radius:23px;
+ border:1px solid var(--border);
+ background:var(--card);
+ backdrop-filter:blur(18px);
 }
-.panel.show{display:block}
-.panel h3{font-size:24px;margin-bottom:6px}
-.panel-description{color:var(--muted);line-height:1.6}
+
+.panel.show{
+ display:block;
+}
+
+.panel h3{
+ font-size:24px;
+ margin-bottom:6px;
+}
+
+.panel-description{
+ color:var(--muted);
+ line-height:1.6;
+}
+
 .panel-grid{
- display:grid;grid-template-columns:repeat(3,1fr);
- gap:11px;margin-top:17px
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:11px;
+ margin-top:17px;
 }
+
 .info-box{
- padding:16px;border:1px solid var(--border);
- border-radius:16px;background:#ffffff08
+ padding:16px;
+ border:1px solid var(--border);
+ border-radius:16px;
+ background:#ffffff08;
 }
-.info-box strong{display:block;margin-bottom:5px}
-.info-box p{color:var(--muted);line-height:1.5}
+
+.info-box strong{
+ display:block;
+ margin-bottom:5px;
+}
+
+.info-box p{
+ color:var(--muted);
+ line-height:1.5;
+}
 
 /* REMINDER */
+
 .reminder-form{
- display:grid;grid-template-columns:1fr 210px auto;
- gap:8px;margin-top:16px
+ display:grid;
+ grid-template-columns:1fr 210px auto;
+ gap:8px;
+ margin-top:16px;
 }
+
 .reminder-form input{
- padding:12px;color:white;background:#0006;
- border:1px solid var(--border);border-radius:13px
+ padding:12px;
+ color:white;
+ background:#0006;
+ border:1px solid var(--border);
+ border-radius:13px;
 }
+
 .add-button{
- border:0;border-radius:13px;padding:0 18px;
- background:var(--gold);font-weight:950
+ border:0;
+ border-radius:13px;
+ padding:0 18px;
+ background:var(--gold);
+ font-weight:950;
 }
-.reminder-list{display:grid;gap:8px;margin-top:14px}
+
+.reminder-list{
+ display:grid;
+ gap:8px;
+ margin-top:14px;
+}
+
 .reminder{
- display:flex;justify-content:space-between;gap:10px;
- padding:12px;border:1px solid var(--border);
- border-radius:13px;background:#ffffff08
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ padding:12px;
+ border:1px solid var(--border);
+ border-radius:13px;
+ background:#ffffff08;
 }
-.delete-button{border:0;background:none;color:#ff7088}
+
+.delete-button{
+ border:0;
+ background:none;
+ color:#ff7088;
+}
 
 /* FOOTER */
-footer{text-align:center;padding:38px 8px 20px;color:var(--muted)}
-.footer-logo{font-size:24px;font-weight:950;color:var(--gold)}
-.credit{margin-top:9px}.credit strong{color:var(--gold)}
+
+footer{
+ text-align:center;
+ padding:38px 8px 20px;
+ color:var(--muted);
+}
+
+.footer-logo{
+ font-size:24px;
+ font-weight:950;
+ color:var(--gold);
+}
+
+.credit{
+ margin-top:9px;
+}
+
+.credit strong{
+ color:var(--gold);
+}
+
+/* RESPONSIVE */
 
 @media(max-width:950px){
- .service-grid{grid-template-columns:repeat(3,1fr)}
+
+ .service-grid{
+  grid-template-columns:repeat(3,1fr);
+ }
 }
+
 @media(max-width:680px){
- .app{padding:9px}
- header{align-items:flex-start}
- .logo{width:49px;height:49px;font-size:25px}
- .brand h1{font-size:23px}
- .header-actions{max-width:180px}
- .header-btn{font-size:11px;padding:7px 9px}
- .hero{padding:31px 12px 24px}
- .ai-orb{width:160px;height:160px}
- .orb{inset:36px;font-size:51px}
- .service-grid{grid-template-columns:repeat(2,1fr);gap:8px}
- .service-card{min-height:135px;padding:13px}
- .service-icon{width:43px;height:43px}
- .panel-grid{grid-template-columns:1fr}
- .reminder-form{grid-template-columns:1fr}
- .add-button{min-height:45px}
+
+ .app{
+  padding:9px;
+ }
+
+ header{
+  align-items:flex-start;
+ }
+
+ .logo{
+  width:49px;
+  height:49px;
+  font-size:25px;
+ }
+
+ .brand h1{
+  font-size:23px;
+ }
+
+ .header-actions{
+  max-width:180px;
+ }
+
+ .header-btn{
+  font-size:11px;
+  padding:7px 9px;
+ }
+
+ .hero{
+  padding:31px 12px 24px;
+ }
+
+ .hero-title{
+  letter-spacing:5px;
+ }
+
+ .ai-orb{
+  width:160px;
+  height:160px;
+ }
+
+ .orb{
+  inset:36px;
+  font-size:51px;
+ }
+
+ .service-grid{
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+ }
+
+ .service-card{
+  min-height:135px;
+  padding:13px;
+ }
+
+ .service-icon{
+  width:43px;
+  height:43px;
+ }
+
+ .panel-grid{
+  grid-template-columns:1fr;
+ }
+
+ .reminder-form{
+  grid-template-columns:1fr;
+ }
+
+ .add-button{
+  min-height:45px;
+ }
+
+ .chat-row{
+  align-items:stretch;
+ }
+
+ .send-button{
+  padding:0 14px;
+ }
 }
 </style>
+
 </head>
 
 <body>
+
 <div class="app">
 
+<!-- HEADER -->
+
 <header>
+
  <div class="logo-area">
+
   <div class="logo">🤖</div>
+
   <div class="brand">
    <h1>SAKHA</h1>
    <p>AI Life Assistant</p>
   </div>
+
  </div>
 
  <div class="header-actions">
-  <button class="header-btn" onclick="setLanguage('or')">ଓଡ଼ିଆ</button>
-  <button class="header-btn" onclick="setLanguage('hi')">हिन्दी</button>
-  <button class="header-btn" onclick="setLanguage('en')">English</button>
+
+<button class="header-btn"
+onclick="setLanguage('or')">
+ଓଡ଼ିଆ </button>
+
+<button class="header-btn"
+onclick="setLanguage('hi')">
+हिन्दी </button>
+
+<button class="header-btn"
+onclick="setLanguage('en')">
+English </button>
+
  </div>
+
 </header>
 
+<!-- HERO -->
+
 <section class="hero">
+
  <div class="hero-content">
 
-  <div class="hero-title">SAKHA</div>
+  <div class="hero-title">
+   SAKHA
+  </div>
 
   <div class="tagline">
    SAKHA ଅଛି — ଡରିବାର କିଛି ନାହିଁ।
@@ -283,928 +697,2344 @@ footer{text-align:center;padding:38px 8px 20px;color:var(--muted)}
   </div>
 
   <div class="ai-orb">
+
    <div class="ring"></div>
    <div class="ring two"></div>
    <div class="ring three"></div>
-   <div class="orb">🤖</div>
+
+   <div class="orb">
+    🤖
+   </div>
+
   </div>
 
-  <button id="voiceButton" class="voice-button" onclick="startVoice()">🎙️</button>
+<button
+id="voiceButton"
+class="voice-button"
+onclick="startVoice()">
 
-  <div id="voiceStatus" class="voice-status">
-   କହନ୍ତୁ… SAKHA ଶୁଣୁଛି
+🎙️
+
+  </button>
+
+  <div
+   id="voiceStatus"
+   class="voice-status">
+
+କହନ୍ତୁ… SAKHA ଶୁଣୁଛି
+
   </div>
 
   <div class="voice-hint">
    🎙️ Voiceରେ ପଚାରନ୍ତୁ • SAKHA ଉତ୍ତର ଦେବ
   </div>
+
  </div>
+
 </section>
 
+<!-- CHAT -->
+
 <section class="chat">
- <div class="chat-title">💬 Talk with SAKHA</div>
+
+ <div class="chat-title">
+  💬 Talk with SAKHA
+ </div>
 
  <div id="messages" class="messages">
+
   <div class="message ai">
    🤖 ନମସ୍କାର! ମୁଁ SAKHA। କହନ୍ତୁ, କଣ help ଦରକାର?
   </div>
+
  </div>
 
  <div class="chat-row">
-  <input id="chatInput"
-   placeholder="ତୁମ problem ଲେଖ…"
-   onkeydown="if(event.key==='Enter')sendMessage()">
-  <button class="send-button" onclick="sendMessage()">Send</button>
+
+<input
+id="chatInput"
+placeholder="ତୁମ problem ଲେଖ…"
+autocomplete="off">
+
+<button
+class="send-button"
+onclick="sendMessage()">
+
+Send
+
+  </button>
+
  </div>
+
 </section>
+
+<!-- SERVICES -->
 
 <section class="section">
-<div class="section-heading">
- <h2>✨ SAKHA Services</h2>
- <span>All-in-one daily assistant</span>
-</div>
 
-<div class="service-grid">
+ <div class="section-heading">
 
-<button class="service-card purple" onclick="openPanel('student')">
- <div class="service-icon">📚</div><strong>Student AI</strong>
- <small>Study, questions, explanation ଓ revision help।</small>
-</button>
+  <h2>✨ SAKHA Services</h2>
 
-<button class="service-card green" onclick="openPanel('farmer')">
- <div class="service-icon">🌾</div><strong>Farmer AI</strong>
- <small>ଫସଲ, farming ଓ field guidance।</small>
-</button>
+  <span>
+   All-in-one daily assistant
+  </span>
 
-<button class="service-card orange" onclick="openPanel('animalCare')">
- <div class="service-icon">🐄</div><strong>Animal Care</strong>
- <small>ପଶୁ care ଓ general information।</small>
-</button>
+ </div>
 
-<button class="service-card red" onclick="openPanel('animalRescue')">
- <div class="service-icon">🐾</div><strong>Animal Rescue</strong>
- <small>ବିପଦରେ ଥିବା ପଶୁ ପାଇଁ help।</small>
-</button>
+ <div class="service-grid">
 
-<button class="service-card blue" onclick="openPanel('baby')">
- <div class="service-icon">👶</div><strong>Baby Care</strong>
- <small>Baby care, hygiene ଓ safety guidance।</small>
-</button>
+<button class="service-card purple"
+onclick="openPanel('student')">
 
-<button class="service-card pink" onclick="openPanel('kitchen')">
- <div class="service-icon">🍳</div><strong>Kitchen & Recipes</strong>
- <small>Ingredients ଅନୁସାରେ recipe ideas।</small>
-</button>
+   <div class="service-icon">📚</div>
 
-<button class="service-card gold" onclick="openPanel('buySell')">
- <div class="service-icon">🛍️</div><strong>Buy & Sell</strong>
- <small>Old/used ଜିନିଷ buy କିମ୍ବା sell।</small>
-</button>
+<strong>Student AI</strong>
 
-<button class="service-card purple" onclick="openPanel('lostFound')">
- <div class="service-icon">🔎</div><strong>Lost & Found</strong>
- <small>ହଜିଥିବା/ମିଳିଥିବା ଜିନିଷ ପାଇଁ help।</small>
-</button>
+   <small>
+    Study, questions, explanation ଓ revision help।
+   </small>
 
-<button class="service-card blue" onclick="openPanel('jobs')">
- <div class="service-icon">💼</div><strong>Jobs & Career</strong>
- <small>Job information ଓ career guidance।</small>
-</button>
+  </button>
 
-<button class="service-card blue" onclick="openPanel('maps')">
- <div class="service-icon">🗺️</div><strong>Maps & Places</strong>
- <small>Nearby useful places ଖୋଜନ୍ତୁ।</small>
-</button>
+<button class="service-card green"
+onclick="openPanel('farmer')">
 
-<button class="service-card blue" onclick="openPanel('weather')">
- <div class="service-icon">🌦️</div><strong>Weather</strong>
- <small>Current weather ଓ forecast foundation।</small>
-</button>
+   <div class="service-icon">🌾</div>
 
-<button class="service-card green" onclick="openPanel('market')">
- <div class="service-icon">🛒</div><strong>Smart Market</strong>
- <small>ଜିନିଷ କେଉଁଠି ମିଳିବ ଖୋଜିବାର help।</small>
-</button>
+<strong>Farmer AI</strong>
 
-<button class="service-card orange" onclick="openPanel('vehicle')">
- <div class="service-icon">🏍️</div><strong>Vehicle Help</strong>
- <small>Bike, car ଓ scooter basic help।</small>
-</button>
+   <small>
+    ଫସଲ, farming ଓ field guidance।
+   </small>
 
-<button class="service-card blue" onclick="openPanel('mobile')">
- <div class="service-icon">📱</div><strong>Mobile Help</strong>
- <small>Phone, battery, network ଓ Wi-Fi help।</small>
-</button>
+  </button>
 
-<button class="service-card purple" onclick="openPanel('smartHome')">
- <div class="service-icon">🏠</div><strong>Smart Home</strong>
- <small>Supported smart-device integration।</small>
-</button>
+<button class="service-card orange"
+onclick="openPanel('animalCare')">
 
-<button class="service-card gold" onclick="openPanel('reminder')">
- <div class="service-icon">⏰</div><strong>Smart Reminder</strong>
- <small>Important କାମ ମନେ ପକାଇବା।</small>
-</button>
+   <div class="service-icon">🐄</div>
 
-<button class="service-card red" onclick="openPanel('emergency')">
- <div class="service-icon">🆘</div><strong>Emergency Help</strong>
- <small>Emergency situationରେ quick guidance।</small>
-</button>
+<strong>Animal Care</strong>
 
-<button class="service-card pink" onclick="openPanel('camera')">
- <div class="service-icon">📷</div><strong>Camera AI</strong>
- <small>Photo-based AI information foundation।</small>
-</button>
+   <small>
+    ପଶୁ care ଓ general information।
+   </small>
 
-<button class="service-card gold" onclick="openPanel('movies')">
- <div class="service-icon">🎬</div><strong>Movie & Ticket</strong>
- <small>Movie show ଓ official ticket information।</small>
-</button>
+  </button>
 
-<button class="service-card purple" onclick="openPanel('daily')">
- <div class="service-icon">🧠</div><strong>Daily Life AI</strong>
- <small>Planning, tasks ଓ general help।</small>
-</button>
+<button class="service-card red"
+onclick="openPanel('animalRescue')">
 
-</div>
+   <div class="service-icon">🐾</div>
+
+<strong>Animal Rescue</strong>
+
+   <small>
+    ବିପଦରେ ଥିବା ପଶୁ ପାଇଁ help।
+   </small>
+
+  </button>
+
+<button class="service-card blue"
+onclick="openPanel('baby')">
+
+   <div class="service-icon">👶</div>
+
+<strong>Baby Care</strong>
+
+   <small>
+    Baby care, hygiene ଓ safety guidance।
+   </small>
+
+  </button>
+
+<button class="service-card pink"
+onclick="openPanel('kitchen')">
+
+   <div class="service-icon">🍳</div>
+
+<strong>Kitchen & Recipes</strong>
+
+   <small>
+    Ingredients ଅନୁସାରେ recipe ideas।
+   </small>
+
+  </button>
+
+<button class="service-card gold"
+onclick="openPanel('buySell')">
+
+   <div class="service-icon">🛍️</div>
+
+<strong>Buy & Sell</strong>
+
+   <small>
+    Old/used ଜିନିଷ buy କିମ୍ବା sell।
+   </small>
+
+  </button>
+
+<button class="service-card purple"
+onclick="openPanel('lostFound')">
+
+   <div class="service-icon">🔎</div>
+
+<strong>Lost & Found</strong>
+
+   <small>
+    ହଜିଥିବା/ମିଳିଥିବା ଜିନିଷ ପାଇଁ help।
+   </small>
+
+  </button>
+
+<button class="service-card blue"
+onclick="openPanel('jobs')">
+
+   <div class="service-icon">💼</div>
+
+<strong>Jobs & Career</strong>
+
+   <small>
+    Job information ଓ career guidance।
+   </small>
+
+  </button>
+
+<button class="service-card blue"
+onclick="openPanel('maps')">
+
+   <div class="service-icon">🗺️</div>
+
+<strong>Maps & Places</strong>
+
+   <small>
+    Nearby useful places ଖୋଜନ୍ତୁ।
+   </small>
+
+  </button>
+
+<button class="service-card blue"
+onclick="openPanel('weather')">
+
+   <div class="service-icon">🌦️</div>
+
+<strong>Weather</strong>
+
+   <small>
+    Current weather ଓ forecast foundation।
+   </small>
+
+  </button>
+
+<button class="service-card green"
+onclick="openPanel('market')">
+
+   <div class="service-icon">🛒</div>
+
+<strong>Smart Market</strong>
+
+   <small>
+    ଜିନିଷ କେଉଁଠି ମିଳିବ ଖୋଜିବାର help।
+   </small>
+
+  </button>
+
+<button class="service-card orange"
+onclick="openPanel('vehicle')">
+
+   <div class="service-icon">🏍️</div>
+
+<strong>Vehicle Help</strong>
+
+   <small>
+    Bike, car ଓ scooter basic help।
+   </small>
+
+  </button>
+
+<button class="service-card blue"
+onclick="openPanel('mobile')">
+
+   <div class="service-icon">📱</div>
+
+<strong>Mobile Help</strong>
+
+   <small>
+    Phone, battery, network ଓ Wi-Fi help।
+   </small>
+
+  </button>
+
+<button class="service-card purple"
+onclick="openPanel('smartHome')">
+
+   <div class="service-icon">🏠</div>
+
+<strong>Smart Home</strong>
+
+   <small>
+    Supported smart-device integration।
+   </small>
+
+  </button>
+
+<button class="service-card gold"
+onclick="openPanel('reminder')">
+
+   <div class="service-icon">⏰</div>
+
+<strong>Smart Reminder</strong>
+
+   <small>
+    Important କାମ ମନେ ପକାଇବା।
+   </small>
+
+  </button>
+
+<button class="service-card red"
+onclick="openPanel('emergency')">
+
+   <div class="service-icon">🆘</div>
+
+<strong>Emergency Help</strong>
+
+   <small>
+    Emergency situationରେ quick guidance।
+   </small>
+
+  </button>
+
+<button class="service-card pink"
+onclick="openPanel('camera')">
+
+   <div class="service-icon">📷</div>
+
+<strong>Camera AI</strong>
+
+   <small>
+    Photo-based AI information foundation।
+   </small>
+
+  </button>
+
+<button class="service-card gold"
+onclick="openPanel('movies')">
+
+   <div class="service-icon">🎬</div>
+
+<strong>Movie & Ticket</strong>
+
+   <small>
+    Movie show ଓ official ticket information।
+   </small>
+
+  </button>
+
+<button class="service-card purple"
+onclick="openPanel('daily')">
+
+   <div class="service-icon">🧠</div>
+
+<strong>Daily Life AI</strong>
+
+   <small>
+    Planning, tasks ଓ general help।
+   </small>
+
+  </button>
+
+ </div>
+
 </section>
 
-<!-- PANELS -->
+<!-- STUDENT -->
 
 <div id="student" class="panel">
-<h3>📚 Student AI</h3>
-<p class="panel-description">ପଢ଼ାରେ problem ହେଲେ SAKHAକୁ ପଚାରନ୍ତୁ।</p>
-<div class="panel-grid">
-<div class="info-box"><strong>📖 Explain</strong><p>Topicକୁ ସରଳ ଭାଷାରେ ବୁଝିବାର help।</p></div>
-<div class="info-box"><strong>❓ Quiz</strong><p>Practice questions ଓ revision help।</p></div>
-<div class="info-box"><strong>📝 Notes</strong><p>Important pointsକୁ short notes କରିବାର help।</p></div>
+
+ <h3>📚 Student AI</h3>
+
+ <p class="panel-description">
+  ପଢ଼ାରେ problem ହେଲେ SAKHAକୁ ପଚାରନ୍ତୁ।
+ </p>
+
+ <div class="panel-grid">
+
+  <div class="info-box">
+   <strong>📖 Explain</strong>
+   <p>
+    Topicକୁ ସରଳ ଭାଷାରେ ବୁଝିବାର help।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>❓ Quiz</strong>
+   <p>
+    Practice questions ଓ revision help।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>📝 Notes</strong>
+   <p>
+    Important pointsକୁ short notes କରିବାର help।
+   </p>
+  </div>
+
+ </div>
+
 </div>
-</div>
+
+<!-- FARMER -->
 
 <div id="farmer" class="panel">
-<h3>🌾 Farmer AI</h3>
-<p class="panel-description">Farming, crop ଓ field-related general guidance।</p>
-<div class="panel-grid">
-<div class="info-box"><strong>🌱 Crop</strong><p>Crop selection ଓ farming information।</p></div>
-<div class="info-box"><strong>🐛 Crop Problem</strong><p>Photo/symptom ଆଧାରରେ general information।</p></div>
-<div class="info-box"><strong>🌦️ Weather</strong><p>Weather-based farming planning।</p></div>
+
+ <h3>🌾 Farmer AI</h3>
+
+ <p class="panel-description">
+  Farming, crop ଓ field-related general guidance।
+ </p>
+
+ <div class="panel-grid">
+
+  <div class="info-box">
+   <strong>🌱 Crop</strong>
+   <p>
+    Crop selection ଓ farming information।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>🐛 Crop Problem</strong>
+   <p>
+    Photo/symptom ଆଧାରରେ general information।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>🌦️ Weather</strong>
+   <p>
+    Weather-based farming planning।
+   </p>
+  </div>
+
+ </div>
+
 </div>
-</div>
+
+<!-- ANIMAL CARE -->
 
 <div id="animalCare" class="panel">
-<h3>🐄 Animal Care</h3>
-<p class="panel-description">ପଶୁଙ୍କ basic care ଓ general information। Serious problem ହେଲେ veterinarianଙ୍କ advice ନିଅନ୍ତୁ।</p>
-<div class="panel-grid">
-<div class="info-box"><strong>🐄 Cow Care</strong><p>Basic feeding, hygiene ଓ care information।</p></div>
-<div class="info-box"><strong>🐐 Goat Care</strong><p>General goat-care guidance।</p></div>
-<div class="info-box"><strong>🐕 Pet Care</strong><p>General pet-care information।</p></div>
+
+ <h3>🐄 Animal Care</h3>
+
+ <p class="panel-description">
+  ପଶୁଙ୍କ basic care ଓ general information।
+  Serious problem ହେଲେ veterinarianଙ୍କ advice ନିଅନ୍ତୁ।
+ </p>
+
+ <div class="panel-grid">
+
+  <div class="info-box">
+   <strong>🐄 Cow Care</strong>
+   <p>
+    Basic feeding, hygiene ଓ care information।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>🐐 Goat Care</strong>
+   <p>
+    General goat-care guidance।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>🐕 Pet Care</strong>
+   <p>
+    General pet-care information।
+   </p>
+  </div>
+
+ </div>
+
 </div>
-</div>
+
+<!-- ANIMAL RESCUE -->
 
 <div id="animalRescue" class="panel">
-<h3>🐾 Animal Rescue</h3>
-<p class="panel-description">ଆହତ କିମ୍ବା ବିପଦରେ ଥିବା ପଶୁ ପାଇଁ nearby veterinarian/rescue help ଖୋଜିବାର guidance।</p>
-<div class="panel-grid">
-<div class="info-box"><strong>🆘 Emergency</strong><p>Risky ଭାବରେ ନିଜେ handle ନକରି professional help ନିଅନ୍ତୁ।</p></div>
-<div class="info-box"><strong>📍 Location</strong><p>Nearby veterinary service future integration।</p></div>
-<div class="info-box"><strong>📷 Photo</strong><p>Photo/location share feature future integration।</p></div>
+
+ <h3>🐾 Animal Rescue</h3>
+
+ <p class="panel-description">
+  ଆହତ କିମ୍ବା ବିପଦରେ ଥିବା ପଶୁ ପାଇଁ
+  nearby veterinarian/rescue help ଖୋଜିବାର guidance।
+ </p>
+
+ <div class="panel-grid">
+
+  <div class="info-box">
+   <strong>🆘 Emergency</strong>
+   <p>
+    Risky ଭାବରେ ନିଜେ handle ନକରି professional help ନିଅନ୍ତୁ।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>📍 Location</strong>
+   <p>
+    Nearby veterinary service future integration।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>📷 Photo</strong>
+   <p>
+    Photo/location share feature future integration।
+   </p>
+  </div>
+
+ </div>
+
 </div>
-</div>
+
+<!-- BABY -->
 
 <div id="baby" class="panel">
-<h3>👶 Baby Care</h3>
-<p class="panel-description">Baby care, hygiene ଓ safety ବିଷୟରେ general information। Medical concern ହେଲେ parent/guardianଙ୍କ ସହ doctorଙ୍କ advice ନିଅନ୍ତୁ।</p>
-<div class="panel-grid">
-<div class="info-box"><strong>🍼 Feeding</strong><p>Age-appropriate general information।</p></div>
-<div class="info-box"><strong>🛁 Hygiene</strong><p>Basic hygiene guidance।</p></div>
-<div class="info-box"><strong>🛡️ Safety</strong><p>Safe environment tips।</p></div>
+
+ <h3>👶 Baby Care</h3>
+
+ <p class="panel-description">
+  Baby care, hygiene ଓ safety ବିଷୟରେ general information।
+  Medical concern ହେଲେ parent/guardianଙ୍କ ସହ doctorଙ୍କ advice ନିଅନ୍ତୁ।
+ </p>
+
+ <div class="panel-grid">
+
+  <div class="info-box">
+   <strong>🍼 Feeding</strong>
+   <p>
+    Age-appropriate general information।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>🛁 Hygiene</strong>
+   <p>
+    Basic hygiene guidance।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>🛡️ Safety</strong>
+   <p>
+    Safe environment tips।
+   </p>
+  </div>
+
+ </div>
+
 </div>
-</div>
+
+<!-- KITCHEN -->
 
 <div id="kitchen" class="panel">
-<h3>🍳 Kitchen & Recipes</h3>
-<p class="panel-description">ଘରେ ଥିବା ingredients କହନ୍ତୁ, SAKHA recipe ideas ଦେବ।</p>
-<div class="panel-grid">
-<div class="info-box"><strong>🥘 Recipe</strong><p>Available ingredients ଅନୁସାରେ ideas।</p></div>
-<div class="info-box"><strong>⏱️ Quick Food</strong><p>କମ୍ ସମୟରେ cooking ideas।</p></div>
-<div class="info-box"><strong>🌶️ Odia Food</strong><p>Odia ଓ Indian recipe guidance।</p></div>
+
+ <h3>🍳 Kitchen & Recipes</h3>
+
+ <p class="panel-description">
+  ଘରେ ଥିବା ingredients କହନ୍ତୁ, SAKHA recipe ideas ଦେବ।
+ </p>
+
+ <div class="panel-grid">
+
+  <div class="info-box">
+   <strong>🥘 Recipe</strong>
+   <p>
+    Available ingredients ଅନୁସାରେ ideas।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>⏱️ Quick Food</strong>
+   <p>
+    କମ୍ ସମୟରେ cooking ideas।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>🌶️ Odia Food</strong>
+   <p>
+    Odia ଓ Indian recipe guidance।
+   </p>
+  </div>
+
+ </div>
+
 </div>
-</div>
+
+<!-- BUY SELL -->
 
 <div id="buySell" class="panel">
-<h3>🛍️ Buy & Sell</h3>
-<p class="panel-description">Old/used ଜିନିଷ buy କିମ୍ବା sell କରିବାର marketplace foundation।</p>
-<div class="panel-grid">
-<div class="info-box"><strong>📱 Electronics</strong><p>Used mobile ଓ electronics।</p></div>
-<div class="info-box"><strong>🪑 Furniture</strong><p>Used furniture ଓ household items।</p></div>
-<div class="info-box"><strong>🏍️ Vehicle</strong><p>Used cycle/bike listing foundation।</p></div>
+
+ <h3>🛍️ Buy & Sell</h3>
+
+ <p class="panel-description">
+  Old/used ଜିନିଷ buy କିମ୍ବା sell କରିବାର marketplace foundation।
+ </p>
+
+ <div class="panel-grid">
+
+  <div class="info-box">
+   <strong>📱 Electronics</strong>
+   <p>
+    Used mobile ଓ electronics।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>🪑 Furniture</strong>
+   <p>
+    Used furniture ଓ household items।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>🏍️ Vehicle</strong>
+   <p>
+    Used cycle/bike listing foundation।
+   </p>
+  </div>
+
+ </div>
+
 </div>
-</div>
+
+<!-- LOST FOUND -->
 
 <div id="lostFound" class="panel">
-<h3>🔎 Lost & Found</h3>
-<p class="panel-description">ହଜିଥିବା କିମ୍ବା ମିଳିଥିବା ଜିନିଷର information share କରିବାର feature।</p>
-<div class="panel-grid">
-<div class="info-box"><strong>📱 Mobile</strong><p>Lost item details save କରିବାର foundation।</p></div>
-<div class="info-box"><strong>📄 Documents</strong><p>Lost/found document information।</p></div>
-<div class="info-box"><strong>🐕 Pet</strong><p>Lost pet information share option।</p></div>
+
+ <h3>🔎 Lost & Found</h3>
+
+ <p class="panel-description">
+  ହଜିଥିବା କିମ୍ବା ମିଳିଥିବା ଜିନିଷର information share କରିବାର feature।
+ </p>
+
+ <div class="panel-grid">
+
+  <div class="info-box">
+   <strong>📱 Mobile</strong>
+   <p>
+    Lost item details save କରିବାର foundation।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>📄 Documents</strong>
+   <p>
+    Lost/found document information।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>🐕 Pet</strong>
+   <p>
+    Lost pet information share option।
+   </p>
+  </div>
+
+ </div>
+
 </div>
-</div>
+
+<!-- JOBS -->
 
 <div id="jobs" class="panel">
-<h3>💼 Jobs & Career</h3>
-<p class="panel-description">Government/private job information ଓ career guidance।</p>
-<div class="panel-grid">
-<div class="info-box"><strong>🏛️ Govt Jobs</strong><p>Odisha + India job opportunities।</p></div>
-<div class="info-box"><strong>🔔 Alerts</strong><p>New notification/deadline reminders।</p></div>
-<div class="info-box"><strong>📋 Apply</strong><p>Application process guidance।</p></div>
+
+ <h3>💼 Jobs & Career</h3>
+
+ <p class="panel-description">
+  Government/private job information ଓ career guidance।
+ </p>
+
+ <div class="panel-grid">
+
+  <div class="info-box">
+   <strong>🏛️ Govt Jobs</strong>
+   <p>
+    Odisha + India job opportunities।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>🔔 Alerts</strong>
+   <p>
+    New notification/deadline reminders।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>📋 Apply</strong>
+   <p>
+    Application process guidance।
+   </p>
+  </div>
+
+ </div>
+
 </div>
-</div>
+
+<!-- MAPS -->
 
 <div id="maps" class="panel">
-<h3>🗺️ Maps & Places</h3>
-<p class="panel-description">Location permission ଦିଆଗଲେ nearby useful places search କରିବାର system।</p>
-<div class="panel-grid">
-<div class="info-box"><strong>⛽ Petrol Pump</strong><p>Nearby petrol pump search।</p></div>
-<div class="info-box"><strong>🏧 ATM</strong><p>Nearby ATM search।</p></div>
-<div class="info-box"><strong>🏥 Hospital</strong><p>Nearby healthcare search foundation।</p></div>
+
+ <h3>🗺️ Maps & Places</h3>
+
+ <p class="panel-description">
+  Location permission ଦିଆଗଲେ nearby useful places search କରିବାର system।
+ </p>
+
+ <div class="panel-grid">
+
+  <div class="info-box">
+   <strong>⛽ Petrol Pump</strong>
+   <p>
+    Nearby petrol pump search।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>🏧 ATM</strong>
+   <p>
+    Nearby ATM search।
+   </p>
+  </div>
+
+  <div class="info-box">
+   <strong>🏥 Hospital</strong>
+   <p>
+    Nearby healthcare search foundation।
+   </p>
+  </div>
+
+ </div>
+
 </div>
-</div>
+
+<!-- WEATHER -->
 
 <div id="weather" class="panel">
-<h3>🌦️ Weather</h3>
-<p class="panel-description">Live weather API connect କଲେ location-based current weather ଓ forecast ଦେଖାଯିବ।</p>
+
+ <h3>🌦️ Weather</h3>
+
+ <p class="panel-description">
+  Live weather API connect କଲେ location-based current weather
+  ଓ forecast ଦେଖାଯିବ।
+ </p>
+
 </div>
+
+<!-- MARKET -->
 
 <div id="market" class="panel">
-<h3>🛒 Smart Market</h3>
-<p class="panel-description">“ଏହି ଜିନିଷ କେଉଁଠି ମିଳିବ?” କହିଲେ search/nearby market integration ଦିଆଯାଇପାରିବ।</p>
+
+ <h3>🛒 Smart Market</h3>
+
+ <p class="panel-description">
+  “ଏହି ଜିନିଷ କେଉଁଠି ମିଳିବ?” କହିଲେ
+  search/nearby market integration ଦିଆଯାଇପାରିବ।
+ </p>
+
 </div>
+
+<!-- VEHICLE -->
 
 <div id="vehicle" class="panel">
-<h3>🏍️ Vehicle Help</h3>
-<p class="panel-description">Bike/car problem କହିଲେ safe basic troubleshooting guidance। Serious mechanical issue ହେଲେ qualified mechanicଙ୍କ help ନିଅନ୍ତୁ।</p>
+
+ <h3>🏍️ Vehicle Help</h3>
+
+ <p class="panel-description">
+  Bike/car problem କହିଲେ safe basic troubleshooting guidance।
+  Serious mechanical issue ହେଲେ qualified mechanicଙ୍କ help ନିଅନ୍ତୁ।
+ </p>
+
 </div>
+
+<!-- MOBILE -->
 
 <div id="mobile" class="panel">
-<h3>📱 Mobile Help</h3>
-<p class="panel-description">Phone slow, battery, charging, network, Wi-Fi ଓ storage problem ପାଇଁ troubleshooting guidance।</p>
+
+ <h3>📱 Mobile Help</h3>
+
+ <p class="panel-description">
+  Phone slow, battery, charging, network, Wi-Fi ଓ storage
+  problem ପାଇଁ troubleshooting guidance।
+ </p>
+
 </div>
+
+<!-- SMART HOME -->
 
 <div id="smartHome" class="panel">
-<h3>🏠 Smart Home</h3>
-<p class="panel-description">Compatible smart devices ଏବଂ proper permissions/integrations ଥିଲେ supported devices control କରିବାର future system।</p>
+
+ <h3>🏠 Smart Home</h3>
+
+ <p class="panel-description">
+  Compatible smart devices ଏବଂ proper permissions/integrations
+  ଥିଲେ supported devices control କରିବାର future system।
+ </p>
+
 </div>
+
+<!-- CAMERA -->
 
 <div id="camera" class="panel">
-<h3>📷 Camera AI</h3>
-<p class="panel-description">Camera/photo integration ପରେ image-based AI information ଦିଆଯାଇପାରିବ।</p>
+
+ <h3>📷 Camera AI</h3>
+
+ <p class="panel-description">
+  Camera/photo integration ପରେ image-based AI information
+  ଦିଆଯାଇପାରିବ।
+ </p>
+
 </div>
+
+<!-- MOVIES -->
 
 <div id="movies" class="panel">
-<h3>🎬 Movie & Ticket</h3>
-<p class="panel-description">Live movie showtime ଓ official ticket booking services future API integrationରେ connect କରାଯିବ।</p>
+
+ <h3>🎬 Movie & Ticket</h3>
+
+ <p class="panel-description">
+  Live movie showtime ଓ official ticket booking services
+  future API integrationରେ connect କରାଯିବ।
+ </p>
+
 </div>
+
+<!-- DAILY -->
 
 <div id="daily" class="panel">
-<h3>🧠 Daily Life AI</h3>
-<p class="panel-description">Daily planning, shopping, learning, reminders ଓ general problem solving ପାଇଁ all-purpose assistant।</p>
+
+ <h3>🧠 Daily Life AI</h3>
+
+ <p class="panel-description">
+  Daily planning, shopping, learning, reminders ଓ general
+  problem solving ପାଇଁ all-purpose assistant।
+ </p>
+
 </div>
 
+<!-- EMERGENCY -->
+
 <div id="emergency" class="panel">
-<h3>🆘 Emergency Help</h3>
-<p class="panel-description">Emergencyରେ local emergency services, trusted adults/family କିମ୍ବା appropriate professionalsଙ୍କୁ contact କରିବା ଗୁରୁତ୍ୱପୂର୍ଣ୍ଣ। SAKHA guidance ମାତ୍ର ଦେବ; emergency serviceର replacement ନୁହେଁ।</p>
+
+ <h3>🆘 Emergency Help</h3>
+
+ <p class="panel-description">
+  Emergencyରେ local emergency services, trusted adults/family
+  କିମ୍ବା appropriate professionalsଙ୍କୁ contact କରିବା ଗୁରୁତ୍ୱପୂର୍ଣ୍ଣ।
+  SAKHA guidance ମାତ୍ର ଦେବ; emergency serviceର replacement ନୁହେଁ।
+ </p>
+
 </div>
 
 <!-- REMINDER -->
+
 <div id="reminder" class="panel">
-<h3>⏰ Smart Reminder</h3>
-<p class="panel-description">Important କାମ ପାଇଁ reminder set କରନ୍ତୁ।</p>
 
-<div class="reminder-form">
- <input id="reminderText" placeholder="ଯେପରି: କାଲି market ଯିବି">
- <input id="reminderTime" type="datetime-local">
- <button class="add-button" onclick="addReminder()">Add</button>
+ <h3>⏰ Smart Reminder</h3>
+
+ <p class="panel-description">
+  Important କାମ ପାଇଁ reminder set କରନ୍ତୁ।
+ </p>
+
+ <div class="reminder-form">
+
+<input
+id="reminderText"
+placeholder="ଯେପରି: କାଲି market ଯିବି">
+
+<input
+id="reminderTime"
+type="datetime-local">
+
+<button
+class="add-button"
+onclick="addReminder()">
+
+Add
+
+  </button>
+
+ </div>
+
+ <div
+  id="reminderList"
+  class="reminder-list">
+ </div>
+
 </div>
 
-<div id="reminderList" class="reminder-list"></div>
-</div>
+<!-- FOOTER -->
 
 <footer>
- <div class="footer-logo">🤖 SAKHA</div>
- <div style="margin-top:7px">SAKHA ଅଛି — ଡରିବାର କିଛି ନାହିଁ।</div>
- <div>Problem ଯେଉଁଠି, Solution ସେଇଠି।</div>
- <div class="credit">Created by <strong>Babulu Naik ❤️</strong></div>
+
+ <div class="footer-logo">
+  🤖 SAKHA
+ </div>
+
+ <div style="margin-top:7px">
+  SAKHA ଅଛି — ଡରିବାର କିଛି ନାହିଁ।
+ </div>
+
+ <div>
+  Problem ଯେଉଁଠି, Solution ସେଇଠି।
+ </div>
+
+ <div class="credit">
+  Created by <strong>Babulu Naik ❤️</strong>
+ </div>
+
 </footer>
 
 </div>
 
 <script>
-/* =====================================================
-   SAKHA VOICE + CHAT ENGINE
-===================================================== */
 
-let currentLanguage="or";
-let voices=[];
-let recognition=null;
+/* =========================================================
+   SAKHA — FINAL SINGLE JAVASCRIPT ENGINE
+   UI + REAL AI + VOICE + REMINDER
+========================================================= */
 
-const messages=document.getElementById("messages");
-const chatInput=document.getElementById("chatInput");
-const voiceButton=document.getElementById("voiceButton");
-const voiceStatus=document.getElementById("voiceStatus");
 
-/* -------- VOICES -------- */
+/* =========================================================
+   SUPABASE CONFIG
+========================================================= */
 
-function loadVoices(){
- voices=window.speechSynthesis
-   ? window.speechSynthesis.getVoices()
-   : [];
-}
+const SUPABASE_URL =
+"https://hsexaatuacdnumxnkehx.supabase.co";
 
-if("speechSynthesis" in window){
- loadVoices();
- speechSynthesis.onvoiceschanged=loadVoices;
-}
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_mkUyaXPtvVNxFTrGOwErvw_rKhV7t8I";
 
-/*
- Priority:
- 1. Odia voice if device provides it
- 2. Indian Hindi/English voice
- 3. Any matching language voice
- 4. Browser default
-*/
-function getBestVoice(lang){
+const SAKHA_AI_URL =
+SUPABASE_URL +
+"/functions/v1/smart-endpoint";
 
- if(!voices.length) return null;
 
- const wanted=lang==="or"
-   ? ["or-IN","or"]
-   : lang==="hi"
-     ? ["hi-IN","hi"]
-     : ["en-IN","en-GB","en-US","en"];
+/* =========================================================
+   GLOBAL STATE
+========================================================= */
 
- for(const code of wanted){
-   const exact=voices.find(v=>
-     v.lang && v.lang.toLowerCase()===code.toLowerCase()
-   );
-   if(exact)return exact;
- }
+let currentLanguage = "or";
 
- if(lang==="en"){
-   const indian=voices.find(v=>
-     /en-IN/i.test(v.lang)
-   );
-   if(indian)return indian;
- }
+let voices = [];
 
- if(lang==="hi"){
-   const hindi=voices.find(v=>
-     /hi-IN|hi/i.test(v.lang)
-   );
-   if(hindi)return hindi;
- }
+let recognition = null;
 
- const partial=voices.find(v=>
-   wanted.some(x=>
-     v.lang.toLowerCase().startsWith(x.toLowerCase().split("-")[0])
-   )
+let reminders =
+ JSON.parse(
+  localStorage.getItem(
+   "sakha_reminders"
+  ) || "[]"
  );
 
- return partial || voices[0];
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const messages =
+ document.getElementById("messages");
+
+const chatInput =
+ document.getElementById("chatInput");
+
+const voiceButton =
+ document.getElementById("voiceButton");
+
+const voiceStatus =
+ document.getElementById("voiceStatus");
+
+
+/* =========================================================
+   SPEECH SYNTHESIS
+========================================================= */
+
+function loadVoices(){
+
+ if(
+  "speechSynthesis" in window
+ ){
+
+  voices =
+   speechSynthesis.getVoices();
+ }
 }
 
 
-/* -------- NATURAL SPEECH -------- */
+loadVoices();
+
+
+if(
+ "speechSynthesis" in window
+){
+
+ speechSynthesis.onvoiceschanged =
+  loadVoices;
+}
+
+
+function getBestVoice(language){
+
+ if(!voices.length){
+
+  return null;
+ }
+
+
+ let preferred = [];
+
+
+ if(language === "or"){
+
+  preferred = [
+   "or-IN",
+   "or"
+  ];
+ }
+
+
+ else if(language === "hi"){
+
+  preferred = [
+   "hi-IN",
+   "hi"
+  ];
+ }
+
+
+ else{
+
+  preferred = [
+   "en-IN",
+   "en-GB",
+   "en-US",
+   "en"
+  ];
+ }
+
+
+ for(
+  const code of preferred
+ ){
+
+  const exact =
+   voices.find(
+    v =>
+     v.lang &&
+     v.lang.toLowerCase() ===
+     code.toLowerCase()
+   );
+
+
+  if(exact){
+
+   return exact;
+  }
+ }
+
+
+ if(language === "en"){
+
+  const indian =
+   voices.find(
+    v =>
+     /en-IN/i.test(
+      v.lang
+     )
+   );
+
+
+  if(indian){
+
+   return indian;
+  }
+ }
+
+
+ if(language === "hi"){
+
+  const hindi =
+   voices.find(
+    v =>
+     /hi-IN|hi/i.test(
+      v.lang
+     )
+   );
+
+
+  if(hindi){
+
+   return hindi;
+  }
+ }
+
+
+ const partial =
+  voices.find(
+   v =>
+    preferred.some(
+     x =>
+      v.lang
+       .toLowerCase()
+       .startsWith(
+        x
+         .toLowerCase()
+         .split("-")[0]
+       )
+    )
+  );
+
+
+ return partial ||
+        voices[0] ||
+        null;
+}
+
+
+/* =========================================================
+   SPEAK AI ANSWER
+========================================================= */
 
 function speak(text){
 
- if(!("speechSynthesis" in window))return;
+ if(
+  !("speechSynthesis" in window)
+ ){
+
+  return;
+ }
+
 
  speechSynthesis.cancel();
 
- const clean=String(text)
-   .replace(/https?:\/\/\S+/g,"")
+
+ const clean =
+  String(text)
+   .replace(
+    /https?:\/\/\S+/gi,
+    ""
+   )
    .trim();
 
- if(!clean)return;
 
- const u=new SpeechSynthesisUtterance(clean);
+ if(!clean){
 
- const voice=getBestVoice(currentLanguage);
+  return;
+ }
 
- if(voice)u.voice=voice;
 
- u.lang=
-   currentLanguage==="or"
-     ? "or-IN"
-     : currentLanguage==="hi"
-       ? "hi-IN"
-       : "en-IN";
+ const utterance =
+  new SpeechSynthesisUtterance(
+   clean
+  );
 
- /*
-  Natural sounding browser/device speech:
-  slower rate + moderate pitch.
-  Actual human voice quality depends on installed device voice.
- */
- u.rate=.88;
- u.pitch=1.02;
- u.volume=1;
 
- speechSynthesis.speak(u);
+ const voice =
+  getBestVoice(
+   currentLanguage
+  );
+
+
+ if(voice){
+
+  utterance.voice =
+   voice;
+ }
+
+
+ utterance.lang =
+  currentLanguage === "or"
+  ? "or-IN"
+  : currentLanguage === "hi"
+  ? "hi-IN"
+  : "en-IN";
+
+
+ utterance.rate = 0.88;
+
+ utterance.pitch = 1.02;
+
+ utterance.volume = 1;
+
+
+ speechSynthesis.speak(
+  utterance
+ );
 }
 
 
-/* -------- CHAT -------- */
+/* =========================================================
+   CHAT MESSAGE
+========================================================= */
 
-function addMessage(text,type){
+function addMessage(
+ text,
+ type
+){
 
- const div=document.createElement("div");
- div.className="message "+type;
- div.textContent=text;
+ const div =
+  document.createElement(
+   "div"
+  );
 
- messages.appendChild(div);
- messages.scrollTop=messages.scrollHeight;
+
+ div.className =
+  "message " + type;
+
+
+ div.textContent =
+  String(text);
+
+
+ messages.appendChild(
+  div
+ );
+
+
+ messages.scrollTop =
+  messages.scrollHeight;
+
+
+ return div;
 }
+
+
+/* =========================================================
+   AI REQUEST
+========================================================= */
+
+async function askSakhaAI(
+ userText
+){
+
+ const language =
+  currentLanguage === "or"
+  ? "odia"
+  : currentLanguage === "hi"
+  ? "hindi"
+  : "english";
+
+
+ const payload = {
+
+  exam_id:null,
+
+  exam_name:"SAKHA",
+
+  category:"general",
+
+  subject:"daily life assistant",
+
+  topic:userText,
+
+  difficulty:"medium",
+
+  question_type:"general",
+
+  pyq_year:null,
+
+  count:1,
+
+  language:language,
+
+  message:userText,
+
+  prompt:userText,
+
+  user_question:userText
+ };
+
+
+ const response =
+  await fetch(
+   SAKHA_AI_URL,
+   {
+
+    method:"POST",
+
+    headers:{
+     "Content-Type":
+      "application/json",
+
+     "apikey":
+      SUPABASE_PUBLISHABLE_KEY,
+
+     "Authorization":
+      "Bearer " +
+      SUPABASE_PUBLISHABLE_KEY
+    },
+
+    body:
+     JSON.stringify(
+      payload
+     )
+   }
+  );
+
+
+ let data;
+
+
+ try{
+
+  data =
+   await response.json();
+
+ }
+ catch(error){
+
+  throw new Error(
+   "AI server returned invalid response."
+  );
+ }
+
+
+ if(!response.ok){
+
+  console.error(
+   "SAKHA AI ERROR:",
+   data
+  );
+
+
+  throw new Error(
+   data?.message ||
+   data?.error ||
+   data?.details ||
+   "AI service error"
+  );
+ }
+
+
+ let answer =
+
+  data?.answer ||
+
+  data?.message ||
+
+  data?.response ||
+
+  data?.text ||
+
+  data?.output_text ||
+
+  data?.result ||
+
+  data?.data?.answer ||
+
+  data?.data?.message ||
+
+  data?.data?.text;
+
+
+ /* OpenAI Responses style */
+
+ if(
+  !answer &&
+  Array.isArray(
+   data?.output
+  )
+ ){
+
+  try{
+
+   answer =
+    data.output
+     .flatMap(
+      item =>
+       item.content || []
+     )
+     .map(
+      item =>
+       item.text || ""
+     )
+     .join(" ")
+     .trim();
+
+  }
+  catch(error){
+
+   console.log(
+    "Output parse error:",
+    error
+   );
+  }
+ }
+
+
+ /* Gemini style */
+
+ if(
+  !answer &&
+  data?.candidates?.[0]
+   ?.content?.parts
+ ){
+
+  answer =
+   data.candidates[0]
+    .content.parts
+    .map(
+     part =>
+      part.text || ""
+    )
+    .join(" ")
+    .trim();
+ }
+
+
+ /* Nested response */
+
+ if(
+  !answer &&
+  data?.data
+ ){
+
+  if(
+   typeof data.data ===
+   "string"
+  ){
+
+   answer =
+    data.data;
+  }
+ }
+
+
+ if(
+  !answer &&
+  typeof data ===
+  "string"
+ ){
+
+  answer =
+   data;
+ }
+
+
+ if(!answer){
+
+  console.error(
+   "Unknown AI response:",
+   data
+  );
+
+
+  throw new Error(
+   "AI answer পাওয়া যায়নি।"
+  );
+ }
+
+
+ return String(
+  answer
+ ).trim();
+}
+
+
+/* =========================================================
+   AI PROCESS
+========================================================= */
+
+async function processCommand(
+ text
+){
+
+ const userText =
+  String(text).trim();
+
+
+ if(!userText){
+
+  return;
+ }
+
+
+ const thinking =
+  addMessage(
+   currentLanguage === "or"
+   ? "🤖 SAKHA ଭାବୁଛି…"
+   : currentLanguage === "hi"
+   ? "🤖 SAKHA सोच रहा है…"
+   : "🤖 SAKHA is thinking…",
+   "ai thinking"
+  );
+
+
+ try{
+
+  const answer =
+   await askSakhaAI(
+    userText
+   );
+
+
+  thinking.remove();
+
+
+  addMessage(
+   answer,
+   "ai"
+  );
+
+
+  speak(answer);
+
+ }
+ catch(error){
+
+  console.error(
+   "SAKHA AI ERROR:",
+   error
+  );
+
+
+  thinking.remove();
+
+
+  let fallback;
+
+
+  if(currentLanguage === "or"){
+
+   fallback =
+    "ଦୁଃଖିତ 🙏 SAKHA AI server ସହିତ ଏବେ connection ହେଉନାହିଁ। କିଛି ସମୟ ପରେ ପୁଣି try କରନ୍ତୁ।";
+  }
+
+  else if(
+   currentLanguage === "hi"
+  ){
+
+   fallback =
+    "माफ़ कीजिए 🙏 अभी SAKHA AI server से connection नहीं हो पा रहा है। थोड़ी देर बाद फिर कोशिश करें।";
+  }
+
+  else{
+
+   fallback =
+    "Sorry 🙏 SAKHA AI server is not connected right now. Please try again shortly.";
+  }
+
+
+  addMessage(
+   fallback,
+   "ai"
+  );
+
+
+  speak(
+   fallback
+  );
+ }
+}
+
+
+/* =========================================================
+   SEND MESSAGE
+========================================================= */
 
 function sendMessage(){
 
- const text=chatInput.value.trim();
+ const text =
+  chatInput.value.trim();
 
- if(!text)return;
 
- addMessage(text,"user");
- chatInput.value="";
+ if(!text){
 
- processCommand(text);
+  return;
+ }
+
+
+ addMessage(
+  text,
+  "user"
+ );
+
+
+ chatInput.value =
+  "";
+
+
+ processCommand(
+  text
+ );
 }
 
 
-/* -------- COMMAND ROUTER -------- */
+chatInput.addEventListener(
+ "keydown",
+ event => {
 
-function processCommand(text){
+  if(
+   event.key === "Enter"
+  ){
 
- const t=text.toLowerCase();
+   event.preventDefault();
 
- let reply=
- "ହଁ, କହନ୍ତୁ। Problemଟା କହିଲେ SAKHA help କରିବାକୁ try କରିବ।";
+   sendMessage();
+  }
+ }
+);
 
- let panel=null;
 
- if(
-  t.includes("student")||
-  t.includes("study")||
-  t.includes("ପଢ଼ା")||
-  t.includes("ପଢି")
- ){
-  panel="student";
-  reply="📚 Student AI ଖୋଲୁଛି।";
+/* =========================================================
+   OPEN SERVICE PANEL
+========================================================= */
+
+function openPanel(
+ id
+){
+
+ document
+  .querySelectorAll(
+   ".panel"
+  )
+  .forEach(
+   panel =>
+    panel.classList.remove(
+     "show"
+    )
+  );
+
+
+ const panel =
+  document.getElementById(
+   id
+  );
+
+
+ if(!panel){
+
+  return;
  }
 
- else if(
-  t.includes("farmer")||
-  t.includes("farm")||
-  t.includes("ଖେତ")||
-  t.includes("ଫସଲ")
- ){
-  panel="farmer";
-  reply="🌾 Farmer AI ଖୋଲୁଛି।";
- }
 
- else if(
-  t.includes("animal rescue")||
-  t.includes("rescue")
- ){
-  panel="animalRescue";
-  reply="🐾 Animal Rescue ଖୋଲୁଛି।";
- }
-
- else if(
-  t.includes("animal")||
-  t.includes("ପଶୁ")
- ){
-  panel="animalCare";
-  reply="🐄 Animal Care ଖୋଲୁଛି।";
- }
-
- else if(
-  t.includes("baby")||
-  t.includes("ବେବି")||
-  t.includes("ଶିଶୁ")
- ){
-  panel="baby";
-  reply="👶 Baby Care ଖୋଲୁଛି।";
- }
-
- else if(
-  t.includes("recipe")||
-  t.includes("kitchen")||
-  t.includes("ରେସିପି")||
-  t.includes("ରୋଷେଇ")
- ){
-  panel="kitchen";
-  reply="🍳 Kitchen & Recipes ଖୋଲୁଛି।";
- }
-
- else if(
-  t.includes("buy")||
-  t.includes("sell")||
-  t.includes("old item")||
-  t.includes("ପୁରୁଣା ଜିନିଷ")
- ){
-  panel="buySell";
-  reply="🛍️ Buy & Sell ଖୋଲୁଛି।";
- }
-
- else if(
-  t.includes("lost")||
-  t.includes("found")||
-  t.includes("ହଜି")
- ){
-  panel="lostFound";
-  reply="🔎 Lost & Found ଖୋଲୁଛି।";
- }
-
- else if(
-  t.includes("job")||
-  t.includes("career")||
-  t.includes("ଚାକିରି")
- ){
-  panel="jobs";
-  reply="💼 Jobs & Career ଖୋଲୁଛି।";
- }
-
- else if(
-  t.includes("map")||
-  t.includes("atm")||
-  t.includes("petrol")||
-  t.includes("hospital")
- ){
-  panel="maps";
-  reply="🗺️ Maps & Places ଖୋଲୁଛି।";
- }
-
- else if(
-  t.includes("weather")||
-  t.includes("ପାଗ")||
-  t.includes("ବର୍ଷା")
- ){
-  panel="weather";
-  reply="🌦️ Weather section ଖୋଲୁଛି।";
- }
-
- else if(
-  t.includes("bike")||
-  t.includes("car")||
-  t.includes("vehicle")||
-  t.includes("ବାଇକ")||
-  t.includes("କାର")
- ){
-  panel="vehicle";
-  reply="🏍️ Vehicle Help ଖୋଲୁଛି। Problemଟା କହନ୍ତୁ।";
- }
-
- else if(
-  t.includes("mobile")||
-  t.includes("phone")||
-  t.includes("ମୋବାଇଲ")
- ){
-  panel="mobile";
-  reply="📱 Mobile Help ଖୋଲୁଛି।";
- }
-
- else if(
-  t.includes("reminder")||
-  t.includes("ମନେ ପକା")
- ){
-  panel="reminder";
-  reply="⏰ Reminder section ଖୋଲୁଛି।";
- }
-
- else if(
-  t.includes("emergency")||
-  t.includes("ଆପତ୍କାଳୀନ")
- ){
-  panel="emergency";
-  reply="🆘 Emergency Help section ଖୋଲୁଛି।";
- }
-
- else if(
-  t.includes("movie")||
-  t.includes("cinema")||
-  t.includes("ମୋଭି")
- ){
-  panel="movies";
-  reply="🎬 Movie & Ticket section ଖୋଲୁଛି।";
- }
-
- if(panel)openPanel(panel);
-
- setTimeout(()=>{
-  addMessage(reply,"ai");
-  speak(reply);
- },250);
-}
+ panel.classList.add(
+  "show"
+ );
 
 
-/* -------- PANELS -------- */
+ setTimeout(
+  () => {
 
-function openPanel(id){
-
- document.querySelectorAll(".panel")
-   .forEach(p=>p.classList.remove("show"));
-
- const panel=document.getElementById(id);
-
- if(!panel)return;
-
- panel.classList.add("show");
-
- setTimeout(()=>{
    panel.scrollIntoView({
-     behavior:"smooth",
-     block:"start"
+    behavior:"smooth",
+    block:"start"
    });
- },40);
+
+  },
+  40
+ );
 }
 
 
-/* =====================================================
-   VOICE INPUT
-===================================================== */
+/* =========================================================
+   VOICE RECOGNITION
+========================================================= */
 
-const Recognition=
+const Recognition =
  window.SpeechRecognition ||
  window.webkitSpeechRecognition;
 
+
 if(Recognition){
 
- recognition=new Recognition();
+ recognition =
+  new Recognition();
 
- recognition.continuous=false;
- recognition.interimResults=false;
 
- recognition.onstart=()=>{
+ recognition.continuous =
+  false;
 
-   voiceButton.classList.add("listening");
 
-   voiceStatus.textContent=
-    currentLanguage==="or"
-      ? "🎙️ ଶୁଣୁଛି… କହନ୍ତୁ"
-      : currentLanguage==="hi"
-        ? "🎙️ सुन रहा हूँ… बोलिए"
-        : "🎙️ Listening… speak now";
- };
+ recognition.interimResults =
+  false;
 
- recognition.onresult=(event)=>{
 
-   const text=
-    event.results[0][0].transcript;
+ recognition.maxAlternatives =
+  1;
 
-   addMessage(text,"user");
 
-   processCommand(text);
- };
+ recognition.onstart =
+  function(){
 
- recognition.onerror=(event)=>{
+   voiceButton.classList.add(
+    "listening"
+   );
 
-   console.log("Voice error:",event.error);
 
-   voiceStatus.textContent=
-    currentLanguage==="or"
-      ? "ପୁଣି try କରନ୍ତୁ…"
-      : currentLanguage==="hi"
-        ? "फिर से कोशिश करें…"
-        : "Please try again…";
- };
+   voiceStatus.textContent =
 
- recognition.onend=()=>{
+    currentLanguage === "or"
 
-   voiceButton.classList.remove("listening");
+    ? "🎙️ ଶୁଣୁଛି… କହନ୍ତୁ"
 
-   voiceStatus.textContent=
-    currentLanguage==="or"
-      ? "କହନ୍ତୁ… SAKHA ଶୁଣୁଛି"
-      : currentLanguage==="hi"
-        ? "बोलिए… SAKHA सुन रहा है"
-        : "Speak… SAKHA is listening";
- };
+    : currentLanguage === "hi"
+
+    ? "🎙️ सुन रहा हूँ… बोलिए"
+
+    : "🎙️ Listening… speak now";
+  };
+
+
+ recognition.onresult =
+  function(event){
+
+   const text =
+    event.results[0][0]
+     .transcript;
+
+
+   if(!text){
+
+    return;
+   }
+
+
+   addMessage(
+    text,
+    "user"
+   );
+
+
+   processCommand(
+    text
+   );
+  };
+
+
+ recognition.onerror =
+  function(event){
+
+   console.log(
+    "Voice error:",
+    event.error
+   );
+
+
+   voiceButton.classList.remove(
+    "listening"
+   );
+
+
+   let msg;
+
+
+   if(
+    event.error ===
+    "not-allowed"
+   ){
+
+    msg =
+     currentLanguage === "or"
+     ? "🎙️ Microphone permission ଦିଅନ୍ତୁ।"
+     : currentLanguage === "hi"
+     ? "🎙️ Microphone permission दें।"
+     : "🎙️ Please allow microphone permission.";
+   }
+
+   else{
+
+    msg =
+     currentLanguage === "or"
+     ? "ପୁଣି try କରନ୍ତୁ…"
+     : currentLanguage === "hi"
+     ? "फिर से कोशिश करें…"
+     : "Please try again…";
+   }
+
+
+   voiceStatus.textContent =
+    msg;
+  };
+
+
+ recognition.onend =
+  function(){
+
+   voiceButton.classList.remove(
+    "listening"
+   );
+
+
+   voiceStatus.textContent =
+
+    currentLanguage === "or"
+
+    ? "କହନ୍ତୁ… SAKHA ଶୁଣୁଛି"
+
+    : currentLanguage === "hi"
+
+    ? "बोलिए… SAKHA सुन रहा है"
+
+    : "Speak… SAKHA is listening";
+  };
+
 }
 
+
+/* =========================================================
+   START VOICE
+========================================================= */
 
 function startVoice(){
 
  if(!recognition){
 
-   addMessage(
-    "🎙️ ଏହି browser voice recognition support କରୁନାହିଁ। Chromeରେ try କରନ୍ତୁ।",
-    "ai"
-   );
+  const msg =
+   currentLanguage === "or"
+   ? "🎙️ ଏହି browser voice recognition support କରୁନାହିଁ। Chrome Android/compatible browserରେ try କରନ୍ତୁ।"
+   : currentLanguage === "hi"
+   ? "🎙️ यह browser voice recognition support नहीं करता। Chrome Android/compatible browser में try करें।"
+   : "🎙️ This browser does not support voice recognition. Try Chrome or another compatible browser.";
 
-   return;
+
+  addMessage(
+   msg,
+   "ai"
+  );
+
+
+  speak(msg);
+
+
+  return;
  }
 
- recognition.lang=
-  currentLanguage==="or"
-    ? "or-IN"
-    : currentLanguage==="hi"
-      ? "hi-IN"
-      : "en-IN";
+
+ recognition.lang =
+
+  currentLanguage === "or"
+
+  ? "or-IN"
+
+  : currentLanguage === "hi"
+
+  ? "hi-IN"
+
+  : "en-IN";
+
 
  try{
-   recognition.start();
- }catch(e){
-   console.log(e);
+
+  recognition.start();
+
+ }
+ catch(error){
+
+  console.log(
+   "Recognition start:",
+   error
+  );
  }
 }
 
 
-/* =====================================================
+/* =========================================================
    LANGUAGE
-===================================================== */
+========================================================= */
 
-function setLanguage(language){
+function setLanguage(
+ language
+){
 
- currentLanguage=language;
+ currentLanguage =
+  language;
 
- if(language==="or"){
-   voiceStatus.textContent="କହନ୍ତୁ… SAKHA ଶୁଣୁଛି";
-   chatInput.placeholder="ତୁମ problem ଲେଖ…";
- }
-
- if(language==="hi"){
-   voiceStatus.textContent="बोलिए… SAKHA सुन रहा है";
-   chatInput.placeholder="अपनी समस्या लिखें…";
- }
-
- if(language==="en"){
-   voiceStatus.textContent="Speak… SAKHA is listening";
-   chatInput.placeholder="Type your problem…";
- }
 
  loadVoices();
+
+
+ if(
+  language === "or"
+ ){
+
+  voiceStatus.textContent =
+   "କହନ୍ତୁ… SAKHA ଶୁଣୁଛି";
+
+
+  chatInput.placeholder =
+   "ତୁମ problem ଲେଖ…";
+ }
+
+
+ else if(
+  language === "hi"
+ ){
+
+  voiceStatus.textContent =
+   "बोलिए… SAKHA सुन रहा है";
+
+
+  chatInput.placeholder =
+   "अपनी समस्या लिखें…";
+ }
+
+
+ else{
+
+  voiceStatus.textContent =
+   "Speak… SAKHA is listening";
+
+
+  chatInput.placeholder =
+   "Type your problem…";
+ }
 }
 
 
-/* =====================================================
-   REMINDER
-===================================================== */
-
-let reminders=
- JSON.parse(
-  localStorage.getItem("sakha_reminders")||"[]"
- );
+/* =========================================================
+   REMINDER STORAGE
+========================================================= */
 
 function saveReminders(){
+
  localStorage.setItem(
   "sakha_reminders",
-  JSON.stringify(reminders)
+  JSON.stringify(
+   reminders
+  )
  );
 }
 
-function escapeHTML(text){
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(
+ text
+){
+
  return String(text)
-  .replaceAll("&","&amp;")
-  .replaceAll("<","&lt;")
-  .replaceAll(">","&gt;")
-  .replaceAll('"',"&quot;")
-  .replaceAll("'","&#039;");
+  .replaceAll(
+   "&",
+   "&amp;"
+  )
+  .replaceAll(
+   "<",
+   "&lt;"
+  )
+  .replaceAll(
+   ">",
+   "&gt;"
+  )
+  .replaceAll(
+   '"',
+   "&quot;"
+  )
+  .replaceAll(
+   "'",
+   "&#039;"
+  );
 }
+
+
+/* =========================================================
+   RENDER REMINDERS
+========================================================= */
 
 function renderReminders(){
 
- const list=document.getElementById("reminderList");
+ const list =
+  document.getElementById(
+   "reminderList"
+  );
 
- list.innerHTML="";
 
- if(!reminders.length){
-   list.innerHTML=
-    "<div style='color:#aeb1d0'>No reminders yet.</div>";
-   return;
+ if(!list){
+
+  return;
  }
 
- reminders.forEach((r,index)=>{
 
-   const div=document.createElement("div");
-   div.className="reminder";
+ list.innerHTML =
+  "";
 
-   div.innerHTML=`
+
+ if(!reminders.length){
+
+  list.innerHTML =
+   "<div style='color:#aeb1d0'>No reminders yet.</div>";
+
+  return;
+ }
+
+
+ reminders.forEach(
+  (
+   reminder,
+   index
+  ) => {
+
+   const div =
+    document.createElement(
+     "div"
+    );
+
+
+   div.className =
+    "reminder";
+
+
+   const date =
+    new Date(
+     reminder.time
+    );
+
+
+   div.innerHTML = `
+
     <div>
-      <strong>${escapeHTML(r.text)}</strong>
-      <div style="color:#aeb1d0;font-size:12px;margin-top:4px">
-        ${new Date(r.time).toLocaleString()}
-      </div>
+
+     <strong>
+      ${escapeHTML(
+       reminder.text
+      )}
+     </strong>
+
+     <div style="
+      color:#aeb1d0;
+      font-size:12px;
+      margin-top:4px">
+
+      ${isNaN(
+       date.getTime()
+      )
+      ? "Invalid time"
+      : date.toLocaleString()}
+
+     </div>
+
     </div>
 
-    <button class="delete-button"
-      onclick="deleteReminder(${index})">
-      Delete
+
+    <button
+     class="delete-button"
+     onclick="deleteReminder(${index})">
+
+     Delete
+
     </button>
    `;
 
-   list.appendChild(div);
- });
+
+   list.appendChild(
+    div
+   );
+  }
+ );
 }
+
+
+/* =========================================================
+   ADD REMINDER
+========================================================= */
 
 function addReminder(){
 
- const text=
-  document.getElementById("reminderText").value.trim();
+ const text =
+  document
+   .getElementById(
+    "reminderText"
+   )
+   .value
+   .trim();
 
- const time=
-  document.getElementById("reminderTime").value;
 
- if(!text||!time){
-   alert("Reminder text ଏବଂ time ଦିଅନ୍ତୁ।");
-   return;
+ const time =
+  document
+   .getElementById(
+    "reminderTime"
+   )
+   .value;
+
+
+ if(
+  !text ||
+  !time
+ ){
+
+  alert(
+   "Reminder text ଏବଂ time ଦିଅନ୍ତୁ।"
+  );
+
+
+  return;
  }
 
+
+ const timestamp =
+  new Date(
+   time
+  ).getTime();
+
+
+ if(
+  isNaN(timestamp)
+ ){
+
+  alert(
+   "ଦୟାକରି valid date/time select କରନ୍ତୁ।"
+  );
+
+
+  return;
+ }
+
+
+ if(
+  timestamp <= Date.now()
+ ){
+
+  alert(
+   "Future time select କରନ୍ତୁ।"
+  );
+
+
+  return;
+ }
+
+
  reminders.push({
-   text:text,
-   time:time,
-   notified:false
+
+  text:text,
+
+  time:time,
+
+  notified:false
  });
 
+
  saveReminders();
+
  renderReminders();
 
- document.getElementById("reminderText").value="";
- document.getElementById("reminderTime").value="";
+
+ document
+  .getElementById(
+   "reminderText"
+  )
+  .value =
+  "";
+
+
+ document
+  .getElementById(
+   "reminderTime"
+  )
+  .value =
+  "";
+
+
+ const msg =
+  "⏰ Reminder set କରାଗଲା: " +
+  text;
+
 
  addMessage(
-  "⏰ Reminder set କରାଗଲା: "+text,
+  msg,
   "ai"
  );
 
- speak("Reminder set କରାଗଲା");
+
+ speak(
+  msg
+ );
 }
 
-function deleteReminder(index){
 
- reminders.splice(index,1);
+/* =========================================================
+   DELETE REMINDER
+========================================================= */
+
+function deleteReminder(
+ index
+){
+
+ if(
+  index < 0 ||
+  index >= reminders.length
+ ){
+
+  return;
+ }
+
+
+ reminders.splice(
+  index,
+  1
+ );
+
 
  saveReminders();
+
  renderReminders();
 }
 
 
-/* CHECK REMINDERS */
+/* =========================================================
+   REMINDER CHECKER
+========================================================= */
 
-setInterval(()=>{
+setInterval(
+ function(){
 
- const now=Date.now();
- let changed=false;
+  const now =
+   Date.now();
 
- reminders.forEach(r=>{
 
-  if(
-   !r.notified &&
-   new Date(r.time).getTime()<=now
-  ){
+  let changed =
+   false;
 
-   r.notified=true;
-   changed=true;
 
-   addMessage(
-    "⏰ Reminder: "+r.text,
-    "ai"
-   );
+  reminders.forEach(
+   function(reminder){
 
-   speak("Reminder. "+r.text);
+    if(
+     !reminder.notified &&
+     new Date(
+      reminder.time
+     ).getTime() <= now
+    ){
 
-   if(
-    "Notification" in window &&
-    Notification.permission==="granted"
-   ){
-    new Notification("SAKHA Reminder",{
-     body:r.text
-    });
+     reminder.notified =
+      true;
+
+
+     changed =
+      true;
+
+
+     const text =
+      "⏰ Reminder: " +
+      reminder.text;
+
+
+     addMessage(
+      text,
+      "ai"
+     );
+
+
+     speak(
+      "Reminder. " +
+      reminder.text
+     );
+
+
+     if(
+      "Notification"
+      in window &&
+      Notification.permission ===
+      "granted"
+     ){
+
+      try{
+
+       new Notification(
+        "SAKHA Reminder",
+        {
+         body:
+          reminder.text
+        }
+       );
+
+      }
+      catch(error){
+
+       console.log(
+        "Notification error:",
+        error
+       );
+      }
+     }
+    }
    }
-  }
- });
+  );
 
- if(changed){
+
+  if(changed){
+
    saveReminders();
+
    renderReminders();
+  }
+
+ },
+ 10000
+);
+
+
+/* =========================================================
+   NOTIFICATION PERMISSION
+========================================================= */
+
+function requestNotificationPermission(){
+
+ if(
+  "Notification" in window &&
+  Notification.permission ===
+  "default"
+ ){
+
+  Notification
+   .requestPermission()
+   .catch(
+    () => {}
+   );
  }
-
-},10000);
-
-
-/* NOTIFICATION PERMISSION */
-
-if(
- "Notification" in window &&
- Notification.permission==="default"
-){
- Notification.requestPermission().catch(()=>{});
 }
 
 
-/* START */
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
 renderReminders();
 
+
+/*
+ Do not automatically ask for notification
+ permission immediately on page load.
+ It is better to request it after user interaction.
+*/
+
+document.addEventListener(
+ "click",
+ function(){
+
+  requestNotificationPermission();
+
+ },
+ {
+  once:true
+ }
+);
+
+
+console.log(
+ "🤖 SAKHA AI initialized"
+);
+
+console.log(
+ "AI Endpoint:",
+ SAKHA_AI_URL
+);
+
 </script>
+
 </body>
 </html>
-```
