@@ -1985,7 +1985,9 @@ SUPABASE_URL +
 ========================================================= */
 
 let currentLanguage = "or";
+let conversationHistory = [];
 
+const MAX_HISTORY = 12;
 let voices = [];
 
 let recognition = null;
