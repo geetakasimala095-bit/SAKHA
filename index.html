@@ -775,6 +775,30 @@ footer{
  }
 }
 
+
+/* =========================================================
+   VIDEO STUDIO
+========================================================= */
+.video-tools{display:grid;gap:12px;margin-top:16px}
+.video-input-row{display:flex;flex-wrap:wrap;gap:8px}
+.video-upload-btn,.video-action-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;border-radius:13px;border:1px solid var(--border);background:#ffffff0b;color:white;font-weight:800;cursor:pointer}
+.video-upload-btn{background:linear-gradient(135deg,#8c5cff,#ff55bf);border:0}
+.video-action-btn:hover,.video-upload-btn:hover{transform:translateY(-1px);background:#ffffff18}
+.video-preview-wrap{position:relative;min-height:220px;border:1px solid var(--border);border-radius:18px;overflow:hidden;background:#0008;display:grid;place-items:center}
+#videoPreview{display:none;width:100%;max-height:480px;background:#000}
+#videoPreview.ready{display:block}
+.video-empty{color:var(--muted);padding:30px 15px;text-align:center}
+.video-form-grid{display:grid;grid-template-columns:1fr 220px;gap:8px}
+.video-form-grid input,.video-form-grid select,.video-caption{width:100%;color:white;background:#0007;border:1px solid var(--border);border-radius:13px;padding:12px;outline:none}
+.video-form-grid select option{color:#111}
+.video-caption{resize:vertical;min-height:100px;line-height:1.5}
+.video-action-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px}
+.video-main-btn{min-height:46px;border:0;border-radius:13px;padding:10px 13px;background:linear-gradient(135deg,#ffd85c,#ff9f43);color:#1b102d;font-weight:950}
+.video-main-btn.secondary{background:#ffffff10;color:white;border:1px solid var(--border)}
+.video-note,.record-status{color:var(--muted);font-size:12px;line-height:1.5}
+.record-status{min-height:18px;color:var(--gold)}
+@media(max-width:680px){.video-form-grid,.video-action-grid{grid-template-columns:1fr}.video-input-row > *{flex:1 1 45%}}
+
 </style>
 </head>
 
@@ -1239,6 +1263,13 @@ footer{
    </small>
 
   </button>
+   <button class="service-card pink" onclick="openPanel('videoStudio')">
+    <div class="service-icon">🎥</div>
+    <strong>Video Studio</strong>
+    <small>Video upload/record, preview, caption, hashtags ଓ social sharing।</small>
+   </button>
+
+
 
 
   <button
@@ -1886,6 +1917,47 @@ footer{
  </p>
 
 </div>
+ <!-- VIDEO STUDIO -->
+ <div id="videoStudio" class="panel">
+  <h3>🎥 SAKHA Video Studio</h3>
+  <p class="panel-description">
+   Video record କିମ୍ବା galleryରୁ upload କରନ୍ତୁ। Preview କରି caption ଓ hashtags ବନାଇ social mediaରେ share କରନ୍ତୁ।
+  </p>
+  <div class="video-tools">
+   <div class="video-input-row">
+    <label class="video-upload-btn">📂 Gallery Video
+     <input id="videoFileInput" type="file" accept="video/*" hidden onchange="handleVideoFile(event)">
+    </label>
+    <button class="video-action-btn" type="button" onclick="startVideoRecording()">🔴 Record</button>
+    <button class="video-action-btn" type="button" onclick="stopVideoRecording()">⏹️ Stop</button>
+    <button class="video-action-btn" type="button" onclick="clearVideoStudio()">🗑️ Clear</button>
+   </div>
+   <div class="video-preview-wrap">
+    <video id="videoPreview" controls playsinline></video>
+    <div id="videoEmpty" class="video-empty">🎬 Video select/record କଲେ ଏଠାରେ preview ହେବ।</div>
+   </div>
+   <div id="recordStatus" class="record-status"></div>
+   <div class="video-form-grid">
+    <input id="videoTopic" type="text" placeholder="Video topic — ଯେପରି: Odisha Job Update">
+    <select id="videoPlatform">
+     <option value="instagram">Instagram</option>
+     <option value="facebook">Facebook</option>
+     <option value="both">Instagram + Facebook</option>
+    </select>
+   </div>
+   <textarea id="videoCaption" class="video-caption" rows="4" placeholder="Caption ଏଠାରେ ଲେଖନ୍ତୁ କିମ୍ବା AI Caption ବଟନ୍ ଦବାନ୍ତୁ…"></textarea>
+   <div class="video-action-grid">
+    <button class="video-main-btn" type="button" onclick="generateVideoCaption()">🤖 AI Caption + Hashtags</button>
+    <button class="video-main-btn secondary" type="button" onclick="shareVideo()">📤 Share</button>
+    <button class="video-main-btn secondary" type="button" onclick="downloadVideo()">⬇️ Save Video</button>
+   </div>
+   <div class="video-note">
+    ℹ️ Browser-only modeରେ Instagramକୁ true automatic upload କରିହେବ ନାହିଁ। Share/Save flow ଚାଲିବ। Direct auto-post ପାଇଁ Meta/Instagram API + secure backend ଦରକାର।
+   </div>
+  </div>
+ </div>
+
+
 
 
 <!-- REMINDER -->
@@ -3619,6 +3691,107 @@ document.addEventListener(
  }
 );
 
+/* =========================================================
+   VIDEO STUDIO
+========================================================= */
+let videoObjectURL=null, videoBlob=null, mediaRecorder=null, recordedChunks=[], videoStream=null;
+
+function getVideoEl(){return document.getElementById("videoPreview");}
+function setVideoStatus(text){const el=document.getElementById("recordStatus");if(el)el.textContent=text||"";}
+
+function showVideoPreview(blobOrFile){
+ const video=getVideoEl(), empty=document.getElementById("videoEmpty");
+ if(!video||!blobOrFile)return;
+ if(videoObjectURL)URL.revokeObjectURL(videoObjectURL);
+ videoObjectURL=URL.createObjectURL(blobOrFile);
+ video.src=videoObjectURL;video.classList.add("ready");
+ if(empty)empty.style.display="none";
+ video.load();
+}
+
+function handleVideoFile(event){
+ const file=event.target.files?.[0];if(!file)return;
+ if(!file.type.startsWith("video/")){alert("ଦୟାକରି video file select କରନ୍ତୁ।");event.target.value="";return;}
+ videoBlob=file;showVideoPreview(file);
+ const topic=document.getElementById("videoTopic");
+ if(topic&&!topic.value.trim())topic.value=file.name.replace(/\.[^/.]+$/,"").replace(/[_-]+/g," ");
+ setVideoStatus("✅ Video loaded: "+file.name);
+}
+
+async function startVideoRecording(){
+ if(mediaRecorder&&mediaRecorder.state==="recording"){setVideoStatus("🔴 Recording already running…");return;}
+ if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){alert("ଏହି browserରେ video recording support ନାହିଁ। Chromeରେ try କରନ୍ତୁ।");return;}
+ try{
+  videoStream=await navigator.mediaDevices.getUserMedia({video:true,audio:true});recordedChunks=[];
+  const types=["video/webm;codecs=vp9,opus","video/webm;codecs=vp8,opus","video/webm"];
+  const supportedType=types.find(type=>MediaRecorder.isTypeSupported(type))||"";
+  mediaRecorder=new MediaRecorder(videoStream,supportedType?{mimeType:supportedType}:undefined);
+  mediaRecorder.ondataavailable=e=>{if(e.data&&e.data.size>0)recordedChunks.push(e.data);};
+  mediaRecorder.onstop=()=>{
+   const type=mediaRecorder?.mimeType||"video/webm";videoBlob=new Blob(recordedChunks,{type});showVideoPreview(videoBlob);
+   if(videoStream){videoStream.getTracks().forEach(t=>t.stop());videoStream=null;}setVideoStatus("✅ Recording ready. Preview କରନ୍ତୁ।");
+  };
+  mediaRecorder.start();setVideoStatus("🔴 Recording… Stop ବଟନ୍ ଦବାନ୍ତୁ।");
+ }catch(error){
+  console.error("Video recording error:",error);
+  if(videoStream){videoStream.getTracks().forEach(t=>t.stop());videoStream=null;}
+  setVideoStatus("❌ Camera/Microphone permission ଦିଆଯାଇନାହିଁ।");
+ }
+}
+
+function stopVideoRecording(){
+ if(!mediaRecorder||mediaRecorder.state!=="recording"){setVideoStatus("ℹ️ କୌଣସି recording ଚାଲୁନାହିଁ।");return;}
+ mediaRecorder.stop();
+}
+
+function clearVideoStudio(){
+ const video=getVideoEl(),input=document.getElementById("videoFileInput"),topic=document.getElementById("videoTopic"),caption=document.getElementById("videoCaption");
+ if(mediaRecorder&&mediaRecorder.state==="recording"){try{mediaRecorder.stop();}catch(e){}}
+ if(videoStream){videoStream.getTracks().forEach(t=>t.stop());videoStream=null;}
+ if(videoObjectURL){URL.revokeObjectURL(videoObjectURL);videoObjectURL=null;}
+ videoBlob=null;recordedChunks=[];
+ if(video){video.pause();video.removeAttribute("src");video.load();video.classList.remove("ready");}
+ const empty=document.getElementById("videoEmpty");if(empty)empty.style.display="";
+ if(input)input.value="";if(topic)topic.value="";if(caption)caption.value="";setVideoStatus("");
+}
+
+async function generateVideoCaption(){
+ const topic=document.getElementById("videoTopic")?.value.trim()||"my video",box=document.getElementById("videoCaption");if(!box)return;
+ box.value=currentLanguage==="or"?"🤖 SAKHA caption ବନାଉଛି…":currentLanguage==="hi"?"🤖 SAKHA caption बना रहा है…":"🤖 SAKHA is creating a caption…";
+ try{
+  const prompt=`Create a short social-media caption and 8 relevant hashtags for this video topic: ${topic}. Language: ${currentLanguage==="or"?"Odia mixed with simple English":currentLanguage==="hi"?"Hindi mixed with simple English":"English"}. Return only caption followed by hashtags.`;
+  const answer=await askSakhaAI(prompt);box.value=answer||"";setVideoStatus("✅ Caption + hashtags ready.");
+ }catch(error){console.error("Caption error:",error);box.value="";setVideoStatus(getFriendlyError(error));}
+}
+
+async function shareVideo(){
+ if(!videoBlob){alert("ପ୍ରଥମେ video upload କିମ୍ବା record କରନ୍ତୁ।");return;}
+ const caption=document.getElementById("videoCaption")?.value.trim()||"",platform=document.getElementById("videoPlatform")?.value||"instagram";
+ const ext=videoBlob.type.includes("mp4")?".mp4":".webm",fileName="sakha-video-"+new Date().toISOString().replace(/[:.]/g,"-")+ext;
+ const file=new File([videoBlob],fileName,{type:videoBlob.type||"video/webm"});
+ if(navigator.share){
+  try{
+   if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({title:"SAKHA Video",text:caption,files:[file]});setVideoStatus("✅ Share sheet opened.");return;}
+   await navigator.share({title:"SAKHA Video",text:caption});setVideoStatus("✅ Share sheet opened. Video fileଟି manually select କରନ୍ତୁ।");return;
+  }catch(error){if(error?.name==="AbortError")return;console.log("Share error:",error);}
+ }
+ downloadBlob(videoBlob,fileName);
+ const msg=platform==="instagram"?"📤 Video save ହୋଇଛି। Instagram ଖୋଲି video Reel/Post ଭାବେ select କରନ୍ତୁ।":platform==="facebook"?"📤 Video save ହୋଇଛି। Facebookରେ upload କରନ୍ତୁ।":"📤 Video save ହୋଇଛି। Instagram/Facebookରେ upload କରନ୍ତୁ।";
+ addMessage(msg,"ai");setVideoStatus(msg);
+}
+
+function downloadVideo(){
+ if(!videoBlob){alert("ପ୍ରଥମେ video upload କିମ୍ବା record କରନ୍ତୁ।");return;}
+ const ext=videoBlob.type.includes("mp4")?".mp4":".webm",name="sakha-video-"+new Date().toISOString().replace(/[:.]/g,"-")+ext;
+ downloadBlob(videoBlob,name);setVideoStatus("✅ Video saved.");
+}
+
+function downloadBlob(blob,fileName){
+ const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=fileName;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+
+
+
 
 /* =========================================================
    INIT
@@ -3635,6 +3808,12 @@ console.log(
  "AI Endpoint:",
  SAKHA_AI_URL
 );
+
+
+window.addEventListener("beforeunload",function(){
+ if(videoStream)videoStream.getTracks().forEach(track=>track.stop());
+ if(videoObjectURL)URL.revokeObjectURL(videoObjectURL);
+});
 
 </script>
 
