@@ -3819,5 +3819,41 @@ document.addEventListener('click',function(e){
 },true);
 </script>
 
+
+<style>
+.sakha-live-card{margin:12px 0;padding:16px;border-radius:18px;border:1px solid #dbe5f0;background:linear-gradient(135deg,#f8fbff,#eef7ff)}
+.sakha-live-card button{border:0;border-radius:12px;padding:10px 14px;margin:4px;cursor:pointer}
+.sakha-live-out{white-space:pre-wrap;line-height:1.55;margin-top:10px}
+</style>
+<script>
+window.SAKHA_BACKEND_URL = localStorage.getItem("SAKHA_BACKEND_URL") || "https://sakha-8wii.onrender.com";
+window.sakhaSetBackend = function(url){
+  localStorage.setItem("SAKHA_BACKEND_URL", String(url).replace(/\/+$/,""));
+  alert("SAKHA backend URL saved.");
+};
+window.sakhaLiveWeather = async function(){
+  const out=document.getElementById("sakhaWeatherOut");
+  out.textContent="📍 Location ନେଉଛି…";
+  if(!navigator.geolocation){out.textContent="Location support ନାହିଁ.";return;}
+  navigator.geolocation.getCurrentPosition(async p=>{
+    try{
+      const r=await fetch(`${window.SAKHA_BACKEND_URL}/api/weather?lat=${p.coords.latitude}&lon=${p.coords.longitude}`);
+      const j=await r.json(); if(!r.ok||!j.ok) throw new Error(j.error||"Weather failed");
+      const c=j.data.current||{};
+      const h=j.data.hourly||{};
+      let max=0;
+      if(Array.isArray(h.precipitation_probability)) max=Math.max(...h.precipitation_probability.slice(0,24).filter(Number.isFinite));
+      out.textContent=`🌦️ Live Weather\nTemperature: ${c.temperature_2m ?? "—"}°C\nFeels like: ${c.apparent_temperature ?? "—"}°C\nRain now: ${c.rain ?? 0} mm\n🌧️ Next 24h max rain probability: ${max}%`;
+    }catch(e){out.textContent="⚠️ Live weather ଆଣିହେଲା ନାହିଁ। Backend URL/Render service check କରନ୍ତୁ."}
+  },()=>out.textContent="📍 Location permission allow କରନ୍ତୁ.");
+};
+</script>
+
+<div class="sakha-live-card" id="sakhaLiveWeatherCard">
+<strong>🌦️ Live Weather</strong>
+<div>ନିଜ locationର current weather ଓ rain probability ଦେଖନ୍ତୁ।</div>
+<button onclick="sakhaLiveWeather()">📍 Check Live Weather</button>
+<div class="sakha-live-out" id="sakhaWeatherOut"></div>
+</div>
 </body>
 </html>
