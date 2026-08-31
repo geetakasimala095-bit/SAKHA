@@ -3741,5 +3741,83 @@ setTimeout(()=>document.querySelectorAll('.panel.show').forEach(p=>window.enhanc
 
 </script>
 
+
+<style>
+#sakhaLivePanel{position:fixed;inset:auto 16px 16px 16px;max-width:760px;margin:auto;background:#fff;border:1px solid #dbe4f0;border-radius:20px;box-shadow:0 18px 50px #0002;padding:18px;z-index:99999;display:none}
+#sakhaLivePanel.show{display:block}.sl-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.sl-close{border:0;background:#eef3f8;border-radius:10px;padding:7px 11px}.sl-input{width:100%;padding:12px;border:1px solid #ccd7e5;border-radius:12px;margin:10px 0}.sl-actions{display:flex;gap:8px;flex-wrap:wrap}.sl-actions button{border:0;border-radius:12px;padding:10px 14px;cursor:pointer}.sl-result{margin-top:12px;white-space:pre-wrap;line-height:1.55}
+</style>
+<div id="sakhaLivePanel">
+  <div class="sl-head"><strong id="slTitle">SAKHA AI</strong><button class="sl-close" onclick="closeSakhaPanel()">✕</button></div>
+  <input id="slInput" class="sl-input" placeholder="ପଚାରନ୍ତୁ…">
+  <div class="sl-actions">
+    <button onclick="runSakhaLive()">🤖 Ask SAKHA</button>
+    <button onclick="useMyLocation()">📍 My location</button>
+    <button onclick="openWebSearch()">🔎 Search web</button>
+  </div>
+  <div id="slResult" class="sl-result"></div>
+</div>
+<script>
+(function(){
+const panel=document.getElementById('sakhaLivePanel'), input=document.getElementById('slInput'), title=document.getElementById('slTitle'), result=document.getElementById('slResult');
+let mode='Daily Life AI';
+window.openSakhaPanel=function(m='Daily Life AI',prefill=''){mode=m;title.textContent='🤖 '+m;input.value=prefill;result.textContent='';panel.classList.add('show');setTimeout(()=>input.focus(),50)};
+window.closeSakhaPanel=()=>panel.classList.remove('show');
+window.useMyLocation=function(){if(!navigator.geolocation){result.textContent='📍 Location support ନାହିଁ।';return}result.textContent='📍 Location ନେଉଛି…';navigator.geolocation.getCurrentPosition(p=>{input.value=(input.value?input.value+' ':'')+'ମୋ location: '+p.coords.latitude.toFixed(4)+', '+p.coords.longitude.toFixed(4);result.textContent='Location added. ଏବେ Ask SAKHA କରନ୍ତୁ।'},()=>result.textContent='📍 Location permission ମିଳିଲା ନାହିଁ।')};
+window.openWebSearch=function(){const q=encodeURIComponent(input.value||mode);window.open('https://www.google.com/search?q='+q,'_blank','noopener')};
+window.runSakhaLive=async function(){
+ const q=input.value.trim(); if(!q){result.textContent='ପ୍ରଥମେ ପ୍ରଶ୍ନଟି ଲେଖନ୍ତୁ।';return}
+ result.textContent='🤔 SAKHA ଭାବୁଛି…';
+ try{
+  const url=(typeof SAKHA_AI_URL==='string')?SAKHA_AI_URL:'https://hsexaatuacdnumxnkehx.supabase.co/functions/v1/smart-endpoint';
+  const key=(typeof SUPABASE_PUBLISHABLE_KEY==='string')?SUPABASE_PUBLISHABLE_KEY:'';
+  const body={message:q,question:q,exam_name:mode,category:mode,language:'or'};
+  const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','apikey':key,'Authorization':'Bearer '+key},body:JSON.stringify(body)});
+  const text=await r.text(); let data; try{data=JSON.parse(text)}catch{data={raw:text}};
+  if(!r.ok) throw new Error(data?.error||data?.message||'AI request failed');
+  const ans=data.answer||data.response||data.output||data.message||data.text||data.raw||'SAKHA answer ପାଇଲା ନାହିଁ।';
+  result.textContent='🤖 '+ans;
+  if('speechSynthesis' in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(ans);u.lang='or-IN';speechSynthesis.speak(u)}
+ }catch(e){result.textContent='⚠️ SAKHA AI connection ହେଲା ନାହିଁ। '+e.message+'\\n\\nInternet ଓ Supabase Edge Function check କରନ୍ତୁ।'}
+};
+window.sakhaSection=function(name){
+ const prompts={
+ 'Student AI':'ମୋ ପଢ଼ା topicକୁ ସରଳ ଭାବେ explain କର ଏବଂ 5ଟି quiz question ଦିଅ।',
+ 'Farmer AI':'ମୋ ଫସଲ ପାଇଁ ଆଜି କଣ କାମ କରିବି? ଫସଲ ଓ ଅଞ୍ଚଳ ପଚାରି ନିରାପଦ guidance ଦିଅ।',
+ 'Animal Care':'ମୋ ପଶୁର ସମସ୍ୟା ବିଷୟରେ general care guidance ଦିଅ ଏବଂ emergency signs କହ।',
+ 'Animal Rescue':'ବିପଦରେ ଥିବା ପଶୁ ପାଇଁ ତୁରନ୍ତ safe rescue steps ଓ local help ଖୋଜିବା ଉପାୟ କହ।',
+ 'Baby Care':'Baby care ବିଷୟରେ general hygiene ଓ safety guidance ଦିଅ; serious signs ଥିଲେ doctor କୁ contact କରିବା କହ।',
+ 'Kitchen & Recipes':'ମୋ ingredients ଅନୁସାରେ ସରଳ recipe suggest କର।',
+ 'Buy & Sell':'ମୋ ଜିନିଷ ପାଇଁ safe buy/sell listing ଲେଖିଦିଅ।',
+ 'Lost & Found':'Lost/Found notice ଲେଖିଦିଅ ଏବଂ privacy-safe details କଣ ଦେବା କହ।',
+ 'Jobs & Career':'ମୋ qualification ଓ location ପଚାରି suitable career/job search plan ଦିଅ।',
+ 'Maps & Places':'ମୋ location ନିକଟର useful place ଖୋଜିବା ପାଇଁ query ପ୍ରସ୍ତୁତ କର।',
+ 'Weather':'ଆଜି Mayurbhanjର weather ଓ ବର୍ଷା ସମ୍ଭାବନା ବିଷୟରେ latest information ଦରକାର।',
+ 'Smart Market':'ମୁଁ କିଣିବାକୁ ଚାହୁଁଥିବା product ପାଇଁ price/features compare କରିବା checklist ଦିଅ।',
+ 'Vehicle Help':'ମୋ bike/car/scooter problem diagnose କରିବାକୁ ପ୍ରଥମେ କଣ check କରିବି?',
+ 'Mobile Help':'ମୋ phone/network/Wi-Fi problem troubleshoot କରିବାକୁ step-by-step କହ।',
+ 'Smart Home':'ମୋ smart device setup/troubleshooting ପାଇଁ step-by-step guidance ଦିଅ।',
+ 'Video Studio':'ମୋ video ପାଇଁ catchy caption, hashtags ଏବଂ short description ତିଆରି କର।',
+ 'Smart Reminder':'ମୋ କାମ ପାଇଁ reminder text ତିଆରି କର।',
+ 'Emergency Help':'Emergencyରେ safe immediate steps ଏବଂ local emergency service contact କରିବା guidance ଦିଅ।',
+ 'Camera AI':'ଏହି photoକୁ ବୁଝିବା ପାଇଁ ମୁଁ କଣ information ଦେବି କହ।',
+ 'Movie & Ticket':'ମୋ cityର movie/show ପାଇଁ official sourceରେ latest information ଖୋଜିବା query ଦିଅ।',
+ 'Daily Life AI':'ମୋ କାମକୁ priority ଦେଇ simple plan ତିଆରି କର।'
+ };
+ openSakhaPanel(name,prompts[name]||'ମୋତେ ସାହାଯ୍ୟ କର।');
+};
+})();
+</script>
+
+
+<script>
+document.addEventListener('click',function(e){
+ const el=e.target.closest('div,section,article,button,a');
+ if(!el)return;
+ const t=(el.innerText||'').trim().split('\n')[0];
+ const names=['Student AI', 'Farmer AI', 'Animal Care', 'Animal Rescue', 'Baby Care', 'Kitchen & Recipes', 'Buy & Sell', 'Lost & Found', 'Jobs & Career', 'Maps & Places', 'Weather', 'Smart Market', 'Vehicle Help', 'Mobile Help', 'Smart Home', 'Video Studio', 'Smart Reminder', 'Emergency Help', 'Camera AI', 'Movie & Ticket', 'Daily Life AI'];
+ for(const n of names){if(t===n || (el.innerText||'').trim().startsWith(n+'\n')){if(!el.closest('#sakhaLivePanel')){e.preventDefault();e.stopPropagation();window.sakhaSection(n);}break;}}
+},true);
+</script>
+
 </body>
 </html>
