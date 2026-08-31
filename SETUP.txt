@@ -1,0 +1,12 @@
+SAKHA LIVE UPDATE SETUP
+
+1. Replace GitHub index.html with SAKHA_LIVE_UPDATED_INDEX.html contents and commit.
+2. In the SAME Render Web Service that runs server.js, replace server.js with SAKHA_LIVE_SERVER.js.
+3. package.json dependencies must match SAKHA_LIVE_PACKAGE.json.
+4. Render should run: npm start
+5. After deploy, open https://sakha-8wii.onrender.com/api/health
+6. The index defaults to https://sakha-8wii.onrender.com.
+7. Live Weather uses Open-Meteo and does not need an API key.
+8. Do NOT put Meta tokens or private API keys inside index.html.
+9. Instagram/Facebook auto-publishing still requires Meta verification and server-side credentials.
+10. AI live answers require configuring SAKHA_AI_URL and SAKHA_AI_KEY on Render; never paste those secrets into chat or frontend code.
