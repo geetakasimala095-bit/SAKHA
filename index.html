@@ -2167,88 +2167,20 @@ function getBestVoice(language){
 
 
 function speak(text){
-
- if(
-  !("speechSynthesis" in window)
- ){
-
-  return;
-
- }
-
-
- let clean =
-  String(text)
-   .replace(
-    /https?:\/\/\S+/gi,
-    ""
-   )
-   .trim();
-
-
- if(!clean){
-
-  return;
-
- }
-
-
+ if(!('speechSynthesis' in window)) return;
+ const clean=String(text).replace(/https?:\/\/\S+/gi,'').replace(/\s+/g,' ').trim();
+ if(!clean) return;
  try{
-
   speechSynthesis.cancel();
-
-
-  const utterance =
-   new SpeechSynthesisUtterance(
-    clean
-   );
-
-
-  const voice =
-   getBestVoice(
-    currentLanguage
-   );
-
-
-  if(voice){
-
-   utterance.voice =
-    voice;
-
-  }
-
-
-  utterance.lang =
-   currentLanguage === "or"
-   ? "or-IN"
-   : currentLanguage === "hi"
-   ? "hi-IN"
-   : "en-IN";
-
-
-  utterance.rate = 0.88;
-
-  utterance.pitch = 1.02;
-
-  utterance.volume = 1;
-
-
-  speechSynthesis.speak(
-   utterance
-  );
-
-
- }catch(error){
-
-  console.log(
-   "Speech error:",
-   error
-  );
-
- }
-
+  const u=new SpeechSynthesisUtterance(clean);
+  const v=getBestVoice(currentLanguage);
+  if(v) u.voice=v;
+  u.lang=currentLanguage==='or'?'or-IN':currentLanguage==='hi'?'hi-IN':'en-IN';
+  u.rate=0.78; u.pitch=1.0; u.volume=1.0;
+  u.onend=()=>{ if(window.sakhaHandsFree) setTimeout(window.sakhaStartListening||(()=>{}),500); };
+  speechSynthesis.speak(u);
+ }catch(e){console.log('Speech error:',e);}
 }
-
 
 /* =========================================================
    ADD MESSAGE
@@ -3779,6 +3711,155 @@ console.log(
   setBadge();
 })();
 </script>
+
+</body>
+</html><!-- =========================================================
+   SAKHA LIVE WEATHER + HELLO SAKHA HANDS-FREE
+   FINAL LOCAL / NATURAL VOICE + FULL QUESTION LISTENING
+========================================================= -->
+<style>
+#handsFreeBadge{position:fixed;right:14px;bottom:14px;z-index:9999;background:#15122d;border:1px solid #ffffff22;color:#fff;padding:10px 13px;border-radius:14px;font-size:12px;box-shadow:0 10px 30px #0008;cursor:pointer}
+#handsFreeBadge.on{border-color:#35dc9a;color:#35dc9a}
+</style>
+<button id="handsFreeBadge" type="button" onclick="sakhaEnableHandsFree()">🎙️ Hands-free: OFF</button>
+<script>
+(function(){
+ const BACKEND='https://sakha-8wii.onrender.com';
+ const WEATHER_WORDS=/(weather|rain|raining|forecast|ବର୍ଷା|ବର୍ଷା ହେବ|ପାଗ|ତାପମାତ୍ରା|ମୌସମ|बारिश|मौसम|temperature)/i;
+ const WAKE=/hello\s*sakha|hey\s*sakha|hi\s*sakha|ହେଲୋ\s*ସଖା|ହେଲୋ\s*ସାଖା/i;
+ let handsFree=false, processing=false, buffer='', silenceTimer=null, weatherBusy=false;
+ window.sakhaHandsFree=false;
+
+ function setBadge(){
+  const b=document.getElementById('handsFreeBadge'); if(!b)return;
+  b.textContent=handsFree?'🎙️ Hands-free: ON':'🎙️ Hands-free: OFF';
+  b.classList.toggle('on',handsFree);
+ }
+
+ function naturalWeather(data,city){
+  const c=data.current||{};
+  const rain=Number(data.rain_probability_next_24h);
+  const temp=c.temperature_2m;
+  let condition='ପାଗ ସାଧାରଣ ଅଛି';
+  if(Number.isFinite(rain)){
+   if(rain>=70) condition='ଆଜି ବର୍ଷା ହେବାର ଭଲ ସମ୍ଭାବନା ଅଛି';
+   else if(rain>=40) condition='ଆଜି ବର୍ଷା ହେବାର କିଛି ସମ୍ଭାବନା ଅଛି';
+   else condition='ଆଜି ବର୍ଷା ହେବାର ସମ୍ଭାବନା କମ୍';
+  }
+  return `🌦️ ${data.place?.name||city} ପାଇଁ Live Weather\n\n${condition}।\n\n🌡️ ତାପମାତ୍ରା: ${temp??'—'}°C\n💧 ଆର୍ଦ୍ରତା: ${c.relative_humidity_2m??'—'}%\n🌧️ ବର୍ଷା ସମ୍ଭାବନା: ${Number.isFinite(rain)?rain+'%':'—'}\n💨 ପବନ: ${c.wind_speed_10m??'—'} km/h\n🕐 Live update: ${c.time||'now'}`;
+ }
+
+ window.sakhaGetWeather=async function(cityArg){
+  const input=document.getElementById('weatherCityInput');
+  const out=document.getElementById('weatherResult');
+  const city=String(cityArg||input?.value||'Baripada').trim()||'Baripada';
+  if(out)out.textContent='⏳ Live weather ଆଣୁଛି…';
+  if(weatherBusy)return null;
+  weatherBusy=true;
+  try{
+   const r=await fetch(BACKEND+'/api/weather/place?city='+encodeURIComponent(city),{cache:'no-store'});
+   const d=await r.json();
+   if(!r.ok||!d.ok)throw new Error(d.error||'Weather unavailable');
+   if(out)out.textContent=naturalWeather(d,city);
+   return d;
+  }finally{weatherBusy=false;}
+ };
+
+ window.sakhaWeatherLocation=function(){
+  const out=document.getElementById('weatherResult');
+  if(!navigator.geolocation){if(out)out.textContent='❌ Browser location support ନାହିଁ।';return;}
+  if(out)out.textContent='📍 Location ନେଉଛି…';
+  navigator.geolocation.getCurrentPosition(async pos=>{
+   try{
+    const r=await fetch(BACKEND+'/api/weather?lat='+pos.coords.latitude+'&lon='+pos.coords.longitude,{cache:'no-store'});
+    const d=await r.json(); if(!r.ok||!d.ok)throw new Error(d.error||'Weather unavailable');
+    if(out)out.textContent=naturalWeather(d,'Your Location');
+   }catch(e){if(out)out.textContent='❌ Live weather unavailable. '+e.message;}
+  },()=>{if(out)out.textContent='📍 Location permission Allow କରନ୍ତୁ।'},{enableHighAccuracy:false,timeout:10000});
+ };
+
+ function cityFromText(text){
+  const t=String(text);
+  if(/mayurbhanj|ମୟୂରଭଞ୍ଜ/i.test(t))return 'Baripada';
+  const m=t.match(/(?:in|at|near|ରେ|ଭିତରେ)\s+([A-Za-z][A-Za-z .-]{2,35})/i);
+  return m?m[1].trim():'Baripada';
+ }
+
+ async function weatherQuestion(text){
+  if(!WEATHER_WORDS.test(text))return false;
+  try{
+   const city=cityFromText(text);
+   const d=await window.sakhaGetWeather(city);
+   const answer=naturalWeather(d,city);
+   addMessage(answer,'ai');
+   speak(answer);
+   return true;
+  }catch(e){return false;}
+ }
+
+ const originalProcess=window.processCommand;
+ if(typeof originalProcess==='function'){
+  window.processCommand=async function(text){
+   if(await weatherQuestion(text))return;
+   return originalProcess(text);
+  };
+ }
+
+ window.sakhaStartListening=function(){
+  if(!recognition||!handsFree)return;
+  recognition.lang=currentLanguage==='or'?'or-IN':currentLanguage==='hi'?'hi-IN':'en-IN';
+  try{recognition.start();}catch(e){}
+ };
+
+ function submitFullSpeech(){
+  clearTimeout(silenceTimer);
+  const text=buffer.trim(); buffer='';
+  if(!text||processing)return;
+  const hasWake=WAKE.test(text);
+  if(!hasWake)return;
+  let command=text.replace(WAKE,'').trim();
+  if(!command){
+   const reply=currentLanguage==='or'?'ହଁ, କହନ୍ତୁ। ମୁଁ ସମ୍ପୂର୍ଣ୍ଣ କଥା ଶୁଣୁଛି।':'Yes, go ahead. I am listening.';
+   addMessage(reply,'ai'); speak(reply); return;
+  }
+  processing=true; addMessage(command,'user');
+  Promise.resolve(window.processCommand(command)).finally(()=>{processing=false;});
+ }
+
+ if(typeof recognition!=='undefined'&&recognition){
+  recognition.continuous=true; recognition.interimResults=true; recognition.maxAlternatives=1;
+  recognition.onresult=function(event){
+   let text='';
+   for(let i=event.resultIndex;i<event.results.length;i++){
+    const r=event.results[i]; if(r&&r[0])text+=' '+r[0].transcript;
+   }
+   text=text.trim(); if(!text)return;
+   buffer=(buffer+' '+text).replace(/\s+/g,' ').trim();
+   clearTimeout(silenceTimer);
+   silenceTimer=setTimeout(submitFullSpeech,1500);
+   if(voiceStatus)voiceStatus.textContent=currentLanguage==='or'?'🎙️ ସମ୍ପୂର୍ଣ୍ଣ ପ୍ରଶ୍ନ କୁହନ୍ତୁ…':'🎙️ Finish your full question…';
+  };
+  recognition.onstart=function(){isListening=true;if(voiceButton)voiceButton.classList.add('listening');};
+  recognition.onerror=function(e){console.log('VOICE ERROR',e.error);if(handsFree&&e.error!=='not-allowed')setTimeout(window.sakhaStartListening,800);};
+  recognition.onend=function(){isListening=false;if(voiceButton)voiceButton.classList.remove('listening');if(handsFree)setTimeout(window.sakhaStartListening,500);};
+ }
+
+ window.sakhaEnableHandsFree=function(){
+  if(!recognition){alert('Chrome browserରେ microphone/voice recognition support ଦରକାର।');return;}
+  handsFree=!handsFree; window.sakhaHandsFree=handsFree; setBadge();
+  if(handsFree){
+   const msg=currentLanguage==='or'?'Hands-free ON। ଏବେ “Hello SAKHA” କହନ୍ତୁ।':'Hands-free ON. Say “Hello SAKHA”.';
+   if(voiceStatus)voiceStatus.textContent=msg;
+   window.sakhaStartListening();
+  }else{
+   buffer='';clearTimeout(silenceTimer);try{recognition.stop();}catch(e){};
+   if(voiceStatus)voiceStatus.textContent='🎙️ Voice OFF';
+  }
+ };
+
+ setBadge();
+})();
+
 
 </body>
 </html>
