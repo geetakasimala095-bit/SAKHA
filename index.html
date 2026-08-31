@@ -2176,7 +2176,7 @@ function speak(text){
   const v=getBestVoice(currentLanguage);
   if(v) u.voice=v;
   u.lang=currentLanguage==='or'?'or-IN':currentLanguage==='hi'?'hi-IN':'en-IN';
-  u.rate=0.78; u.pitch=1.0; u.volume=1.0;
+  u.rate=0.80; u.pitch=1.0; u.volume=1.0;
   u.onend=()=>{ if(window.sakhaHandsFree) setTimeout(window.sakhaStartListening||(()=>{}),500); };
   speechSynthesis.speak(u);
  }catch(e){console.log('Speech error:',e);}
@@ -2766,261 +2766,20 @@ function openPanel(
 
 
 /* =========================================================
-   VOICE RECOGNITION
+   SAKHA VOICE — FULL QUESTION MODE
+   Only completed speech is sent to the AI.
 ========================================================= */
-
-const Recognition =
- window.SpeechRecognition ||
- window.webkitSpeechRecognition;
-
-
+const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+let voiceParts=[]; let voiceFinishTimer=null;
 if(Recognition){
-
- recognition =
-  new Recognition();
-
-
- recognition.continuous =
-  false;
-
-
- recognition.interimResults =
-  false;
-
-
- recognition.maxAlternatives =
-  1;
-
-
- recognition.onstart =
-  function(){
-
-   isListening =
-    true;
-
-
-   if(voiceButton){
-
-    voiceButton.classList.add(
-     "listening"
-    );
-
-   }
-
-
-   if(voiceStatus){
-
-    voiceStatus.textContent =
-     currentLanguage === "or"
-     ? "🎙️ ଶୁଣୁଛି… କହନ୍ତୁ"
-     : currentLanguage === "hi"
-     ? "🎙️ सुन रहा हूँ… बोलिए"
-     : "🎙️ Listening… speak now";
-
-   }
-
-  };
-
-
- recognition.onresult =
-  function(event){
-
-   const result =
-    event
-     .results?.[0]?.[0];
-
-
-   if(!result){
-
-    return;
-
-   }
-
-
-   const text =
-    result
-     .transcript
-     .trim();
-
-
-   if(!text){
-
-    return;
-
-   }
-
-
-   addMessage(
-    text,
-    "user"
-   );
-
-
-   processCommand(
-    text
-   );
-
-  };
-
-
- recognition.onerror =
-  function(event){
-
-   console.log(
-    "VOICE ERROR:",
-    event.error
-   );
-
-
-   isListening =
-    false;
-
-
-   if(voiceButton){
-
-    voiceButton.classList.remove(
-     "listening"
-    );
-
-   }
-
-
-   let msg;
-
-
-   if(
-    event.error ===
-    "not-allowed"
-   ){
-
-    msg =
-     currentLanguage === "or"
-     ? "🎙️ Microphone permission ଦିଅନ୍ତୁ।"
-     : currentLanguage === "hi"
-     ? "🎙️ Microphone permission दें।"
-     : "🎙️ Please allow microphone permission.";
-
-   }
-
-   else{
-
-    msg =
-     currentLanguage === "or"
-     ? "🎙️ Voice ପୁଣି ଥରେ try କରନ୍ତୁ।"
-     : currentLanguage === "hi"
-     ? "🎙️ Voice फिर से try करें।"
-     : "🎙️ Please try voice again.";
-
-   }
-
-
-   if(voiceStatus){
-
-    voiceStatus.textContent =
-     msg;
-
-   }
-
-  };
-
-
- recognition.onend =
-  function(){
-
-   isListening =
-    false;
-
-
-   if(voiceButton){
-
-    voiceButton.classList.remove(
-     "listening"
-    );
-
-   }
-
-
-   if(voiceStatus){
-
-    voiceStatus.textContent =
-     currentLanguage === "or"
-     ? "କହନ୍ତୁ… SAKHA ଶୁଣୁଛି"
-     : currentLanguage === "hi"
-     ? "बोलिए… SAKHA सुन रहा है"
-     : "Speak… SAKHA is listening";
-
-   }
-
-  };
-
+ recognition=new Recognition(); recognition.continuous=false; recognition.interimResults=true; recognition.maxAlternatives=3;
+ recognition.onstart=function(){isListening=true;voiceParts=[];if(voiceButton)voiceButton.classList.add('listening');if(voiceStatus)voiceStatus.textContent=currentLanguage==='or'?'🎙️ ସମ୍ପୂର୍ଣ୍ଣ କଥା କୁହନ୍ତୁ… ମୁଁ ଶୁଣୁଛି।':currentLanguage==='hi'?'🎙️ पूरा सवाल बोलिए… मैं सुन रहा हूँ।':'🎙️ Please finish your full question.';};
+ recognition.onresult=function(e){let t='';for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r&&r.isFinal&&r[0])t+=' '+r[0].transcript;}if(t.trim()){voiceParts.push(t.trim());clearTimeout(voiceFinishTimer);voiceFinishTimer=setTimeout(finishVoiceQuestion,1400);}};
+ recognition.onerror=function(e){isListening=false;if(voiceButton)voiceButton.classList.remove('listening');if(e.error==='not-allowed'||e.error==='service-not-allowed'){if(voiceStatus)voiceStatus.textContent='🎙️ Microphone permission Allow କରନ୍ତୁ।';}else if(e.error!=='aborted'&&voiceStatus)voiceStatus.textContent='🎙️ କଥାଟି ପୁଣିଥରେ ସ୍ପଷ୍ଟ ଭାବରେ କୁହନ୍ତୁ।';};
+ recognition.onend=function(){isListening=false;if(voiceButton)voiceButton.classList.remove('listening');if(voiceParts.length){clearTimeout(voiceFinishTimer);voiceFinishTimer=setTimeout(finishVoiceQuestion,250);}};
 }
-
-
-/* =========================================================
-   START VOICE
-========================================================= */
-
-function startVoice(){
-
- if(!recognition){
-
-  const msg =
-   currentLanguage === "or"
-   ? "🎙️ ଏହି browser voice recognition support କରୁନାହିଁ। Chrome browserରେ try କରନ୍ତୁ।"
-   : currentLanguage === "hi"
-   ? "🎙️ यह browser voice recognition support नहीं करता। Chrome browser में try करें।"
-   : "🎙️ This browser does not support voice recognition. Try Chrome.";
-
-  addMessage(
-   msg,
-   "ai"
-  );
-
-  speak(
-   msg
-  );
-
-  return;
-
- }
-
-
- if(isListening){
-
-  try{
-
-   recognition.stop();
-
-  }catch(error){}
-
-  return;
-
- }
-
-
- recognition.lang =
-  currentLanguage === "or"
-  ? "or-IN"
-  : currentLanguage === "hi"
-  ? "hi-IN"
-  : "en-IN";
-
-
- try{
-
-  recognition.start();
-
- }catch(error){
-
-  console.log(
-   "Recognition start error:",
-   error
-  );
-
- }
-
-}
-
+function finishVoiceQuestion(){clearTimeout(voiceFinishTimer);const text=voiceParts.join(' ').replace(/\s+/g,' ').trim();voiceParts=[];if(!text)return;const command=text.replace(/^\s*(hello\s+sakha|hey\s+sakha|hi\s+sakha|ହେଲୋ\s*ସଖା|ହେଲୋ\s*ସାଖା)[,\s:]*/i,'').trim();if(!command){const r=currentLanguage==='or'?'ହଁ, କହନ୍ତୁ। ମୁଁ ପୁରା କଥା ଶୁଣୁଛି।':'Yes, go ahead. I am listening.';addMessage(r,'ai');speak(r);return;}addMessage(command,'user');processCommand(command);}
+function startVoice(){if(!Recognition){const m='🎙️ ଏହି browser voice recognition support କରୁନାହିଁ। Chrome ବ୍ୟବହାର କରନ୍ତୁ।';addMessage(m,'ai');speak(m);return;}if(isListening){try{recognition.stop();}catch(e){}return;}clearTimeout(voiceFinishTimer);voiceParts=[];recognition.lang=currentLanguage==='or'?'or-IN':currentLanguage==='hi'?'hi-IN':'en-IN';try{recognition.start();}catch(e){console.log('Recognition start error:',e);}}
 
 /* =========================================================
    LANGUAGE
@@ -3595,38 +3354,19 @@ console.log(
   let handsFree=false, wakeBusy=false, weatherBusy=false;
 
   function weatherText(data, city){
-    const c=data.current||{};
-    const rainRaw=data.rain_probability_next_24h;
-    const rain=Number.isFinite(Number(rainRaw)) ? Number(rainRaw) : null;
-    const temp=c.temperature_2m;
-    const feels=c.apparent_temperature;
-    const humidity=c.relative_humidity_2m;
-    const rainNow=Number(c.rain||0);
+ const c=data.current||{}, rain=Number.isFinite(Number(data.rain_probability_next_24h))?Number(data.rain_probability_next_24h):null;
+ const place=data.place?.name||city||'ଆପଣଙ୍କ ଅଞ୍ଚଳ'; const temp=c.temperature_2m, feels=c.apparent_temperature, humidity=c.relative_humidity_2m, now=Number(c.rain||0);
+ let summary='ବର୍ତ୍ତମାନ live ପାଗ ସୂଚନା ମିଳିଛି।',advice='';
+ if(now>0.1){summary='ବର୍ତ୍ତମାନ ବର୍ଷା ହେଉଛି।';advice='ବାହାରକୁ ଯିବାକୁ ଥିଲେ ଛତା ନେଇଯିବା ଭଲ।';}
+ else if(rain!==null&&rain>=70){summary='ଆଜି ବର୍ଷା ହେବାର ସମ୍ଭାବନା ବହୁତ ଅଧିକ।';advice='ଛତା ସାଙ୍ଗରେ ରଖିବା ଭଲ।';}
+ else if(rain!==null&&rain>=40){summary='ଆଜି ବର୍ଷା ହେବାର ଭଲ ସମ୍ଭାବନା ଅଛି।';advice='ଛତା ସାଙ୍ଗରେ ରଖିବା ଭଲ।';}
+ else if(rain!==null&&rain>=20)summary='ଆଜି ଅଳ୍ପ ବର୍ଷା ହେବାର କିଛି ସମ୍ଭାବନା ଅଛି।';
+ else if(rain!==null)summary='ଆଜି ବର୍ଷା ହେବାର ସମ୍ଭାବନା କମ୍। ପାଗ ମୁଖ୍ୟତଃ ଶୁଖିଲା ରହିପାରେ।';
+ let d=''; if(temp!=null)d+=`ବର୍ତ୍ତମାନ ତାପମାତ୍ରା ପ୍ରାୟ ${temp} ଡିଗ୍ରୀ`; if(feels!=null)d+=` ଏବଂ ଅନୁଭବ ହେଉଥିବା ତାପମାତ୍ରା ପ୍ରାୟ ${feels} ଡିଗ୍ରୀ`; if(d)d+='।'; if(humidity!=null)d+=` ଆର୍ଦ୍ରତା ପ୍ରାୟ ${humidity} ପ୍ରତିଶତ।`; if(rain!==null)d+=` ଆସନ୍ତା 24 ଘଣ୍ଟାରେ ବର୍ଷାର ସମ୍ଭାବନା ପ୍ରାୟ ${rain} ପ୍ରତିଶତ।`;
+ return `🌦️ ${place}\n\n${summary}${advice?' '+advice:''}\n\n${d}`.trim();
+}
 
-    let sky='ପାଗ ବିଷୟରେ live ସୂଚନା ମିଳିଛି।';
-    if(rainNow>0.1){
-      sky='ବର୍ତ୍ତମାନ ବର୍ଷା ହେଉଛି।';
-    }else if(rain!==null && rain>=70){
-      sky='ଆଜି ବର୍ଷା ହେବାର ସମ୍ଭାବନା ବହୁତ ଅଧିକ।';
-    }else if(rain!==null && rain>=40){
-      sky='ଆଜି ବର୍ଷା ହେବାର ଭଲ ସମ୍ଭାବନା ଅଛି।';
-    }else if(rain!==null && rain>=20){
-      sky='ଆଜି ଅଳ୍ପ ବର୍ଷା ହେବାର ସମ୍ଭାବନା ଅଛି।';
-    }else if(rain!==null){
-      sky='ଆଜି ବର୍ଷା ହେବାର ସମ୍ଭାବନା କମ୍।';
-    }
-
-    let advice='';
-    if(rainNow>0.1 || (rain!==null && rain>=40)){
-      advice='ବାହାରକୁ ଯିବାକୁ ଥିଲେ ଛତା ସାଙ୍ଗରେ ନେଇଯିବା ଭଲ।';
-    }else if(rain!==null && rain<20){
-      advice='ବର୍ଷା chance କମ୍ ଥିବାରୁ ସାଧାରଣତଃ ବାହାର କାମ କରିପାରିବେ।';
-    }
-
-    return `🌦️ ${data.place?.name || city}\n\n${sky}${advice?' '+advice:''}\n\n🌡️ ବର୍ତ୍ତମାନ ତାପମାତ୍ରା ${temp ?? '—'}°C${feels!==undefined ? `, feels like ${feels}°C` : ''}।\n💧 ଆର୍ଦ୍ରତା ${humidity ?? '—'}%।\n${rain!==null ? `🌧️ ଆସନ୍ତା 24 ଘଣ୍ଟାରେ ବର୍ଷା ସମ୍ଭାବନା ${rain}%।\n` : ''}💨 ପବନର ବେଗ ${c.wind_speed_10m ?? '—'} km/h।\n\n🕐 Live update: ${c.time || 'now'}`;
-  }
-
-  function weatherLocationFromQuestion(text){
+function weatherLocationFromQuestion(text){
     const t=String(text||'').trim();
     // Explicit place: "Karanjia re", "Karanjia ରେ", "in Karanjia", etc.
     let m=t.match(/([A-Za-z][A-Za-z\s.-]{2,35})\s*(?:re|ରେ|near|ନିକଟରେ)\b/i);
@@ -3727,59 +3467,7 @@ console.log(
     b.classList.toggle('on',handsFree);
   }
 
-  window.sakhaEnableHandsFree=function(){
-    if(!recognition){alert('Chrome browserରେ voice recognition support ଦରକାର।');return;}
-    handsFree=true; setBadge();
-    try{ recognition.lang=currentLanguage==='or'?'or-IN':currentLanguage==='hi'?'hi-IN':'en-IN'; recognition.continuous=true; recognition.interimResults=false;
-    recognition.maxAlternatives=3; recognition.start(); }
-    catch(e){console.log('Hands-free start:',e);}
-  };
-
-  /* Enhance the existing recognition without replacing the original engine. */
-  if(typeof recognition!=='undefined' && recognition){
-    recognition.continuous=true;
-    const oldResult=recognition.onresult;
-    let voiceDebounceTimer=null;
-    let voicePendingText='';
-    recognition.onresult=function(event){
-      const last=event.results?.[event.results.length-1]?.[0];
-      const text=last?.transcript?.trim()||'';
-      if(!text)return;
-      clearTimeout(voiceDebounceTimer);
-      voicePendingText=(voicePendingText+' '+text).replace(/\s+/g,' ').trim();
-      voiceDebounceTimer=setTimeout(()=>{ const fullText=voicePendingText; voicePendingText=''; handleVoiceFinal(fullText); },1200);
-      return;
-    };
-    function handleVoiceFinal(text){
-      if(handsFree && WAKE_WORD.test(text)){
-        const command=text.replace(WAKE_WORD,'').trim();
-        if(!command){
-          speak(currentLanguage==='or'?'ହଁ ଭାଇ, କହନ୍ତୁ।':'Yes, I am listening.');
-          return;
-        }
-        if(!wakeBusy){wakeBusy=true; addMessage(command,'user'); Promise.resolve(window.processCommand(command)).finally(()=>{wakeBusy=false;});}
-        return;
-      }
-      if(handsFree && !WAKE_WORD.test(text)){
-        if(!wakeBusy){wakeBusy=true; addMessage(text,'user'); Promise.resolve(window.processCommand(text)).finally(()=>{wakeBusy=false;});}
-        return;
-      }
-      if(typeof oldResult==='function') oldResult.call(recognition,event);
-    };
-    recognition.onend=function(){
-      if(handsFree){setTimeout(()=>{try{recognition.start();}catch(e){}},700);}
-    };
-  }
-
-  /* If microphone permission was already granted, try hands-free automatically. */
-  window.addEventListener('load',()=>{
-    setTimeout(()=>{
-      if(recognition && !handsFree){
-        try{handsFree=true;setBadge();recognition.continuous=true;recognition.lang=currentLanguage==='or'?'or-IN':'en-IN';recognition.start();}
-        catch(e){handsFree=false;setBadge();}
-      }
-    },1200);
-  });
+  window.sakhaEnableHandsFree=function(){ startVoice(); };
 
   setBadge();
 })();
