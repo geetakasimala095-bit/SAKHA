@@ -3590,14 +3590,53 @@ console.log(
 ========================================================= */
 (function(){
   const BACKEND = "https://sakha-8wii.onrender.com";
-  const WEATHER_WORDS = /(weather|rain|raining|ବର୍ଷା|ବର୍ଷା ହେବ|ପାଗ|ତାପମାତ୍ରା|ମୌସମ|बारिश|मौसम|temperature)/i;
+  const WEATHER_WORDS = /(weather|forecast|rain|raining|temperature|climate|ପାଗ|ବର୍ଷା|ବର୍ଷା ହେବ|ବର୍ଷା ପଡିବ|ଖରା|ମେଘୁଆ|ତାପମାତ୍ରା|ମୌସମ|ଆଜିର ପାଗ|କାଲିର ପାଗ|बारिश|मौसम|तापमान)/i;
   const WAKE_WORD = /\b(hello\s*sakha|hey\s*sakha|hi\s*sakha|ହେଲୋ\s*ସଖା|ହେଲୋ\s*ସାଖା|ସଖା|ସାଖା)\b/i;
   let handsFree=false, wakeBusy=false, weatherBusy=false;
 
   function weatherText(data, city){
     const c=data.current||{};
-    const rain=Number.isFinite(data.rain_probability_next_24h)?data.rain_probability_next_24h:null;
-    return `🌦️ ${data.place?.name || city}\n\n🌡️ Temperature: ${c.temperature_2m ?? "—"} °C\n🌡️ Feels like: ${c.apparent_temperature ?? "—"} °C\n💧 Humidity: ${c.relative_humidity_2m ?? "—"}%\n🌧️ Rain now: ${c.rain ?? 0} mm\n🌧️ Next 24h rain probability: ${rain===null?"—":rain+"%"}\n💨 Wind: ${c.wind_speed_10m ?? "—"} km/h\n🕐 Live update: ${c.time || "now"}`;
+    const rainRaw=data.rain_probability_next_24h;
+    const rain=Number.isFinite(Number(rainRaw)) ? Number(rainRaw) : null;
+    const temp=c.temperature_2m;
+    const feels=c.apparent_temperature;
+    const humidity=c.relative_humidity_2m;
+    const rainNow=Number(c.rain||0);
+
+    let sky='ପାଗ ବିଷୟରେ live ସୂଚନା ମିଳିଛି।';
+    if(rainNow>0.1){
+      sky='ବର୍ତ୍ତମାନ ବର୍ଷା ହେଉଛି।';
+    }else if(rain!==null && rain>=70){
+      sky='ଆଜି ବର୍ଷା ହେବାର ସମ୍ଭାବନା ବହୁତ ଅଧିକ।';
+    }else if(rain!==null && rain>=40){
+      sky='ଆଜି ବର୍ଷା ହେବାର ଭଲ ସମ୍ଭାବନା ଅଛି।';
+    }else if(rain!==null && rain>=20){
+      sky='ଆଜି ଅଳ୍ପ ବର୍ଷା ହେବାର ସମ୍ଭାବନା ଅଛି।';
+    }else if(rain!==null){
+      sky='ଆଜି ବର୍ଷା ହେବାର ସମ୍ଭାବନା କମ୍।';
+    }
+
+    let advice='';
+    if(rainNow>0.1 || (rain!==null && rain>=40)){
+      advice='ବାହାରକୁ ଯିବାକୁ ଥିଲେ ଛତା ସାଙ୍ଗରେ ନେଇଯିବା ଭଲ।';
+    }else if(rain!==null && rain<20){
+      advice='ବର୍ଷା chance କମ୍ ଥିବାରୁ ସାଧାରଣତଃ ବାହାର କାମ କରିପାରିବେ।';
+    }
+
+    return `🌦️ ${data.place?.name || city}\n\n${sky}${advice?' '+advice:''}\n\n🌡️ ବର୍ତ୍ତମାନ ତାପମାତ୍ରା ${temp ?? '—'}°C${feels!==undefined ? `, feels like ${feels}°C` : ''}।\n💧 ଆର୍ଦ୍ରତା ${humidity ?? '—'}%।\n${rain!==null ? `🌧️ ଆସନ୍ତା 24 ଘଣ୍ଟାରେ ବର୍ଷା ସମ୍ଭାବନା ${rain}%।\n` : ''}💨 ପବନର ବେଗ ${c.wind_speed_10m ?? '—'} km/h।\n\n🕐 Live update: ${c.time || 'now'}`;
+  }
+
+  function weatherLocationFromQuestion(text){
+    const t=String(text||'').trim();
+    // Explicit place: "Karanjia re", "Karanjia ରେ", "in Karanjia", etc.
+    let m=t.match(/([A-Za-z][A-Za-z\s.-]{2,35})\s*(?:re|ରେ|near|ନିକଟରେ)\b/i);
+    if(m && m[1]) return m[1].trim();
+    m=t.match(/(?:in|at|near)\s+([A-Za-z][A-Za-z\s.-]{2,35})/i);
+    if(m && m[1]) return m[1].trim();
+    // Common English phrasing: "Karanjia weather"
+    m=t.match(/\b([A-Za-z][A-Za-z.-]{2,25})\s+(?:weather|rain|raining|forecast)\b/i);
+    if(m && m[1]) return m[1].trim();
+    return '';
   }
 
   window.sakhaGetWeather=async function(cityArg){
@@ -3634,19 +3673,44 @@ console.log(
   };
 
   async function weatherFromQuestion(text){
-    const t=String(text||'');
+    const t=String(text||'').trim();
     if(!WEATHER_WORDS.test(t)) return false;
-    let city='Baripada';
-    const m=t.match(/(?:in|at|near|ରେ|ରେ|ର)[\s:,-]+([A-Za-z][A-Za-z\s-]{2,30})/i);
-    if(m&&m[1])city=m[1].trim();
-    if(/mayurbhanj/i.test(t)||/ମୟୂରଭଞ୍ଜ/i.test(t))city='Baripada';
+
+    let city=weatherLocationFromQuestion(t);
+    let data=null;
+
     try{
-      const d=await window.sakhaGetWeather(city);
-      const answer=weatherText(d,city)+'\n\n📌 Mayurbhanj ପାଇଁ Baripadaକୁ district reference ଭାବେ ନିଆଯାଇଛି।';
+      // "mo gaan / my location / here" => use the user's actual browser location.
+      const wantsMyLocation=/(mo gaan|ମୋ ଗାଁ|ମୋ ଜାଗା|ମୋ location|my location|here|ଏଠି|ଏଠାରେ)/i.test(t);
+
+      if(wantsMyLocation && navigator.geolocation){
+        await new Promise((resolve,reject)=>{
+          navigator.geolocation.getCurrentPosition(async pos=>{
+            try{
+              const r=await fetch(BACKEND+'/api/weather?lat='+pos.coords.latitude+'&lon='+pos.coords.longitude,{cache:'no-store'});
+              const d=await r.json();
+              if(!r.ok||!d.ok) throw new Error(d.error||'Weather unavailable');
+              data=d;
+              resolve();
+            }catch(e){reject(e);}
+          },reject,{enableHighAccuracy:false,timeout:10000});
+        });
+        city=data.place?.name || 'ଆପଣଙ୍କ ଅଞ୍ଚଳ';
+      }else{
+        city=city || 'Baripada';
+        data=await window.sakhaGetWeather(city);
+        city=data.place?.name || city;
+      }
+
+      const answer=weatherText(data,city);
       addMessage(answer,'ai');
       speak(answer);
       return true;
-    }catch(e){return false;}
+    }catch(e){
+      // If weather lookup fails, let the normal AI answer instead of claiming data is unavailable.
+      console.log('Weather lookup failed:',e);
+      return false;
+    }
   }
 
   const originalProcess=window.processCommand;
@@ -3666,7 +3730,8 @@ console.log(
   window.sakhaEnableHandsFree=function(){
     if(!recognition){alert('Chrome browserରେ voice recognition support ଦରକାର।');return;}
     handsFree=true; setBadge();
-    try{ recognition.lang=currentLanguage==='or'?'or-IN':currentLanguage==='hi'?'hi-IN':'en-IN'; recognition.continuous=true; recognition.interimResults=false; recognition.start(); }
+    try{ recognition.lang=currentLanguage==='or'?'or-IN':currentLanguage==='hi'?'hi-IN':'en-IN'; recognition.continuous=true; recognition.interimResults=false;
+    recognition.maxAlternatives=3; recognition.start(); }
     catch(e){console.log('Hands-free start:',e);}
   };
 
@@ -3674,10 +3739,18 @@ console.log(
   if(typeof recognition!=='undefined' && recognition){
     recognition.continuous=true;
     const oldResult=recognition.onresult;
+    let voiceDebounceTimer=null;
+    let voicePendingText='';
     recognition.onresult=function(event){
       const last=event.results?.[event.results.length-1]?.[0];
       const text=last?.transcript?.trim()||'';
       if(!text)return;
+      clearTimeout(voiceDebounceTimer);
+      voicePendingText=(voicePendingText+' '+text).replace(/\s+/g,' ').trim();
+      voiceDebounceTimer=setTimeout(()=>{ const fullText=voicePendingText; voicePendingText=''; handleVoiceFinal(fullText); },1200);
+      return;
+    };
+    function handleVoiceFinal(text){
       if(handsFree && WAKE_WORD.test(text)){
         const command=text.replace(WAKE_WORD,'').trim();
         if(!command){
