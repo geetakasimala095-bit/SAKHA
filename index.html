@@ -1241,13 +1241,6 @@ footer{
   </button>
 
 
-
-  <button class="service-card gold" onclick="openPanel('videoStudio')">
-   <div class="service-icon">🎥</div>
-   <strong>Video Studio</strong>
-   <small>Video preview, AI caption, hashtags ଓ social sharing.</small>
-  </button>
-
   <button
    class="service-card gold"
    onclick="openPanel('reminder')">
@@ -1754,14 +1747,21 @@ footer{
 
 <div id="weather" class="panel">
 
- <h3>
-  🌦️ Weather
- </h3>
+ <h3>🌦️ Live Weather</h3>
 
  <p class="panel-description">
-  Live weather API connect କଲେ location-based current weather
-  ଓ forecast ଦେଖାଯିବ।
+  City name ଦିଅନ୍ତୁ। SAKHA real-time weather data ଆଣିବ।
  </p>
+
+ <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+  <input id="weatherCityInput" value="Baripada" placeholder="Baripada / Mayurbhanj" style="flex:1;min-width:220px;padding:12px;border-radius:12px;border:1px solid var(--border);background:#0006;color:white;outline:none">
+  <button onclick="sakhaGetWeather()" style="border:0;border-radius:12px;padding:12px 16px;background:var(--gold);font-weight:900">🌦️ Check</button>
+  <button onclick="sakhaWeatherLocation()" style="border:0;border-radius:12px;padding:12px 16px;background:#36ddff;font-weight:900">📍 My Location</button>
+ </div>
+
+ <div id="weatherResult" class="info-box" style="margin-top:14px">
+  Weather result ଏଠାରେ ଦେଖାଯିବ।
+ </div>
 
 </div>
 
@@ -1935,23 +1935,6 @@ footer{
 
 </div>
 
-
-
-<!-- VIDEO STUDIO -->
-<div id="videoStudio" class="panel">
- <h3>🎥 Video Studio</h3>
- <p class="panel-description">Video select କରନ୍ତୁ, preview ଦେଖନ୍ତୁ ଏବଂ SAKHA ଦ୍ୱାରା caption + hashtags ବନାନ୍ତୁ। Meta verification complete ହେଲେ social publishing connect କରିବାକୁ ପାରିବା।</p>
- <div style="display:grid;gap:12px">
-  <input id="videoFileInput" type="file" accept="video/*" style="padding:12px;border-radius:12px">
-  <video id="videoPreview" controls playsinline style="display:none;width:100%;max-height:420px;border-radius:16px;background:#050814"></video>
-  <textarea id="videoIdea" rows="3" placeholder="Video ବିଷୟରେ ଲେଖନ୍ତୁ… ଯେପରି: Odisha travel vlog, cricket practice, food recipe" style="width:100%;padding:12px;border-radius:12px"></textarea>
-  <button class="add-button" onclick="generateVideoCaption()">🤖 Generate Caption + Hashtags</button>
-  <textarea id="videoCaption" rows="5" placeholder="AI caption ଏଠାରେ ଆସିବ…" style="width:100%;padding:12px;border-radius:12px"></textarea>
-  <div id="videoHashtags" style="padding:12px;border-radius:12px;background:rgba(255,255,255,.06);line-height:1.8">#SAKHA #Odisha</div>
-  <button class="add-button" onclick="copyVideoText()">📋 Copy Caption + Hashtags</button>
-  <div id="videoPublishStatus" style="font-size:13px;color:#aeb1d0">📤 Instagram/Facebook publish: Meta verification ଓ API credentials ପରେ enable ହେବ।</div>
- </div>
-</div>
 
 <!-- FOOTER -->
 
@@ -3660,481 +3643,142 @@ console.log(
  SAKHA_AI_URL
 );
 
-
-
-/* =========================================================
-   REAL WORKING SERVICE CONTROLS
-   These controls turn the service cards into useful actions.
-========================================================= */
-(function(){
-  const configs = {
-    student:{icon:'📚',title:'Student AI',ph:'ଯେପରି: Photosynthesis ସରଳ ଭାବେ ବୁଝାଅ',btn:'Explain / Solve'},
-    farmer:{icon:'🌾',title:'Farmer AI',ph:'ଯେପରି: ଧାନ ଚାଷ ପାଇଁ basic care କଣ?',btn:'Ask Farmer AI'},
-    animalCare:{icon:'🐄',title:'Animal Care',ph:'ଯେପରି: ଗାଈର basic hygiene କେମିତି?',btn:'Ask Animal AI'},
-    animalRescue:{icon:'🐾',title:'Animal Rescue',ph:'ଯେପରି: ରାସ୍ତାରେ ଆହତ ପଶୁ ମିଳିଲେ କଣ କରିବି?',btn:'Get Safe Guidance'},
-    baby:{icon:'👶',title:'Baby Care',ph:'ଯେପରି: baby hygiene ବିଷୟରେ basic tips',btn:'Ask Baby Care'},
-    kitchen:{icon:'🍳',title:'Kitchen & Recipes',ph:'Ingredients ଲେଖନ୍ତୁ: potato, onion, tomato…',btn:'Create Recipe'},
-    buySell:{icon:'🛍️',title:'Buy & Sell',ph:'ଯେପରି: old bicycle sell post ଲେଖ',btn:'Create Listing'},
-    lostFound:{icon:'🔎',title:'Lost & Found',ph:'ଯେପରି: lost school bag ପାଇଁ notice ଲେଖ',btn:'Create Notice'},
-    jobs:{icon:'💼',title:'Jobs & Career',ph:'ଯେପରି: Odisha govt job preparation roadmap',btn:'Get Career Help'},
-    market:{icon:'🛒',title:'Smart Market',ph:'ଯେପରି: ମୋତେ study table ଦରକାର',btn:'Search / Suggest'},
-    vehicle:{icon:'🏍️',title:'Vehicle Help',ph:'ଯେପରି: bike battery weak ହେଲେ basic checks',btn:'Ask Vehicle AI'},
-    mobile:{icon:'📱',title:'Mobile Help',ph:'ଯେପରି: Wi-Fi connect ହେଉନାହିଁ',btn:'Troubleshoot'},
-    smartHome:{icon:'🏠',title:'Smart Home',ph:'ଯେପରି: smart light setup ବିଷୟରେ ପଚାରନ୍ତୁ',btn:'Ask SAKHA'},
-    camera:{icon:'📷',title:'Camera AI',ph:'Photo select କରିବା ପରେ ଏଠାରେ question ଲେଖନ୍ତୁ',btn:'Ask About Photo'},
-    movies:{icon:'🎬',title:'Movie & Ticket',ph:'Movie / city ଲେଖନ୍ତୁ',btn:'Find Official Info'},
-    daily:{icon:'🧠',title:'Daily Life AI',ph:'ଆଜି କଣ plan କରିବାକୁ ଚାହୁଁଛନ୍ତି?',btn:'Plan with SAKHA'}
-  };
-  function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
-  window.enhancePanel=function(id){
-    const panel=document.getElementById(id), cfg=configs[id];
-    if(!panel || !cfg || panel.querySelector('.sakha-action-box')) return;
-    const box=document.createElement('div'); box.className='sakha-action-box'; box.style.cssText='margin-top:18px;padding:14px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)';
-    box.innerHTML=`<div style="font-weight:700;margin-bottom:8px">${cfg.icon} Try it now</div><div style="display:flex;gap:8px;flex-wrap:wrap"><input class="sakha-action-input" placeholder="${esc(cfg.ph)}" style="flex:1;min-width:220px;padding:12px;border-radius:12px;border:0"><button class="add-button sakha-action-btn">${esc(cfg.btn)}</button></div><div class="sakha-action-result" style="margin-top:12px;white-space:pre-wrap;line-height:1.65"></div>`;
-    panel.appendChild(box);
-    box.querySelector('.sakha-action-btn').onclick=()=>runServiceAI(id,box);
-  };
-  window.runServiceAI=async function(id,box){
-    const input=box.querySelector('.sakha-action-input'), out=box.querySelector('.sakha-action-result'), text=input.value.trim();
-    if(!text){out.textContent='କିଛି ଲେଖି ପଚାରନ୍ତୁ।';return;}
-    out.textContent='⏳ SAKHA ଭାବୁଛି…';
-    const prompts={
-      student:'You are Student AI. Answer this study question clearly with simple steps and examples: ', farmer:'You are Farmer AI. Give safe general farming guidance and recommend local agriculture experts for diagnosis: ', animalCare:'You are Animal Care AI. Give basic safe animal-care information and advise a veterinarian for illness/emergency: ', animalRescue:'You are Animal Rescue AI. Give safe, non-harmful immediate guidance and suggest contacting local animal rescue/vet services: ', baby:'You are Baby Care AI. Give general hygiene and safety information. For medical concerns advise a pediatric professional: ', kitchen:'You are Kitchen & Recipes AI. Create a simple recipe from the ingredients/request: ', buySell:'You are a Buy & Sell assistant. Create a clear, honest listing or buying checklist: ', lostFound:'You are a Lost & Found assistant. Create a concise notice with safe contact guidance: ', jobs:'You are Jobs & Career AI. Give practical career/job preparation guidance and say to verify current vacancies on official sites: ', market:'You are Smart Market AI. Suggest useful search terms, features and buying checks; do not claim live prices unless supplied: ', vehicle:'You are Vehicle Help AI. Give basic safe troubleshooting; recommend a qualified mechanic for risky/uncertain repairs: ', mobile:'You are Mobile Help AI. Give step-by-step basic troubleshooting: ', smartHome:'You are Smart Home AI. Give general setup/troubleshooting guidance and state that device-specific integration may need a supported API: ', camera:'You are Camera AI. Answer the user question about the photo context they provide. Do not pretend to see a photo unless one is actually provided: ', movies:'You are Movie & Ticket AI. Explain how to find official showtimes/tickets and avoid inventing live listings: ', daily:'You are Daily Life AI. Help make a practical plan or solve the task: '};
-    try{const r=await fetch(SAKHA_AI_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY,'Authorization':'Bearer '+SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify({message:(prompts[id]||'Help the user: ')+text,language:currentLanguage})}); const data=await r.json(); if(!r.ok) throw new Error(data?.error||data?.message||('HTTP '+r.status)); const ans=data.answer||data.response||data.message||data.output||'SAKHA response ମିଳିଲା ନାହିଁ।'; out.textContent=ans; if(typeof speak==='function') speak(ans);}catch(e){out.textContent='⚠️ '+(typeof getFriendlyError==='function'?getFriendlyError(e):'SAKHA AI connection problem.');}};
-  const obs=new MutationObserver(ms=>ms.forEach(m=>m.target.classList?.contains('show')&&enhancePanel(m.target.id)));
-  document.querySelectorAll('.panel').forEach(p=>obs.observe(p,{attributes:true,attributeFilter:['class']}));
-  document.addEventListener('DOMContentLoaded',()=>document.querySelectorAll('.panel.show').forEach(p=>enhancePanel(p.id)));
-})();
-
-/* =========================================================
-   VIDEO STUDIO
-========================================================= */
-(function(){
- const input=document.getElementById('videoFileInput');
- if(input){input.addEventListener('change',()=>{const f=input.files?.[0],v=document.getElementById('videoPreview'); if(!f||!v)return; if(v.src)URL.revokeObjectURL(v.src); v.src=URL.createObjectURL(f); v.style.display='block'; document.getElementById('videoPublishStatus').textContent='🎥 Video ready: '+f.name+' • '+Math.round(f.size/1024/1024*10)/10+' MB';});}
-})();
-window.generateVideoCaption=async function(){
- const idea=document.getElementById('videoIdea')?.value.trim(); const cap=document.getElementById('videoCaption'); const tags=document.getElementById('videoHashtags');
- if(!idea){alert('ପ୍ରଥମେ Video ବିଷୟରେ କିଛି ଲେଖନ୍ତୁ।');return;} cap.value='Generating…'; tags.textContent='Generating hashtags…';
- try{const prompt=`Create a short social-media caption for this video idea: ${idea}. Return exactly two sections: CAPTION and HASHTAGS. Caption should be natural and family-friendly. Hashtags 8-12 relevant tags.`; const r=await fetch(SAKHA_AI_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY,'Authorization':'Bearer '+SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify({message:prompt,language:currentLanguage})}); const d=await r.json(); if(!r.ok)throw new Error(d?.error||d?.message||('HTTP '+r.status)); const ans=d.answer||d.response||d.message||d.output||''; const hm=ans.match(/HASHTAGS?\s*:?([\\s\\S]*)/i); const cm=ans.match(/CAPTION\s*:?[\\s\\S]*?(?=HASHTAGS?|$)/i); cap.value=(cm?cm[0].replace(/CAPTION\s*:?/i,'').trim():ans).trim(); tags.textContent=(hm?hm[1]:'#SAKHA #Odisha #Creator').trim(); }catch(e){cap.value='';tags.textContent='⚠️ '+(typeof getFriendlyError==='function'?getFriendlyError(e):'AI connection problem.');}
-};
-window.copyVideoText=function(){const c=document.getElementById('videoCaption')?.value||'',t=document.getElementById('videoHashtags')?.innerText||''; navigator.clipboard?.writeText((c+'\
-\
-'+t).trim()).then(()=>alert('Caption + hashtags copied ✅')).catch(()=>alert('Copy କରିହେଲା ନାହିଁ।'));};
-
-/* =========================================================
-   SIMPLE REAL UTILITIES
-========================================================= */
-window.useCurrentLocationForWeather=async function(){
- const out=document.getElementById('weatherResult'); if(!out)return; out.textContent='📍 Location ନେଉଛି…';
- if(!navigator.geolocation){out.textContent='Location support ନାହିଁ।';return;}
- navigator.geolocation.getCurrentPosition(async p=>{try{const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.coords.latitude}&longitude=${p.coords.longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`); const d=await r.json(); out.textContent=`🌦️ Temperature: ${d.current.temperature_2m}°C\
-💧 Humidity: ${d.current.relative_humidity_2m}%\
-💨 Wind: ${d.current.wind_speed_10m} km/h`; }catch(e){out.textContent='Weather data load ହେଲା ନାହିଁ।';}},()=>out.textContent='Location permission ଦିଆଯାଇନାହିଁ।');
-};
-(function(){const p=document.getElementById('weather'); if(p&&!p.querySelector('#weatherResult')){const d=document.createElement('div');d.style.cssText='margin-top:15px';d.innerHTML='<button class="add-button" onclick="useCurrentLocationForWeather()">📍 Get Current Weather</button><div id="weatherResult" style="margin-top:12px;white-space:pre-wrap"></div>';p.appendChild(d);}})();
-(function(){const p=document.getElementById('maps'); if(p&&!p.querySelector('.maps-action')){const d=document.createElement('div');d.className='maps-action';d.style.cssText='margin-top:15px;display:flex;gap:8px;flex-wrap:wrap';d.innerHTML='<input id="placeQuery" placeholder="ଯେପରି: hospital near me" style="flex:1;min-width:220px;padding:12px;border-radius:12px"><button class="add-button" onclick="findPlace()">🗺️ Search</button>';p.appendChild(d);}})();
-window.findPlace=function(){const q=document.getElementById('placeQuery')?.value.trim();if(!q)return;window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q),'_blank','noopener');};
-
-/* Make panels easier to use */
-setTimeout(()=>document.querySelectorAll('.panel.show').forEach(p=>window.enhancePanel?.(p.id)),300);
-
 </script>
 
 
 <style>
-#sakhaLivePanel{position:fixed;inset:auto 16px 16px 16px;max-width:760px;margin:auto;background:#fff;border:1px solid #dbe4f0;border-radius:20px;box-shadow:0 18px 50px #0002;padding:18px;z-index:99999;display:none}
-#sakhaLivePanel.show{display:block}.sl-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.sl-close{border:0;background:#eef3f8;border-radius:10px;padding:7px 11px}.sl-input{width:100%;padding:12px;border:1px solid #ccd7e5;border-radius:12px;margin:10px 0}.sl-actions{display:flex;gap:8px;flex-wrap:wrap}.sl-actions button{border:0;border-radius:12px;padding:10px 14px;cursor:pointer}.sl-result{margin-top:12px;white-space:pre-wrap;line-height:1.55}
+#handsFreeBadge{position:fixed;right:14px;bottom:14px;z-index:9999;background:#15122d;border:1px solid #ffffff22;color:#fff;padding:10px 13px;border-radius:14px;font-size:12px;box-shadow:0 10px 30px #0008;cursor:pointer}
+#handsFreeBadge.on{border-color:#35dc9a;color:#35dc9a}
 </style>
-<div id="sakhaLivePanel">
-  <div class="sl-head"><strong id="slTitle">SAKHA AI</strong><button class="sl-close" onclick="closeSakhaPanel()">✕</button></div>
-  <input id="slInput" class="sl-input" placeholder="ପଚାରନ୍ତୁ…">
-  <div class="sl-actions">
-    <button onclick="runSakhaLive()">🤖 Ask SAKHA</button>
-    <button onclick="useMyLocation()">📍 My location</button>
-    <button onclick="openWebSearch()">🔎 Search web</button>
-  </div>
-  <div id="slResult" class="sl-result"></div>
-</div>
+<button id="handsFreeBadge" type="button" onclick="sakhaEnableHandsFree()">🎙️ Hands-free: OFF</button>
 <script>
+/* =========================================================
+   SAKHA LIVE WEATHER + HELLO SAKHA HANDS-FREE
+   This layer keeps the original SAKHA engine intact.
+========================================================= */
 (function(){
-const panel=document.getElementById('sakhaLivePanel'), input=document.getElementById('slInput'), title=document.getElementById('slTitle'), result=document.getElementById('slResult');
-let mode='Daily Life AI';
-window.openSakhaPanel=function(m='Daily Life AI',prefill=''){mode=m;title.textContent='🤖 '+m;input.value=prefill;result.textContent='';panel.classList.add('show');setTimeout(()=>input.focus(),50)};
-window.closeSakhaPanel=()=>panel.classList.remove('show');
-window.useMyLocation=function(){if(!navigator.geolocation){result.textContent='📍 Location support ନାହିଁ।';return}result.textContent='📍 Location ନେଉଛି…';navigator.geolocation.getCurrentPosition(p=>{input.value=(input.value?input.value+' ':'')+'ମୋ location: '+p.coords.latitude.toFixed(4)+', '+p.coords.longitude.toFixed(4);result.textContent='Location added. ଏବେ Ask SAKHA କରନ୍ତୁ।'},()=>result.textContent='📍 Location permission ମିଳିଲା ନାହିଁ।')};
-window.openWebSearch=function(){const q=encodeURIComponent(input.value||mode);window.open('https://www.google.com/search?q='+q,'_blank','noopener')};
-window.runSakhaLive=async function(){
- const q=input.value.trim(); if(!q){result.textContent='ପ୍ରଥମେ ପ୍ରଶ୍ନଟି ଲେଖନ୍ତୁ।';return}
- result.textContent='🤔 SAKHA ଭାବୁଛି…';
- try{
-  const url=(typeof SAKHA_AI_URL==='string')?SAKHA_AI_URL:'https://hsexaatuacdnumxnkehx.supabase.co/functions/v1/smart-endpoint';
-  const key=(typeof SUPABASE_PUBLISHABLE_KEY==='string')?SUPABASE_PUBLISHABLE_KEY:'';
-  const body={message:q,question:q,exam_name:mode,category:mode,language:'or'};
-  const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','apikey':key,'Authorization':'Bearer '+key},body:JSON.stringify(body)});
-  const text=await r.text(); let data; try{data=JSON.parse(text)}catch{data={raw:text}};
-  if(!r.ok) throw new Error(data?.error||data?.message||'AI request failed');
-  const ans=data.answer||data.response||data.output||data.message||data.text||data.raw||'SAKHA answer ପାଇଲା ନାହିଁ।';
-  result.textContent='🤖 '+ans;
-  if('speechSynthesis' in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(ans);u.lang='or-IN';speechSynthesis.speak(u)}
- }catch(e){result.textContent='⚠️ SAKHA AI connection ହେଲା ନାହିଁ। '+e.message+'\\n\\nInternet ଓ Supabase Edge Function check କରନ୍ତୁ।'}
-};
-window.sakhaSection=function(name){
- const prompts={
- 'Student AI':'ମୋ ପଢ଼ା topicକୁ ସରଳ ଭାବେ explain କର ଏବଂ 5ଟି quiz question ଦିଅ।',
- 'Farmer AI':'ମୋ ଫସଲ ପାଇଁ ଆଜି କଣ କାମ କରିବି? ଫସଲ ଓ ଅଞ୍ଚଳ ପଚାରି ନିରାପଦ guidance ଦିଅ।',
- 'Animal Care':'ମୋ ପଶୁର ସମସ୍ୟା ବିଷୟରେ general care guidance ଦିଅ ଏବଂ emergency signs କହ।',
- 'Animal Rescue':'ବିପଦରେ ଥିବା ପଶୁ ପାଇଁ ତୁରନ୍ତ safe rescue steps ଓ local help ଖୋଜିବା ଉପାୟ କହ।',
- 'Baby Care':'Baby care ବିଷୟରେ general hygiene ଓ safety guidance ଦିଅ; serious signs ଥିଲେ doctor କୁ contact କରିବା କହ।',
- 'Kitchen & Recipes':'ମୋ ingredients ଅନୁସାରେ ସରଳ recipe suggest କର।',
- 'Buy & Sell':'ମୋ ଜିନିଷ ପାଇଁ safe buy/sell listing ଲେଖିଦିଅ।',
- 'Lost & Found':'Lost/Found notice ଲେଖିଦିଅ ଏବଂ privacy-safe details କଣ ଦେବା କହ।',
- 'Jobs & Career':'ମୋ qualification ଓ location ପଚାରି suitable career/job search plan ଦିଅ।',
- 'Maps & Places':'ମୋ location ନିକଟର useful place ଖୋଜିବା ପାଇଁ query ପ୍ରସ୍ତୁତ କର।',
- 'Weather':'ଆଜି Mayurbhanjର weather ଓ ବର୍ଷା ସମ୍ଭାବନା ବିଷୟରେ latest information ଦରକାର।',
- 'Smart Market':'ମୁଁ କିଣିବାକୁ ଚାହୁଁଥିବା product ପାଇଁ price/features compare କରିବା checklist ଦିଅ।',
- 'Vehicle Help':'ମୋ bike/car/scooter problem diagnose କରିବାକୁ ପ୍ରଥମେ କଣ check କରିବି?',
- 'Mobile Help':'ମୋ phone/network/Wi-Fi problem troubleshoot କରିବାକୁ step-by-step କହ।',
- 'Smart Home':'ମୋ smart device setup/troubleshooting ପାଇଁ step-by-step guidance ଦିଅ।',
- 'Video Studio':'ମୋ video ପାଇଁ catchy caption, hashtags ଏବଂ short description ତିଆରି କର।',
- 'Smart Reminder':'ମୋ କାମ ପାଇଁ reminder text ତିଆରି କର।',
- 'Emergency Help':'Emergencyରେ safe immediate steps ଏବଂ local emergency service contact କରିବା guidance ଦିଅ।',
- 'Camera AI':'ଏହି photoକୁ ବୁଝିବା ପାଇଁ ମୁଁ କଣ information ଦେବି କହ।',
- 'Movie & Ticket':'ମୋ cityର movie/show ପାଇଁ official sourceରେ latest information ଖୋଜିବା query ଦିଅ।',
- 'Daily Life AI':'ମୋ କାମକୁ priority ଦେଇ simple plan ତିଆରି କର।'
- };
- openSakhaPanel(name,prompts[name]||'ମୋତେ ସାହାଯ୍ୟ କର।');
-};
-})();
-</script>
+  const BACKEND = "https://sakha-8wii.onrender.com";
+  const WEATHER_WORDS = /(weather|rain|raining|ବର୍ଷା|ବର୍ଷା ହେବ|ପାଗ|ତାପମାତ୍ରା|ମୌସମ|बारिश|मौसम|temperature)/i;
+  const WAKE_WORD = /\b(hello\s*sakha|hey\s*sakha|hi\s*sakha|ହେଲୋ\s*ସଖା|ହେଲୋ\s*ସାଖା|ସଖା|ସାଖା)\b/i;
+  let handsFree=false, wakeBusy=false, weatherBusy=false;
 
+  function weatherText(data, city){
+    const c=data.current||{};
+    const rain=Number.isFinite(data.rain_probability_next_24h)?data.rain_probability_next_24h:null;
+    return `🌦️ ${data.place?.name || city}\n\n🌡️ Temperature: ${c.temperature_2m ?? "—"} °C\n🌡️ Feels like: ${c.apparent_temperature ?? "—"} °C\n💧 Humidity: ${c.relative_humidity_2m ?? "—"}%\n🌧️ Rain now: ${c.rain ?? 0} mm\n🌧️ Next 24h rain probability: ${rain===null?"—":rain+"%"}\n💨 Wind: ${c.wind_speed_10m ?? "—"} km/h\n🕐 Live update: ${c.time || "now"}`;
+  }
 
-<script>
-document.addEventListener('click',function(e){
- const el=e.target.closest('div,section,article,button,a');
- if(!el)return;
- const t=(el.innerText||'').trim().split('\n')[0];
- const names=['Student AI', 'Farmer AI', 'Animal Care', 'Animal Rescue', 'Baby Care', 'Kitchen & Recipes', 'Buy & Sell', 'Lost & Found', 'Jobs & Career', 'Maps & Places', 'Weather', 'Smart Market', 'Vehicle Help', 'Mobile Help', 'Smart Home', 'Video Studio', 'Smart Reminder', 'Emergency Help', 'Camera AI', 'Movie & Ticket', 'Daily Life AI'];
- for(const n of names){if(t===n || (el.innerText||'').trim().startsWith(n+'\n')){if(!el.closest('#sakhaLivePanel')){e.preventDefault();e.stopPropagation();window.sakhaSection(n);}break;}}
-},true);
-</script>
-
-
-<style>
-.sakha-live-card{margin:12px 0;padding:16px;border-radius:18px;border:1px solid #dbe5f0;background:linear-gradient(135deg,#f8fbff,#eef7ff)}
-.sakha-live-card button{border:0;border-radius:12px;padding:10px 14px;margin:4px;cursor:pointer}
-.sakha-live-out{white-space:pre-wrap;line-height:1.55;margin-top:10px}
-</style>
-<script>
-window.SAKHA_BACKEND_URL = localStorage.getItem("SAKHA_BACKEND_URL") || "https://sakha-8wii.onrender.com";
-window.sakhaSetBackend = function(url){
-  localStorage.setItem("SAKHA_BACKEND_URL", String(url).replace(/\/+$/,""));
-  alert("SAKHA backend URL saved.");
-};
-window.sakhaLiveWeather = async function(){
-  const out=document.getElementById("sakhaWeatherOut");
-  out.textContent="📍 Location ନେଉଛି…";
-  if(!navigator.geolocation){out.textContent="Location support ନାହିଁ.";return;}
-  navigator.geolocation.getCurrentPosition(async p=>{
+  window.sakhaGetWeather=async function(cityArg){
+    const input=document.getElementById('weatherCityInput');
+    const out=document.getElementById('weatherResult');
+    const city=String(cityArg||input?.value||'Baripada').trim()||'Baripada';
+    if(out) out.textContent='⏳ Live weather ଆଣୁଛି…';
+    if(weatherBusy)return;
+    weatherBusy=true;
     try{
-      const r=await fetch(`${window.SAKHA_BACKEND_URL}/api/weather?lat=${p.coords.latitude}&lon=${p.coords.longitude}`);
-      const j=await r.json(); if(!r.ok||!j.ok) throw new Error(j.error||"Weather failed");
-      const c=j.data.current||{};
-      const h=j.data.hourly||{};
-      let max=0;
-      if(Array.isArray(h.precipitation_probability)) max=Math.max(...h.precipitation_probability.slice(0,24).filter(Number.isFinite));
-      out.textContent=`🌦️ Live Weather\nTemperature: ${c.temperature_2m ?? "—"}°C\nFeels like: ${c.apparent_temperature ?? "—"}°C\nRain now: ${c.rain ?? 0} mm\n🌧️ Next 24h max rain probability: ${max}%`;
-    }catch(e){out.textContent="⚠️ Live weather ଆଣିହେଲା ନାହିଁ। Backend URL/Render service check କରନ୍ତୁ."}
-  },()=>out.textContent="📍 Location permission allow କରନ୍ତୁ.");
-};
-</script>
+      const r=await fetch(BACKEND+'/api/weather/place?city='+encodeURIComponent(city),{cache:'no-store'});
+      const data=await r.json();
+      if(!r.ok||!data.ok) throw new Error(data.error||'Weather unavailable');
+      if(out) out.textContent=weatherText(data,city);
+      return data;
+    }catch(e){
+      if(out) out.textContent='❌ Live weather ଆସୁନାହିଁ।\n'+(e.message||'Backend connection problem');
+      throw e;
+    }finally{weatherBusy=false;}
+  };
 
-<!-- ===============================
-     SAKHA LIVE WEATHER
-================================ -->
-
-<style>
-.sakha-weather-box{
-  margin:20px auto;
-  max-width:700px;
-  padding:22px;
-  border-radius:22px;
-  background:linear-gradient(135deg,#eef8ff,#ffffff);
-  border:1px solid #d7e7f5;
-  box-shadow:0 10px 30px rgba(0,0,0,.08);
-  font-family:Arial,sans-serif;
-}
-
-.sakha-weather-box h2{
-  margin:0 0 8px;
-}
-
-.sakha-weather-input{
-  width:100%;
-  box-sizing:border-box;
-  padding:13px;
-  margin:12px 0;
-  border:1px solid #cbd8e6;
-  border-radius:12px;
-  font-size:16px;
-}
-
-.sakha-weather-btn{
-  border:0;
-  padding:12px 18px;
-  margin:5px;
-  border-radius:12px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.sakha-weather-result{
-  margin-top:15px;
-  padding:15px;
-  border-radius:15px;
-  background:#fff;
-  line-height:1.7;
-  white-space:pre-wrap;
-}
-</style>
-
-<div class="sakha-weather-box">
-
-  <h2>🌦️ SAKHA Live Weather</h2>
-
-  <p>
-    City ଲେଖନ୍ତୁ କିମ୍ବା ନିଜ location ବ୍ୟବହାର କରନ୍ତୁ।
-  </p>
-
-  <input
-    id="sakhaWeatherCity"
-    class="sakha-weather-input"
-    placeholder="ଉଦାହରଣ: Mayurbhanj / Baripada"
-  >
-
-  <button
-    class="sakha-weather-btn"
-    onclick="sakhaWeatherByCity()">
-    🔎 Check Weather
-  </button>
-
-  <button
-    class="sakha-weather-btn"
-    onclick="sakhaWeatherMyLocation()">
-    📍 My Location
-  </button>
-
-  <div
-    id="sakhaWeatherResult"
-    class="sakha-weather-result">
-    Weather result ଏଠାରେ ଦେଖାଯିବ।
-  </div>
-
-</div>
-
-<script>
-
-const SAKHA_WEATHER_BACKEND =
-  "https://sakha-8wii.onrender.com";
-
-/* =================================
-   WEATHER BY CITY
-================================= */
-
-async function sakhaWeatherByCity(){
-
-  const city =
-    document.getElementById("sakhaWeatherCity")
-    .value
-    .trim();
-
-  const result =
-    document.getElementById("sakhaWeatherResult");
-
-  if(!city){
-
-    result.innerText =
-      "⚠️ ପ୍ରଥମେ city name ଲେଖନ୍ତୁ।";
-
-    return;
-  }
-
-  result.innerText =
-    "⏳ Live weather data ଆଣୁଛି...";
-
-  try{
-
-    const response = await fetch(
-      SAKHA_WEATHER_BACKEND +
-      "/api/weather/place?city=" +
-      encodeURIComponent(city)
-    );
-
-    const data = await response.json();
-
-    if(!response.ok || !data.ok){
-
-      throw new Error(
-        data.error || "Weather unavailable"
-      );
-
-    }
-
-    const c = data.current || {};
-
-    const rain =
-      data.rain_probability_next_24h ?? 0;
-
-    result.innerText =
-`📍 ${data.place?.name || city}
-
-🌡️ Temperature:
-${c.temperature_2m ?? "—"} °C
-
-🌡️ Feels Like:
-${c.apparent_temperature ?? "—"} °C
-
-💧 Humidity:
-${c.relative_humidity_2m ?? "—"} %
-
-🌧️ Rain Now:
-${c.rain ?? 0} mm
-
-🌧️ Rain Probability Next 24 Hours:
-${rain} %
-
-💨 Wind:
-${c.wind_speed_10m ?? "—"} km/h
-
-🕐 Updated:
-${c.time || "Live"}`;
-
-  }catch(error){
-
-    console.error(error);
-
-    result.innerText =
-`❌ Live weather ଆସୁନାହିଁ।
-
-କାରଣ:
-${error.message}
-
-Render server running ଅଛି କି check କରନ୍ତୁ।`;
-
-  }
-
-}
-
-
-/* =================================
-   WEATHER BY GPS
-================================= */
-
-function sakhaWeatherMyLocation(){
-
-  const result =
-    document.getElementById("sakhaWeatherResult");
-
-  if(!navigator.geolocation){
-
-    result.innerText =
-      "❌ ଏହି browser location support କରୁନାହିଁ.";
-
-    return;
-  }
-
-  result.innerText =
-    "📍 Location ନେଉଛି...";
-
-  navigator.geolocation.getCurrentPosition(
-
-    async function(position){
-
-      const lat =
-        position.coords.latitude;
-
-      const lon =
-        position.coords.longitude;
-
+  window.sakhaWeatherLocation=function(){
+    const out=document.getElementById('weatherResult');
+    if(!navigator.geolocation){if(out)out.textContent='📍 Browser location support କରୁନାହିଁ।';return;}
+    if(out)out.textContent='📍 Location ନେଉଛି…';
+    navigator.geolocation.getCurrentPosition(async pos=>{
       try{
+        const r=await fetch(BACKEND+'/api/weather?lat='+pos.coords.latitude+'&lon='+pos.coords.longitude,{cache:'no-store'});
+        const d=await r.json(); if(!r.ok||!d.ok)throw new Error(d.error||'Weather unavailable');
+        const c=d.current||{};
+        if(out)out.textContent=`🌦️ Your live weather\n\n🌡️ Temperature: ${c.temperature_2m ?? '—'} °C\n🌡️ Feels like: ${c.apparent_temperature ?? '—'} °C\n💧 Humidity: ${c.relative_humidity_2m ?? '—'}%\n🌧️ Rain now: ${c.rain ?? 0} mm\n🌧️ Next 24h rain probability: ${d.rain_probability_next_24h ?? '—'}%\n💨 Wind: ${c.wind_speed_10m ?? '—'} km/h`;
+      }catch(e){if(out)out.textContent='❌ Live weather unavailable. '+e.message;}
+    },()=>{if(out)out.textContent='📍 Location permission Allow କରନ୍ତୁ।';},{enableHighAccuracy:false,timeout:10000});
+  };
 
-        const response = await fetch(
-          SAKHA_WEATHER_BACKEND +
-          "/api/weather?lat=" +
-          lat +
-          "&lon=" +
-          lon
-        );
+  async function weatherFromQuestion(text){
+    const t=String(text||'');
+    if(!WEATHER_WORDS.test(t)) return false;
+    let city='Baripada';
+    const m=t.match(/(?:in|at|near|ରେ|ରେ|ର)[\s:,-]+([A-Za-z][A-Za-z\s-]{2,30})/i);
+    if(m&&m[1])city=m[1].trim();
+    if(/mayurbhanj/i.test(t)||/ମୟୂରଭଞ୍ଜ/i.test(t))city='Baripada';
+    try{
+      const d=await window.sakhaGetWeather(city);
+      const answer=weatherText(d,city)+'\n\n📌 Mayurbhanj ପାଇଁ Baripadaକୁ district reference ଭାବେ ନିଆଯାଇଛି।';
+      addMessage(answer,'ai');
+      speak(answer);
+      return true;
+    }catch(e){return false;}
+  }
 
-        const data =
-          await response.json();
+  const originalProcess=window.processCommand;
+  if(typeof originalProcess==='function'){
+    window.processCommand=async function(text){
+      if(await weatherFromQuestion(text)) return;
+      return originalProcess(text);
+    };
+  }
 
-        if(!response.ok || !data.ok){
+  function setBadge(){
+    const b=document.getElementById('handsFreeBadge'); if(!b)return;
+    b.textContent=handsFree?'🎙️ Hands-free: ON':'🎙️ Hands-free: OFF';
+    b.classList.toggle('on',handsFree);
+  }
 
-          throw new Error(
-            data.error || "Weather unavailable"
-          );
+  window.sakhaEnableHandsFree=function(){
+    if(!recognition){alert('Chrome browserରେ voice recognition support ଦରକାର।');return;}
+    handsFree=true; setBadge();
+    try{ recognition.lang=currentLanguage==='or'?'or-IN':currentLanguage==='hi'?'hi-IN':'en-IN'; recognition.continuous=true; recognition.interimResults=false; recognition.start(); }
+    catch(e){console.log('Hands-free start:',e);}
+  };
 
+  /* Enhance the existing recognition without replacing the original engine. */
+  if(typeof recognition!=='undefined' && recognition){
+    recognition.continuous=true;
+    const oldResult=recognition.onresult;
+    recognition.onresult=function(event){
+      const last=event.results?.[event.results.length-1]?.[0];
+      const text=last?.transcript?.trim()||'';
+      if(!text)return;
+      if(handsFree && WAKE_WORD.test(text)){
+        const command=text.replace(WAKE_WORD,'').trim();
+        if(!command){
+          speak(currentLanguage==='or'?'ହଁ ଭାଇ, କହନ୍ତୁ।':'Yes, I am listening.');
+          return;
         }
-
-        const c =
-          data.current || {};
-
-        const rain =
-          data.rain_probability_next_24h ?? 0;
-
-        result.innerText =
-`📍 Your Current Location
-
-🌡️ Temperature:
-${c.temperature_2m ?? "—"} °C
-
-🌡️ Feels Like:
-${c.apparent_temperature ?? "—"} °C
-
-💧 Humidity:
-${c.relative_humidity_2m ?? "—"} %
-
-🌧️ Rain Now:
-${c.rain ?? 0} mm
-
-🌧️ Rain Probability Next 24 Hours:
-${rain} %
-
-💨 Wind:
-${c.wind_speed_10m ?? "—"} km/h
-
-🕐 Live Update:
-${c.time || "Now"}`;
-
-      }catch(error){
-
-        result.innerText =
-          "❌ Live weather unavailable: " +
-          error.message;
-
+        if(!wakeBusy){wakeBusy=true; addMessage(command,'user'); Promise.resolve(window.processCommand(command)).finally(()=>{wakeBusy=false;});}
+        return;
       }
+      if(handsFree && !WAKE_WORD.test(text)){
+        if(!wakeBusy){wakeBusy=true; addMessage(text,'user'); Promise.resolve(window.processCommand(text)).finally(()=>{wakeBusy=false;});}
+        return;
+      }
+      if(typeof oldResult==='function') oldResult.call(recognition,event);
+    };
+    recognition.onend=function(){
+      if(handsFree){setTimeout(()=>{try{recognition.start();}catch(e){}},700);}
+    };
+  }
 
-    },
+  /* If microphone permission was already granted, try hands-free automatically. */
+  window.addEventListener('load',()=>{
+    setTimeout(()=>{
+      if(recognition && !handsFree){
+        try{handsFree=true;setBadge();recognition.continuous=true;recognition.lang=currentLanguage==='or'?'or-IN':'en-IN';recognition.start();}
+        catch(e){handsFree=false;setBadge();}
+      }
+    },1200);
+  });
 
-    function(){
-
-      result.innerText =
-`📍 Location permission ମିଳିଲା ନାହିଁ।
-
-Browserର Location permissionକୁ Allow କରନ୍ତୁ।`;
-
-    }
-
-  );
-
-}
-
+  setBadge();
+})();
 </script>
 
-<!-- ===============================
-     END LIVE WEATHER
-================================ -->
-</div>
 </body>
 </html>
