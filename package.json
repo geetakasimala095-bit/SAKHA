@@ -1,13 +1,9 @@
 {
-  "name": "sakha-auto-post-backend",
+  "name": "sakha-live-backend",
   "version": "1.0.0",
-  "description": "SAKHA social media auto-post backend",
-  "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js"
-  },
-  "engines": {
-    "node": ">=18"
   },
   "dependencies": {
     "cors": "^2.8.5",
