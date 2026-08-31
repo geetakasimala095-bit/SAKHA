@@ -3849,11 +3849,292 @@ window.sakhaLiveWeather = async function(){
 };
 </script>
 
-<div class="sakha-live-card" id="sakhaLiveWeatherCard">
-<strong>🌦️ Live Weather</strong>
-<div>ନିଜ locationର current weather ଓ rain probability ଦେଖନ୍ତୁ।</div>
-<button onclick="sakhaLiveWeather()">📍 Check Live Weather</button>
-<div class="sakha-live-out" id="sakhaWeatherOut"></div>
+<!-- ===============================
+     SAKHA LIVE WEATHER
+================================ -->
+
+<style>
+.sakha-weather-box{
+  margin:20px auto;
+  max-width:700px;
+  padding:22px;
+  border-radius:22px;
+  background:linear-gradient(135deg,#eef8ff,#ffffff);
+  border:1px solid #d7e7f5;
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+  font-family:Arial,sans-serif;
+}
+
+.sakha-weather-box h2{
+  margin:0 0 8px;
+}
+
+.sakha-weather-input{
+  width:100%;
+  box-sizing:border-box;
+  padding:13px;
+  margin:12px 0;
+  border:1px solid #cbd8e6;
+  border-radius:12px;
+  font-size:16px;
+}
+
+.sakha-weather-btn{
+  border:0;
+  padding:12px 18px;
+  margin:5px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.sakha-weather-result{
+  margin-top:15px;
+  padding:15px;
+  border-radius:15px;
+  background:#fff;
+  line-height:1.7;
+  white-space:pre-wrap;
+}
+</style>
+
+<div class="sakha-weather-box">
+
+  <h2>🌦️ SAKHA Live Weather</h2>
+
+  <p>
+    City ଲେଖନ୍ତୁ କିମ୍ବା ନିଜ location ବ୍ୟବହାର କରନ୍ତୁ।
+  </p>
+
+  <input
+    id="sakhaWeatherCity"
+    class="sakha-weather-input"
+    placeholder="ଉଦାହରଣ: Mayurbhanj / Baripada"
+  >
+
+  <button
+    class="sakha-weather-btn"
+    onclick="sakhaWeatherByCity()">
+    🔎 Check Weather
+  </button>
+
+  <button
+    class="sakha-weather-btn"
+    onclick="sakhaWeatherMyLocation()">
+    📍 My Location
+  </button>
+
+  <div
+    id="sakhaWeatherResult"
+    class="sakha-weather-result">
+    Weather result ଏଠାରେ ଦେଖାଯିବ।
+  </div>
+
+</div>
+
+<script>
+
+const SAKHA_WEATHER_BACKEND =
+  "https://sakha-8wii.onrender.com";
+
+/* =================================
+   WEATHER BY CITY
+================================= */
+
+async function sakhaWeatherByCity(){
+
+  const city =
+    document.getElementById("sakhaWeatherCity")
+    .value
+    .trim();
+
+  const result =
+    document.getElementById("sakhaWeatherResult");
+
+  if(!city){
+
+    result.innerText =
+      "⚠️ ପ୍ରଥମେ city name ଲେଖନ୍ତୁ।";
+
+    return;
+  }
+
+  result.innerText =
+    "⏳ Live weather data ଆଣୁଛି...";
+
+  try{
+
+    const response = await fetch(
+      SAKHA_WEATHER_BACKEND +
+      "/api/weather/place?city=" +
+      encodeURIComponent(city)
+    );
+
+    const data = await response.json();
+
+    if(!response.ok || !data.ok){
+
+      throw new Error(
+        data.error || "Weather unavailable"
+      );
+
+    }
+
+    const c = data.current || {};
+
+    const rain =
+      data.rain_probability_next_24h ?? 0;
+
+    result.innerText =
+`📍 ${data.place?.name || city}
+
+🌡️ Temperature:
+${c.temperature_2m ?? "—"} °C
+
+🌡️ Feels Like:
+${c.apparent_temperature ?? "—"} °C
+
+💧 Humidity:
+${c.relative_humidity_2m ?? "—"} %
+
+🌧️ Rain Now:
+${c.rain ?? 0} mm
+
+🌧️ Rain Probability Next 24 Hours:
+${rain} %
+
+💨 Wind:
+${c.wind_speed_10m ?? "—"} km/h
+
+🕐 Updated:
+${c.time || "Live"}`;
+
+  }catch(error){
+
+    console.error(error);
+
+    result.innerText =
+`❌ Live weather ଆସୁନାହିଁ।
+
+କାରଣ:
+${error.message}
+
+Render server running ଅଛି କି check କରନ୍ତୁ।`;
+
+  }
+
+}
+
+
+/* =================================
+   WEATHER BY GPS
+================================= */
+
+function sakhaWeatherMyLocation(){
+
+  const result =
+    document.getElementById("sakhaWeatherResult");
+
+  if(!navigator.geolocation){
+
+    result.innerText =
+      "❌ ଏହି browser location support କରୁନାହିଁ.";
+
+    return;
+  }
+
+  result.innerText =
+    "📍 Location ନେଉଛି...";
+
+  navigator.geolocation.getCurrentPosition(
+
+    async function(position){
+
+      const lat =
+        position.coords.latitude;
+
+      const lon =
+        position.coords.longitude;
+
+      try{
+
+        const response = await fetch(
+          SAKHA_WEATHER_BACKEND +
+          "/api/weather?lat=" +
+          lat +
+          "&lon=" +
+          lon
+        );
+
+        const data =
+          await response.json();
+
+        if(!response.ok || !data.ok){
+
+          throw new Error(
+            data.error || "Weather unavailable"
+          );
+
+        }
+
+        const c =
+          data.current || {};
+
+        const rain =
+          data.rain_probability_next_24h ?? 0;
+
+        result.innerText =
+`📍 Your Current Location
+
+🌡️ Temperature:
+${c.temperature_2m ?? "—"} °C
+
+🌡️ Feels Like:
+${c.apparent_temperature ?? "—"} °C
+
+💧 Humidity:
+${c.relative_humidity_2m ?? "—"} %
+
+🌧️ Rain Now:
+${c.rain ?? 0} mm
+
+🌧️ Rain Probability Next 24 Hours:
+${rain} %
+
+💨 Wind:
+${c.wind_speed_10m ?? "—"} km/h
+
+🕐 Live Update:
+${c.time || "Now"}`;
+
+      }catch(error){
+
+        result.innerText =
+          "❌ Live weather unavailable: " +
+          error.message;
+
+      }
+
+    },
+
+    function(){
+
+      result.innerText =
+`📍 Location permission ମିଳିଲା ନାହିଁ।
+
+Browserର Location permissionକୁ Allow କରନ୍ତୁ।`;
+
+    }
+
+  );
+
+}
+
+</script>
+
+<!-- ===============================
+     END LIVE WEATHER
+================================ -->
 </div>
 </body>
 </html>
